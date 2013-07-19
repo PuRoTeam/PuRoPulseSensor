@@ -55,9 +55,7 @@
     </script>
 </head>
 <body>
-	<div id="title">
-		Arduino Healting Monitor
-	</div>
+	<div id="title">Arduino Healting Monitor</div>
 	<div id="wrapper">
 		<div id="menu">
 			<h3><a href="">Real time</a></h3>
@@ -68,6 +66,13 @@
 			<div id="chart"></div>
 		</div>
 		<p>Date: <input id="datepicker" type="text" /></p>
+		
+		<div id="sidebar">
+			<form>
+				<input type="checkbox" name="vehicle" value="Bike">I have a bike<br>
+				<input type="checkbox" name="vehicle" value="Car">I have a car
+			</form>
+		</div>
 	</div>
 	
 	
