@@ -5,6 +5,7 @@
 	<link type="text/css" rel="stylesheet" href="src/css/detail.css">
 	<link type="text/css" rel="stylesheet" href="src/css/legend.css">
 	<link type="text/css" rel="stylesheet" href="css/extensions.css">
+	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
 	
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -57,14 +58,19 @@
 	<div id="title">
 		Arduino Healting Monitor
 	</div>
-	<div id="menubar">
-			
+	<div id="wrapper">
+		<div id="menu">
+			<h3><a href="">Real time</a></h3>
+			<h3><a href="">Replay</a></h3>
+			<h3><a href="">Log out</a></h3>
+		</div>
+		<div id="chart_wrapper">
+			<div id="chart"></div>
+		</div>
+		<p>Date: <input id="datepicker" type="text" /></p>
 	</div>
 	
-	<div id="content">
-		<div id="chart"></div>
-	</div>
-	<p>Date: <input type="text" id="datepicker" /></p>
+	
 
 	<script>
 		var tv = 150; //deve essere sincronizzato col client/arduino
