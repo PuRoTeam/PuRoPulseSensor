@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.mysql.jdbc.Connection;
 
@@ -84,20 +86,20 @@ public final class MysqlConnect
     	
     	long newUid = point.getUid();
     	double newValue = point.getValue();
-    	long newTimestamp = point.getTimeStamp().getTime();
+    	long newTimestamp = point.getTimeStamp().getTimeInMillis();
     	
     	String query = "INSERT INTO " + tpTableName +" (" + tpUid + ", "+ tpValue + ", " + tpTimestamp + ") " + 
     				   "VALUES (" + newUid +"," + newValue + "," + newTimestamp + ")";
     	return insert(query);
     }
     
-    public ArrayList<Point> getPointsByDate(Date start, Date end) throws SQLException
+    public ArrayList<Point> getPointsByDate(GregorianCalendar start, GregorianCalendar end) throws SQLException
     {
     	String tpTableName = TableInfo.TablePoint.toString();
     	String tpTimestamp = TableInfo.TPointTimestamp.toString();
     	
-    	long lstart = start.getTime();
-    	long lend = end.getTime();
+    	long lstart = start.getTimeInMillis();
+    	long lend = end.getTimeInMillis();
     	
 //    	SELECT * 
 //    	FROM  `point` 
@@ -105,7 +107,7 @@ public final class MysqlConnect
 //    	LIMIT 0 , 30
     	
     	String query = "SELECT * FROM " + tpTableName + " " + 
-    				   "WHERE " + tpTimestamp + " > " + lstart + " & " + tpTimestamp + " < " + lend;
+    				   "WHERE " + tpTimestamp + " > " + lstart + " AND " + tpTimestamp + " < " + lend;
     	
     	System.out.println(query);
     	ResultSet rs = query(query);
@@ -125,6 +127,10 @@ public final class MysqlConnect
     	return pointlist;
     }
     
+    /* ------------------------------------------Funzioni Di Test-------------------------------------- */
+    /* ------------------------------------------------------------------------------------------------ */
+    /* ------------------------------------------------------------------------------------------------ */
+    
     public static void main(String[] args)
     {
     	//testInsertSelect();
@@ -132,24 +138,37 @@ public final class MysqlConnect
     }
  
     public static void testGetPointsByDate()
-    {
-    	Date lstart = new Date(0);    	
-    	Date lend = new Date(2030, 6, 1);
-    	System.out.println(lstart);
-    	System.out.println(lend);
+    {	
+    	GregorianCalendar start = new GregorianCalendar();
+    	start.set(Calendar.DATE, 17);
+    	
+    	GregorianCalendar end = new GregorianCalendar();
+    	end.set(Calendar.DATE, 17);
+    	
+    	/*GregorianCalendar gc = new GregorianCalendar();
+    	int anno = gc.get(Calendar.YEAR);
+    	int mese = gc.get(Calendar.MONTH) + 1;
+    	int giorno = gc.get(Calendar.DATE);
+    	int ore = gc.get(Calendar.HOUR);
+    	int min = gc.get(Calendar.MINUTE);
+    	int sec = gc.get(Calendar.SECOND);
+    	int msec = gc.get(Calendar.MILLISECOND);
+    	
+    	System.out.println(gc.getTimeInMillis());    	
+    	System.out.println(giorno + "/" + mese + "/" + anno + " " + ore + ":" + min + ":" + sec + ":" + msec);*/
     	
     	MysqlConnect mysql = MysqlConnect.getDbCon();
     	
     	try 
     	{
-			ArrayList<Point> points = mysql.getPointsByDate(lstart, lend);
+			ArrayList<Point> points = mysql.getPointsByDate(start, end);
 			
 			for(int i = 0; i < points.size(); i++)
 			{
 				Point p = points.get(i);
 		        System.out.println(p.getUid());
 		        System.out.println(p.getValue());
-		        System.out.println(p.getTimeStamp());
+		        System.out.println(p.getTimeStamp().getTime());
 		        System.out.println("----");
 			}
 		} 
