@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
+
 import data.Point;
 
 public class Shared 
@@ -60,5 +62,8 @@ public class Shared
     	System.out.println(sh2.getPointsByUid(uid2));
     	
     	System.out.println(sh1.getPointsByUid(uid2));
+    	    	
+    	//JSONArray ar = new JSONArray(ap1);
+    	//System.out.println(ar.toString());
     }
 }

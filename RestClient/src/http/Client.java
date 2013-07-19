@@ -24,6 +24,40 @@ public class Client implements Runnable
 	public static void Post() 
 			throws ClientProtocolException, IOException
 	{
+		singleValue();
+		//multiValue();
+	}
+	
+	public static void multiValue() //TODO
+			throws ClientProtocolException, IOException	
+	{
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+      
+        //array di punti
+        String json = "[{\"uid\":1,\"timeStamp\":1374256224200,\"value\":2},{\"uid\":2,\"timeStamp\":1374256224200,\"value\":3}]";
+
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(2);
+        params.add(new BasicNameValuePair("JSON", json.toString()));     
+        
+        post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                
+        HttpResponse response = client.execute(post);     
+        
+        post.setHeader("Content-Type", "application/json");
+                
+        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+               
+        String line = "";
+        while ((line = rd.readLine()) != null) 
+        {
+            System.out.println(line);
+        }
+	}
+	
+	public static void singleValue()
+			throws ClientProtocolException, IOException					
+	{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
         
