@@ -121,7 +121,7 @@
 		
 		<div id="menu">
 				<h3><a href="select.jsp?mode=0">Real time</a></h3>
-				<h3><a href="select.jsp?mode=1">Replay</a></h3>
+				<h3><a href="replay.jsp?mode=1">Replay</a></h3>
 				<h3><a href="login.jsp">Log out</a></h3>
 		</div>
 		<div id="content">
@@ -147,14 +147,13 @@
 				<div><% out.print(session.getAttribute("sUserName"));%></div>
 				<br/>
 				<br/>
-							
+			</div>			
 			<%}}%>
 			
 			<div id="chart_wrapper">
 				<div id="chart"></div>
 			</div>
-		</div>
-		
+		</div>	
 	</div><!-- end #wrapper -->
 
 	<script>
