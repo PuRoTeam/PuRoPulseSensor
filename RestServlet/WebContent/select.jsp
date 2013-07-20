@@ -27,6 +27,7 @@
 	
 		
 	<%@ page import="data.Point" %>
+	<%@ page import="java.util.GregorianCalendar"%>
 	
 	<script src="vendor/d3.v2.js"></script>
 
@@ -58,18 +59,47 @@
 	<script>  
       function getDateAndTime(){  
         
-        var date = document.forms["date_form"]["date_input"].value;
+        var datefrom = document.forms["date_form"]["date_from"].value;
+        var dateto = document.forms["date_form"]["date_to"].value;
          
-        var day = date.substring(0,2);
-        var month = date.substring(3,5);
-        var year = date.substring(6,10);
-        var hour = date.substring(11,13);
-        var minute = date.substring(14,16);
+        var day = datefrom.substring(0,2);
+        var month = datefrom.substring(3,5);
+        var year = datefrom.substring(6,10);
+        var hour = datefrom.substring(11,13);
+        var minute = datefrom.substring(14,16);
+
+        var date = new Date(year, month, day, hour, minute);
+        var from_date = date.getTime();
+        
+        day = dateto.substring(0,2);
+        month = dateto.substring(3,5);
+        year = dateto.substring(6,10);
+        hour = dateto.substring(11,13);
+        minute = dateto.substring(14,16);
+        
+        date = new Date(year, month, day, hour, minute);
+        var to_date = date.getTime();
+        
+        var url = ".jsp";
+        
+        /*
+        $.get(url, {from: from_date, to: to_date}, function(responseText) {
+			    	console.log(responseText);
+					var data = { one: responseText.random};
+		    		graph.series.addData(data);
+		    		graph.render();
+		    		$("#testo").html(responseText);
+			    },  
+			    "json"  
+			);  
+        */
         alert("day"+day+"\n"+
         		"month"+month+"\n"+
         		"year"+year+"\n"+
         		"hour"+hour+"\n"+
-        		"minute"+minute+"\n"); 
+        		"minute"+minute+"\n");
+        alert(from_date);
+        alert(to_date);
         
       }  
     </script>
@@ -88,19 +118,24 @@
 		</div>
 		<div id="content">
 			<%	 
-					if(mode == 1){ 
-						out.write("<div id=\"sidebar\">");
-						out.write("<form>");
-						out.write("<input type=\"checkbox\" name=\"vehicle\" value=\"Bike\">I have a bike<br>");
-						out.write("<input type=\"checkbox\" name=\"vehicle\" value=\"Car\">I have a car");
-						out.write("</form>");	
-						out.write("</div>");
-					} 
+				if(mode == 1){ 
+					out.write("<div id=\"sidebar\">");
+					out.write("<form>");
+					out.write("<input type=\"checkbox\" name=\"vehicle\" value=\"Bike\">I have a bike<br>");
+					out.write("<input type=\"checkbox\" name=\"vehicle\" value=\"Car\">I have a car");
+					out.write("</form>");	
+					out.write("</div>");
+				} 
 			%>
+			
 			<div id="sidebar">
 				<form name="date_form" onsubmit="getDateAndTime()">
-					<div>Date and time:</div> 
-					<input name="date_input" class="datetimepicker"/>
+					<div>From:</div> 
+					<input name="date_from" class="datetimepicker"/>
+					<div>To:</div>
+					<input name="date_to" class="datetimepicker"/>
+					<br/><br/>
+					<input type="submit" value="Invia">
 				</form>
 			</div>
 			<div id="chart_wrapper">
