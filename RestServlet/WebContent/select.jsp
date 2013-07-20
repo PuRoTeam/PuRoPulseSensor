@@ -55,6 +55,25 @@
 	<script src="src/js/Rickshaw.Series.js"></script>
 	<script src="src/js/Rickshaw.Series.FixedDuration.js"></script>
 	
+	<script>  
+      function getDateAndTime(){  
+        
+        var date = document.forms["date_form"]["date_input"].value;
+         
+        var day = date.substring(0,2);
+        var month = date.substring(3,5);
+        var year = date.substring(6,10);
+        var hour = date.substring(11,13);
+        var minute = date.substring(14,16);
+        alert("day"+day+"\n"+
+        		"month"+month+"\n"+
+        		"year"+year+"\n"+
+        		"hour"+hour+"\n"+
+        		"minute"+minute+"\n"); 
+        
+      }  
+    </script>
+	
 </head>
 <body>
 	<% int mode = 0; %>
@@ -79,9 +98,9 @@
 					} 
 			%>
 			<div id="sidebar">
-				<form onsubmit="return false;">
+				<form name="date_form" onsubmit="getDateAndTime()">
 					<div>Date and time:</div> 
-					<input class="datetimepicker"/>
+					<input name="date_input" class="datetimepicker"/>
 				</form>
 			</div>
 			<div id="chart_wrapper">
