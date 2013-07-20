@@ -12,10 +12,9 @@
 	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
 	
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" href="/resources/demos/style.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	<link rel="stylesheet" href="/resources/demos/style.css" />
-	
 	
 	<script type="text/javascript" language="javascript" src="datepicker/prototype-1.js"></script>
 	<script type="text/javascript" language="javascript" src="datepicker/prototype-base-extensions.js"></script>
@@ -24,7 +23,6 @@
 	<script type="text/javascript" language="javascript" src="datepicker/datepicker.js"></script>
 	<script type="text/javascript" language="javascript" src="datepicker/behaviors.js"></script>
 	<link rel="stylesheet" href="datepicker/datepicker.css">
-	
 		
 	<%@ page import="data.Point" %>
 	<%@ page import="java.util.GregorianCalendar"%>
@@ -103,7 +101,7 @@
         
       }  
     </script>
-	
+    	
 </head>
 <body>
 	<% int mode = 0; %>
@@ -112,9 +110,9 @@
 		<div id="title">Arduino Healting Monitor</div>
 		
 		<div id="menu">
-				<h3><a href="">Real time</a></h3>
-				<h3><a href="">Replay</a></h3>
-				<h3><a href="">Log out</a></h3>
+				<h3><a href="select.jsp">Real time</a></h3>
+				<h3><a href="select.jsp">Replay</a></h3>
+				<h3><a href="login.jsp">Log out</a></h3>
 		</div>
 		<div id="content">
 			<%	 
