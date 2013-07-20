@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>PuRo Sensor</title>
-
+	
 	<link type="text/css" rel="stylesheet" href="src/css/graph.css">
 	<link type="text/css" rel="stylesheet" href="src/css/detail.css">
 	<link type="text/css" rel="stylesheet" href="src/css/legend.css">
@@ -15,12 +15,17 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<link rel="stylesheet" href="/resources/demos/style.css" />
-	<script>
-		$(function() {
-		$( "#datepicker" ).datepicker();
-		});
-	</script>
 	
+	
+	<script type="text/javascript" language="javascript" src="datepicker/prototype-1.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/prototype-base-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/prototype-date-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/behaviour.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/datepicker.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/behaviors.js"></script>
+	<link rel="stylesheet" href="datepicker/datepicker.css">
+	
+		
 	<%@ page import="data.Point" %>
 	
 	<script src="vendor/d3.v2.js"></script>
@@ -52,7 +57,7 @@
 	
 </head>
 <body>
-	<% int mode = 1; %>
+	<% int mode = 0; %>
 	<div id="wrapper">
 		
 		<div id="title">Arduino Healting Monitor</div>
@@ -73,6 +78,12 @@
 						out.write("</div>");
 					} 
 			%>
+			<div id="sidebar">
+				<form onsubmit="return false;">
+					<div>Date and time:</div> 
+					<input class="datetimepicker"/>
+				</form>
+			</div>
 			<div id="chart_wrapper">
 				
 				<div id="chart"></div>
