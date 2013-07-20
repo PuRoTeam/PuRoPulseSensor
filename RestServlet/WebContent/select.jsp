@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>PuRo Sensor</title>
 	
+		<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
 	<link type="text/css" rel="stylesheet" href="src/css/graph.css">
 	<link type="text/css" rel="stylesheet" href="src/css/detail.css">
 	<link type="text/css" rel="stylesheet" href="src/css/legend.css">
@@ -16,6 +17,10 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+	
+	<!-- Datepicker --> 
 	<script type="text/javascript" language="javascript" src="datepicker/prototype-1.js"></script>
 	<script type="text/javascript" language="javascript" src="datepicker/prototype-base-extensions.js"></script>
 	<script type="text/javascript" language="javascript" src="datepicker/prototype-date-extensions.js"></script>
@@ -24,9 +29,6 @@
 	<script type="text/javascript" language="javascript" src="datepicker/behaviors.js"></script>
 	<link rel="stylesheet" href="datepicker/datepicker.css">
 		
-	<%@ page import="data.Point" %>
-	<%@ page import="java.util.GregorianCalendar"%>
-	
 	<script src="vendor/d3.v2.js"></script>
 
 	<script src="src/js/Rickshaw.js"></script>
@@ -37,6 +39,8 @@
 	<script src="src/js/Rickshaw.Graph.Renderer.Stack.js"></script>
 	<script src="src/js/Rickshaw.Graph.Renderer.Line.js"></script>
 	<script src="src/js/Rickshaw.Graph.Renderer.Area.js"></script>
+		<script src="src/js/Rickshaw.Graph.Renderer.Bar.js"></script>
+		<script src="src/js/Rickshaw.Graph.Renderer.ScatterPlot.js">
 	<script src="src/js/Rickshaw.Graph.RangeSlider.js"></script>
 	<script src="src/js/Rickshaw.Graph.HoverDetail.js"></script>
 	<script src="src/js/Rickshaw.Graph.Annotate.js"></script>
@@ -51,8 +55,13 @@
 	<script src="src/js/Rickshaw.Fixtures.RandomData.js"></script>
 	<script src="src/js/Rickshaw.Fixtures.Color.js"></script>
 	<script src="src/js/Rickshaw.Color.Palette.js"></script>
+		<script src="src/js/Rickshaw.Graph.Axis.Y.js"></script>
 	<script src="src/js/Rickshaw.Series.js"></script>
 	<script src="src/js/Rickshaw.Series.FixedDuration.js"></script>
+	
+		<script src="js/extensions.js"></script>
+	
+	<%@ page import="data.Point" %>
 	
 	<script>  
       function getDateAndTime(){  
@@ -104,28 +113,23 @@
     	
 </head>
 <body>
+	
 	<% int mode = 0; %>
 	<div id="wrapper">
 		
 		<div id="title">Arduino Healting Monitor</div>
 		
 		<div id="menu">
-				<h3><a href="select.jsp">Real time</a></h3>
-				<h3><a href="select.jsp">Replay</a></h3>
+				<h3><a href="select.jsp?mode=0">Real time</a></h3>
+				<h3><a href="select.jsp?mode=1">Replay</a></h3>
 				<h3><a href="login.jsp">Log out</a></h3>
 		</div>
 		<div id="content">
 			<%	 
-				if(mode == 1){ 
-					out.write("<div id=\"sidebar\">");
-					out.write("<form>");
-					out.write("<input type=\"checkbox\" name=\"vehicle\" value=\"Bike\">I have a bike<br>");
-					out.write("<input type=\"checkbox\" name=\"vehicle\" value=\"Car\">I have a car");
-					out.write("</form>");	
-					out.write("</div>");
-				} 
+				String r = request.getParameter("mode");
+				if(r != null){
+					if(new Integer(r) == 1){
 			%>
-			
 			<div id="sidebar">
 				<form name="date_form" onsubmit="getDateAndTime()">
 					<div>From:</div> 
@@ -136,10 +140,18 @@
 					<input type="submit" value="Invia">
 				</form>
 			</div>
+			<%}else{%> 
+			<div id="infoID">
+				<div>Hi!</div> 
+				<div><% out.print(session.getAttribute("sUserID"));%></div>
+				<div><% out.print(session.getAttribute("sUserName"));%></div>
+				<br/>
+				<br/>
+							
+			<%}}%>
+			
 			<div id="chart_wrapper">
-				
 				<div id="chart"></div>
-				
 			</div>
 		</div>
 		

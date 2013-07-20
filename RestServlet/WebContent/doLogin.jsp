@@ -31,7 +31,7 @@
       session.setAttribute("iUserLevel",rsdoLogin.getString("iUserLevel"));
       session.setAttribute("sUserName",sUserName);
      
-      response.sendRedirect("success.jsp?error="+message);
+      response.sendRedirect("select.jsp?error="+message);
     }
     else
     {
@@ -43,7 +43,6 @@
     {
         e.printStackTrace();
     }
-    
     
     /// close object and connection
     try{

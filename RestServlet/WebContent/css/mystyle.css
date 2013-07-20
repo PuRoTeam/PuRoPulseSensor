@@ -101,6 +101,7 @@ input {
 	width: auto;
 	color: #000000;	
 	//border: 1px solid #FF0000;
+	//background-color: #A9D0F5;
 }
 
 #sidebar ul {
@@ -135,6 +136,14 @@ input {
 
 #sidebar a:hover {
 	text-decoration: underline;
+}
+
+#infoID {
+	float: left;
+	width: auto;
+	color: #000000;	
+	//border: 1px solid #FF0000;
+	//background-color: #A9D0F5;
 }
 
 #title{
