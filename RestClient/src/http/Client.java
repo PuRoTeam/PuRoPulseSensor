@@ -22,7 +22,7 @@ public class Client implements Runnable
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
 	
 	public static void Post() 
-			throws ClientProtocolException, IOException
+			throws ClientProtocolException, IOException 
 	{
 		//singleValue();
 		multiValue();
@@ -35,8 +35,26 @@ public class Client implements Runnable
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
       
+    	int max = 100;
+    	int size = 10;
+    	
+    	ArrayList<Double> random = new ArrayList<Double>();
+    	for(int i = 0; i < size; i++)
+    		random.add(Math.random()*max);
+    	
+    	String json = "[";
+    	for(int i = 0; i < size - 1; i++)
+    		json += "{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random.get(i) +"}, ";
+    	json += "{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random.get(size - 1) +"}";
+    	json += "]";
+    	
+    	System.out.println(json);
+    	
         //array di punti
-        String json = "[{\"uid\":1,\"timestamp\":1374256224200,\"value\":2},{\"uid\":1,\"timestamp\":1374256224200,\"value\":3}]";
+        /*String json = "[{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random1 +"}," +
+        			   "{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random2 + "}," +
+        			   "{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random3 + "}," +
+        		      "]";*/
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(2);
         params.add(new BasicNameValuePair("JSON", json.toString()));     

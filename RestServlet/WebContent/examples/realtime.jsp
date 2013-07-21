@@ -1,9 +1,9 @@
 <!doctype>
 <html>
 <head>
-	<link type="text/css" rel="stylesheet" href="src/css/graph.css">
-	<link type="text/css" rel="stylesheet" href="src/css/detail.css">
-	<link type="text/css" rel="stylesheet" href="src/css/legend.css">
+	<link type="text/css" rel="stylesheet" href="../src/css/graph.css">
+	<link type="text/css" rel="stylesheet" href="../src/css/detail.css">
+	<link type="text/css" rel="stylesheet" href="../src/css/legend.css">
 	<link type="text/css" rel="stylesheet" href="css/extensions.css">
 	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
 	
@@ -19,32 +19,32 @@
 	
 	<%@ page import="data.Point" %>
 	
-	<script src="vendor/d3.v2.js"></script>
+	<script src="../vendor/d3.v2.js"></script>
 
-	<script src="src/js/Rickshaw.js"></script>
-	<script src="src/js/Rickshaw.Class.js"></script>
-	<script src="src/js/Rickshaw.Compat.ClassList.js"></script>
-	<script src="src/js/Rickshaw.Graph.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Stack.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Line.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Area.js"></script>
-	<script src="src/js/Rickshaw.Graph.RangeSlider.js"></script>
-	<script src="src/js/Rickshaw.Graph.HoverDetail.js"></script>
-	<script src="src/js/Rickshaw.Graph.Annotate.js"></script>
-	<script src="src/js/Rickshaw.Graph.Legend.js"></script>
-	<script src="src/js/Rickshaw.Graph.Axis.Time.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Toggle.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Order.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Highlight.js"></script>
-	<script src="src/js/Rickshaw.Graph.Smoother.js"></script>
-	<script src="src/js/Rickshaw.Graph.Unstacker.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.Time.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.RandomData.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.Color.js"></script>
-	<script src="src/js/Rickshaw.Color.Palette.js"></script>
-	<script src="src/js/Rickshaw.Series.js"></script>
-	<script src="src/js/Rickshaw.Series.FixedDuration.js"></script>
+	<script src="../src/js/Rickshaw.js"></script>
+	<script src="../src/js/Rickshaw.Class.js"></script>
+	<script src="../src/js/Rickshaw.Compat.ClassList.js"></script>
+	<script src="../src/js/Rickshaw.Graph.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.Stack.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.Line.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.Area.js"></script>
+	<script src="../src/js/Rickshaw.Graph.RangeSlider.js"></script>
+	<script src="../src/js/Rickshaw.Graph.HoverDetail.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Annotate.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Legend.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Axis.Time.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Behavior.Series.Toggle.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Behavior.Series.Order.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Behavior.Series.Highlight.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Smoother.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Unstacker.js"></script>
+	<script src="../src/js/Rickshaw.Fixtures.Time.js"></script>
+	<script src="../src/js/Rickshaw.Fixtures.RandomData.js"></script>
+	<script src="../src/js/Rickshaw.Fixtures.Color.js"></script>
+	<script src="../src/js/Rickshaw.Color.Palette.js"></script>
+	<script src="../src/js/Rickshaw.Series.js"></script>
+	<script src="../src/js/Rickshaw.Series.FixedDuration.js"></script>
 	
 	<script>  
       function raj(){  
@@ -97,9 +97,9 @@
 		
 		graph.render();
 		
-		graphDataToPlot = new Array();
-		var indexToInsert = 0; //posizione in cui inserire nuovi elemento 
-		var indexToView = 0; //posizione del primo elemento da visualizzare 
+		//graphDataToPlot = new Array();
+		//var indexToInsert = 0; //posizione in cui inserire nuovi elemento 
+		//var indexToView = 0; //posizione del primo elemento da visualizzare 
 		
 		//se il client smette di inviare dati, il grafico continua ad indicare l'ultimo valore (comportamento giusto)
 		/*var iv = setInterval( function() {
@@ -124,14 +124,23 @@
 			$.get(loadUrl,
 				{uid: 1},  
 			    function(responseText) {
-			   
-					var i;
+			   					
+					for(var i = 0; i < responseText.length; i++)
+					{
+						var data = { one: responseText[i].value};
+						graph.series.addData(data);
+						graph.render();
+					}
+					
+					
+					
+					/*var i;
 					//da mettere un controllo/booleano per evitare di aggiungere dati già aggiunti (quando client smette di trasmettere)
 					for(i = 0; i < responseText.length; i++)
 					{
 						graphDataToPlot[indexToInsert] = responseText[i].value;
 						indexToInsert++;
-					}
+					}*/
 					//console.log(indexToInsert);
 			    	
 			    },  
@@ -141,11 +150,11 @@
 		}, tv );
 		
 		//sarebbe da svuotare gli elementi già visti 
-		setInterval( function() {
+		/*setInterval( function() {
 			var data = { one: graphDataToPlot[indexToView]};
 			indexToView++;
 			graph.series.addData(data);
-		}, tv );
+		}, tv );*/
 		
 					
 	</script>
