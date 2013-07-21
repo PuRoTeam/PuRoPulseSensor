@@ -2,10 +2,18 @@ div, span, p, td {
 	font-family: Arial, sans-serif;
 }
 #content {
-	width: 1200px;
+	width: 1100px;
+	margin-top: 3px;
+}
+#chart_container {
+	//position: relative;
+	float: right;
+	display: inline-block;
+	border: 1px solid #000000;
 }
 #chart {
 	display: inline-block;
+	border: 1px solid #f0f0f0;
 }
 #chart path {
 	-webkit-transition: opacity 0.2s linear;
@@ -24,23 +32,17 @@ div, span, p, td {
 	bottom: 26px;
 	width: 0;
 }
-#chart_container {
-	position: relative;
-	display: inline-block;
-}
+
 #smoother {
 	margin: 0 0 10px 16px;
-	width: 100px;
+	//width: 100px;
 }
 .rickshaw_graph .detail {
 	left: -1000;
 }
-#chart {
-	border: 1px solid #f0f0f0;
-}
+
 #side_panel {
 	padding: 0 20px 20px 0;
-	width: 240px;
 	display: inline-block;
 	vertical-align: top;
 }
@@ -132,7 +134,7 @@ label.disabled {
 #offset_form {
 	vertical-align: top;
 	display: inline-block;
-	width: 45%;
+	//width: 45%;
 }
 #interpolation_form label,
 #offset_form label {
@@ -155,6 +157,7 @@ label[for=scatter] {
 	background-repeat: no-repeat;
 	background-position: 2em center;
 	cursor: pointer;
+	cursor: hand;
 }
 #offset_form label span,
 #interpolation_form label span {

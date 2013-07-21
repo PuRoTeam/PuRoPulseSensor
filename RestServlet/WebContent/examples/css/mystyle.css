@@ -7,8 +7,8 @@ body {
 	font-size: small;
 	color: #000000;
 }
-
-h1, h2, h3 {
+/*
+h1, h2,*/ h3 {
 	margin: 0px;
 	padding: 0px;
 	color: #FFFFFF;
@@ -81,9 +81,9 @@ input {
 #content {
 	width: 1100px;
 	margin-top: 3px;
-	
 	//border: 1px solid #0000FF;
 }
+
 /* Chart */
 
 #chart_wrapper {
@@ -98,7 +98,8 @@ input {
 #sidebar {
 	float: left;
 	width: auto;
-	color: #000000;	
+	color: #000000;
+	margin-left: 10px;
 	//border: 1px solid #FF0000;
 	//background-color: #A9D0F5;
 }
