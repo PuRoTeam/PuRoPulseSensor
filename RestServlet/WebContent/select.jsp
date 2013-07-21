@@ -5,7 +5,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>PuRo Sensor</title>
 	
-		<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
 	<link type="text/css" rel="stylesheet" href="src/css/graph.css">
 	<link type="text/css" rel="stylesheet" href="src/css/detail.css">
 	<link type="text/css" rel="stylesheet" href="src/css/legend.css">
@@ -16,9 +15,6 @@
 	<link rel="stylesheet" href="/resources/demos/style.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
 	
 	<!-- Datepicker --> 
 	<script type="text/javascript" language="javascript" src="datepicker/prototype-1.js"></script>
@@ -39,8 +35,6 @@
 	<script src="src/js/Rickshaw.Graph.Renderer.Stack.js"></script>
 	<script src="src/js/Rickshaw.Graph.Renderer.Line.js"></script>
 	<script src="src/js/Rickshaw.Graph.Renderer.Area.js"></script>
-		<script src="src/js/Rickshaw.Graph.Renderer.Bar.js"></script>
-		<script src="src/js/Rickshaw.Graph.Renderer.ScatterPlot.js">
 	<script src="src/js/Rickshaw.Graph.RangeSlider.js"></script>
 	<script src="src/js/Rickshaw.Graph.HoverDetail.js"></script>
 	<script src="src/js/Rickshaw.Graph.Annotate.js"></script>
@@ -55,11 +49,9 @@
 	<script src="src/js/Rickshaw.Fixtures.RandomData.js"></script>
 	<script src="src/js/Rickshaw.Fixtures.Color.js"></script>
 	<script src="src/js/Rickshaw.Color.Palette.js"></script>
-		<script src="src/js/Rickshaw.Graph.Axis.Y.js"></script>
 	<script src="src/js/Rickshaw.Series.js"></script>
 	<script src="src/js/Rickshaw.Series.FixedDuration.js"></script>
 	
-		<script src="js/extensions.js"></script>
 	
 	<%@ page import="data.Point" %>
 	

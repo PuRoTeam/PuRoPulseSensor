@@ -155,7 +155,6 @@ label[for=scatter] {
 	background-repeat: no-repeat;
 	background-position: 2em center;
 	cursor: pointer;
-	cursor: hand;
 }
 #offset_form label span,
 #interpolation_form label span {

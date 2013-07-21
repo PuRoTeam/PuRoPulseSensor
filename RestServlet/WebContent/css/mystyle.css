@@ -1,6 +1,5 @@
 body {
 	margin: auto;
-	padding: auto;
 	background-image: url(images/windows-7official-wallpaper.jpg);
 	background-repeat: no-repeat;
 	background-position: center top;
@@ -183,7 +182,7 @@ input {
 #msg{
 	position:absolute;
 	top:190px;
-	left:270;
+	left:270px;
 }
 
 
