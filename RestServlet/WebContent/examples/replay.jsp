@@ -118,11 +118,8 @@
 		
 		<div id="title">Arduino Healting Monitor</div>
 		
-		<div id="menu">
-				<h3><a href="select.jsp?mode=0">Real time</a></h3>
-				<h3><a href="replay.jsp?mode=1">Replay</a></h3>
-				<h3><a href="login.jsp">Log out</a></h3>
-		</div>
+		<%@ include file="menu.jsp" %>
+		
 		<div id="content">
 			<div id="sidebar">
 				<form name="date_form" onsubmit="getDateAndTime()">

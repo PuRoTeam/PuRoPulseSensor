@@ -57,11 +57,9 @@
 <body>
 	<div id="title">Arduino Healting Monitor</div>
 	<div id="wrapper">
-		<div id="menu">
-			<h3><a href="">Real time</a></h3>
-			<h3><a href="">Replay</a></h3>
-			<h3><a href="">Log out</a></h3>
-		</div>
+		
+		<%@ include file="menu.jsp" %>
+		
 		<div id="chart_wrapper">
 			<div id="chart"></div>
 		</div>

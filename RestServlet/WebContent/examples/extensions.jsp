@@ -40,18 +40,23 @@
 	<script src="../src/js/Rickshaw.Graph.Axis.Y.js"></script>
 
 	<script src="js/extensions.js"></script>
+	
+	<!-- Datepicker --> 
+	<!-- <script type="text/javascript" src="../datepicker/prototype-1.js"></script>  -->
+	<script type="text/javascript" src="../datepicker/prototype-base-extensions.js"></script>
+	<script type="text/javascript" src="../datepicker/prototype-date-extensions.js"></script>
+	<script type="text/javascript" src="../datepicker/behaviour.js"></script>
+	<script type="text/javascript" src="../datepicker/datepicker.js"></script>
+	<script type="text/javascript" src="../datepicker/behaviors.js"></script>
+	<link rel="stylesheet" href="../datepicker/datepicker.css">
+	
 </head>
 <body>
 	<div id="wrapper">
 			
 		<div id="title">Arduino Healting Monitor</div>
 		
-		<div id="menu">
-			<h3><a href="select.jsp?mode=0">Real time</a></h3>
-			<h3><a href="replay.jsp?mode=1">Replay</a></h3>
-			<h3><a href="login.jsp">Log out</a></h3>
-		</div>
-	
+		<%@ include file="menu.jsp" %>
 		<div id="content">
 			<div id="sidebar">
 				<form id="side_panel">
@@ -65,7 +70,7 @@
 							<label for="line">line</label>
 						</div>
 					</section>
-					<!-- 
+					
 					<section>
 						<div id="offset_form">
 							<label for="value">
@@ -74,7 +79,7 @@
 							</label>
 						</div>
 					</section>
-					 -->
+					 
 					<section>
 						<div id="interpolation_form">
 							<label for="cardinal">
@@ -91,8 +96,6 @@
 							</label>
 						</div>
 					</section>
-					
-					
 				</form>
 			</div>
 			<div id="chart_container">
