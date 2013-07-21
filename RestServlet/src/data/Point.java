@@ -6,14 +6,16 @@ public class Point
 {
 	private long uid;
 	private double value;
-	private GregorianCalendar timestamp;
+	//private GregorianCalendar timestamp;
+	private long timestamp;
 	
-	public Point(long uid, double value, long timestampMs)
+	public Point(long uid, double value, long timestamp)
 	{
 		this.uid = uid;
-		this.value = value;		
-		this.timestamp = new GregorianCalendar();
-		this.timestamp.setTimeInMillis(timestampMs);
+		this.value = value;
+		this.timestamp = timestamp;
+		//this.timestamp = new GregorianCalendar();
+		//this.timestamp.setTimeInMillis(timestamp);
 	}
 	
 	public long getUid()
@@ -26,8 +28,13 @@ public class Point
 		return value;
 	}
 	
-	public GregorianCalendar getTimeStamp()
+	public long getTimestamp()
 	{
 		return timestamp;
 	}
+	
+	/*public GregorianCalendar getTimestamp()
+	{
+		return timestamp;
+	}*/
 }

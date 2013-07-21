@@ -40,63 +40,69 @@ public class ArduinoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
 	{		
-		singleValue(request, response);
-		//multivalue(request, response);	
+		//singleValue(request, response);
+		multivalue(request, response);	
 	}
 	
-	//ricevo un array
+	//ricevo un array di punti
 	public void multivalue(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
 	{
 		String json = request.getParameter("JSON"); //array di punti
 		PrintWriter out = response.getWriter();
-				
+					
+		/* TODO da modificare in base a come è gestita la cosa da arduino - array */
 		try 
 		{
 			JSONArray jarray = new JSONArray(json);
 			Shared singleton = Shared.getInstance();
 			
-			ArrayList<Long> uids = new ArrayList<Long>();
+			ArrayList<Long> allUidsInJsonArray = new ArrayList<Long>();
 			
 			int lenght = jarray.length();
-			for(int i = 0; i < lenght; i++)
+			
+			//salvo tutti gli uid (una sola volta) che trovo nell'array di punti
+			for(int i = 0; i < lenght; i++) 
 			{
-				JSONObject curElement = jarray.getJSONObject(i);
+				JSONObject curJsonElement = jarray.getJSONObject(i);
 				
-				long curUid = curElement.getLong("uid");
+				long curUid = curJsonElement.getLong("uid");
 				
-				if(!uids.contains(curUid))
-					uids.add(curUid);		
+				if(!allUidsInJsonArray.contains(curUid))
+					allUidsInJsonArray.add(curUid);
 			}
 			
-			for(int i = 0; i < uids.size(); i++)
+			//creo un array (per ogni uid) contenente tutti i punti con stesso uid
+			for(int i = 0; i < allUidsInJsonArray.size(); i++) 
 			{
-				long uid = uids.get(i);
-				ArrayList<Point> pointUid = new ArrayList<Point>();
+				long curUidInArray = allUidsInJsonArray.get(i);
+				ArrayList<Point> pointsWithSameUid = new ArrayList<Point>();
 				
 				for(int j = 0; j < lenght; j++)
 				{
-					JSONObject curElement = jarray.getJSONObject(j);					
-					long curUid = curElement.getLong("uid");
+					JSONObject curJsonElement = jarray.getJSONObject(j);					
+					long curUidJsonElement = curJsonElement.getLong("uid");
 					
-					if(curUid == uid)
+					if(curUidJsonElement == curUidInArray)
 					{
-						double curValue = curElement.getDouble("value");
-						long curTimestamp = curElement.getLong("timestamp");
+						double curValue = curJsonElement.getDouble("value");
+						long curTimestamp = curJsonElement.getLong("timestamp");
 						
-						GregorianCalendar curGTimestamp = new GregorianCalendar();
-						curGTimestamp.setTimeInMillis(curTimestamp);
+						//GregorianCalendar curGTimestamp = new GregorianCalendar();
+						//curGTimestamp.setTimeInMillis(curTimestamp);
 						
-						Point newPoint = new Point(curUid, curValue, curTimestamp);
+						Point newPoint = new Point(curUidJsonElement, curValue, curTimestamp);
 						
-						pointUid.add(newPoint);
+						pointsWithSameUid.add(newPoint);
 					}
 					
-					singleton.putPointsByUid(uid, pointUid);
+					singleton.putPointsByUid(curUidInArray, pointsWithSameUid);					
 				}
-			}
-			
-			
+				
+				for(int j = 0; j < pointsWithSameUid.size(); j++)
+					out.println(pointsWithSameUid.get(j).getUid() + " " + pointsWithSameUid.get(j).getTimestamp() + " " + pointsWithSameUid.get(j).getValue());
+				
+			}			
 		} 
 		catch (JSONException e) 
 		{ e.printStackTrace(); }
@@ -128,7 +134,7 @@ public class ArduinoServlet extends HttpServlet {
 			{
 				out.println(point.getUid());			
 				out.println(point.getValue());
-				out.println(point.getTimeStamp());
+				out.println(point.getTimestamp());
 				
 				ServletContext context = getServletContext();
 				context.setAttribute("Random", point.getValue()); //sarebbe da settare "Random + uid"			

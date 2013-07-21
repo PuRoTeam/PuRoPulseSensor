@@ -24,18 +24,19 @@ public class Client implements Runnable
 	public static void Post() 
 			throws ClientProtocolException, IOException
 	{
-		singleValue();
-		//multiValue();
+		//singleValue();
+		multiValue();
 	}
 	
-	public static void multiValue() //TODO
+	//invio un array di punti
+	public static void multiValue()
 			throws ClientProtocolException, IOException	
 	{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
       
         //array di punti
-        String json = "[{\"uid\":1,\"timeStamp\":1374256224200,\"value\":2},{\"uid\":2,\"timeStamp\":1374256224200,\"value\":3}]";
+        String json = "[{\"uid\":1,\"timestamp\":1374256224200,\"value\":2},{\"uid\":1,\"timestamp\":1374256224200,\"value\":3}]";
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(2);
         params.add(new BasicNameValuePair("JSON", json.toString()));     
@@ -55,6 +56,7 @@ public class Client implements Runnable
         }
 	}
 	
+	//invio un singolo punto
 	public static void singleValue()
 			throws ClientProtocolException, IOException					
 	{

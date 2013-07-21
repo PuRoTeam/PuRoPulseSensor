@@ -86,7 +86,7 @@ public final class MysqlConnect
     	
     	long newUid = point.getUid();
     	double newValue = point.getValue();
-    	long newTimestamp = point.getTimeStamp().getTimeInMillis();
+    	long newTimestamp = point.getTimestamp();//.getTimeInMillis();
     	
     	String query = "INSERT INTO " + tpTableName +" (" + tpUid + ", "+ tpValue + ", " + tpTimestamp + ") " + 
     				   "VALUES (" + newUid +"," + newValue + "," + newTimestamp + ")";
@@ -168,7 +168,7 @@ public final class MysqlConnect
 				Point p = points.get(i);
 		        System.out.println(p.getUid());
 		        System.out.println(p.getValue());
-		        System.out.println(p.getTimeStamp().getTime());
+		        System.out.println(p.getTimestamp());//.getTime());
 		        System.out.println("----");
 			}
 		} 

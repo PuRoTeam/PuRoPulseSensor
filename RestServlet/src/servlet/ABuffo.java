@@ -29,7 +29,7 @@ public class ABuffo {
 		return value;
 	}
 	
-	public long getTimeStamp()
+	public long getTimestamp()
 	{
 		return timestamp;
 	}

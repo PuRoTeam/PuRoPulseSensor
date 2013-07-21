@@ -74,9 +74,7 @@
 			</form>
 		</div>
 	</div>
-	
-	
-
+		
 	<script>
 		var tv = 150; //deve essere sincronizzato col client/arduino
 		
@@ -92,16 +90,27 @@
 				timeBase: new Date().getTime() / 1000
 			}) 
 		} );
+					
+		/*for(i = 0; i < 200; i++)				
+		{
+			var data = {one: i}
+			graph.series.addData(data);
+		}*/ 
 		
 		graph.render();
-
-		var iv = setInterval( function() {
+		
+		graphDataToPlot = new Array();
+		var indexToInsert = 0; //posizione in cui inserire nuovi elemento 
+		var indexToView = 0; //posizione del primo elemento da visualizzare 
+		
+		//se il client smette di inviare dati, il grafico continua ad indicare l'ultimo valore (comportamento giusto)
+		/*var iv = setInterval( function() {
 			var loadUrl = "randomNumber.jsp";
-			$.get(loadUrl,  
-			    null,  
+			$.get(loadUrl,
+				{uid: 1},  
 			    function(responseText) {
-			    	console.log(responseText);
-					var data = { one: responseText.random};
+			    	console.log(responseText.length);
+					var data = { one: responseText[0].value};
 		    		graph.series.addData(data);
 		    		graph.render();
 		    		$("#testo").html(responseText);
@@ -109,7 +118,37 @@
 			    "json"  
 			);  
 			
+		}, tv );*/
+		
+		//se il client smette di inviare dati, il grafico continua ad indicare l'ultimo valore (comportamento giusto)
+		var iv = setInterval( function() {
+			var loadUrl = "randomNumber.jsp";
+			$.get(loadUrl,
+				{uid: 1},  
+			    function(responseText) {
+			   
+					var i;
+					//da mettere un controllo/booleano per evitare di aggiungere dati già aggiunti (quando client smette di trasmettere)
+					for(i = 0; i < responseText.length; i++)
+					{
+						graphDataToPlot[indexToInsert] = responseText[i].value;
+						indexToInsert++;
+					}
+					//console.log(indexToInsert);
+			    	
+			    },  
+			    "json"  
+			);  
+			
 		}, tv );
+		
+		//sarebbe da svuotare gli elementi già visti 
+		setInterval( function() {
+			var data = { one: graphDataToPlot[indexToView]};
+			indexToView++;
+			graph.series.addData(data);
+		}, tv );
+		
 					
 	</script>
 	
