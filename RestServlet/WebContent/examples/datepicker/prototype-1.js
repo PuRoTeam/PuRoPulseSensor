@@ -913,8 +913,8 @@ Object.extend(Array.prototype, {
 });
 
 // use native browser JS 1.6 implementation if available
-if (Object.isFunction(Array.prototype.forEach))
-  Array.prototype._each = Array.prototype.forEach;
+//if (Object.isFunction(Array.prototype.forEach))
+  //Array.prototype._each = Array.prototype.forEach;
 
 if (!Array.prototype.indexOf) Array.prototype.indexOf = function(item, i) {
   i || (i = 0);

@@ -4,16 +4,16 @@ var rules = {
 		new Control.RTE(elt, 'js/controls/rte/images', { fileLister: listUserFiles });
 	},
 	'input.datepicker': function(elt) {
-		new Control.DatePicker(elt, { icon: 'datepicker/calendar.png' });
+		new Control.DatePicker(elt, { icon: 'calendar.png' });
 	},
 	'input.timepicker': function(elt) {
-		new Control.DatePicker(elt, { icon: 'datepicker/clock.png', datePicker: false, timePicker: true });
+		new Control.DatePicker(elt, { icon: 'clock.png', datePicker: false, timePicker: true });
 	},
 	'input.datetimepicker': function(elt) {
-		new Control.DatePicker(elt, { icon: 'datepicker/calendar.png', timePicker: true, timePickerAdjacent: false, use24hrs: true });
+		new Control.DatePicker(elt, { icon: 'calendar.png', timePicker: true, timePickerAdjacent: false, use24hrs: true });
 	},
 	'input.datetimepicker_es': function(elt) {
-		new Control.DatePicker(elt, { icon: 'datepicker/calendar.png', locale:'es_AR', timePicker: true });
+		new Control.DatePicker(elt, { icon: 'calendar.png', locale:'es_AR', timePicker: true });
 	},
 	'input.colorpicker': function(elt) {
 		new Control.ColorPicker(elt);
