@@ -11,13 +11,13 @@
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	
 	<!-- Datepicker --> 
-	<script type="text/javascript" language="javascript" src="datepicker/prototype-1.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/prototype-base-extensions.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/prototype-date-extensions.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/behaviour.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/datepicker.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/behaviors.js"></script>
-	<link rel="stylesheet" href="datepicker/datepicker.css">
+	<script type="text/javascript" language="javascript" src="../datepicker/prototype-1.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/prototype-base-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/prototype-date-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/behaviour.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/datepicker.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/behaviors.js"></script>
+	<link rel="stylesheet" href="../datepicker/datepicker.css">
 		
 	<!-- Chart -->
 	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
@@ -87,7 +87,7 @@
         date = new Date(year, month, day, hour, minute);
         var to_date = date.getTime();
         
-        var url = ".jsp";
+        //var url = ".jsp";
         
         /*
         $.get(url, {from: from_date, to: to_date}, function(responseText) {
@@ -314,33 +314,11 @@
 		} );
 		
 		// add some data every so often
-		
-		var messages = [
-			"Changed home page welcome message",
-			"Minified JS and CSS",
-			"Changed button color from blue to green",
-			"Refactored SQL query to use indexed columns",
-			"Added additional logging for debugging",
-			"Fixed typo",
-			"Rewrite conditional logic for clarity",
-			"Added documentation for new methods"
-		];
-		
-		//Ogni 3 secondi, esegue la function all'interno, che esegue l'update del graph
 		setInterval( function() {
 			random.addData(seriesData);
 			graph.update();
 		
 		}, 3000 );
-		
-		function addAnnotation(force) {
-			if (messages.length > 0 && (force || Math.random() >= 0.95)) {
-				annotator.add(seriesData[2][seriesData[2].length-1].x, messages.shift());
-			}
-		}
-		
-		addAnnotation(true);
-		setTimeout( function() { setInterval( addAnnotation, 6000 ) }, 6000 );
 		
 	</script>
 

@@ -5,54 +5,25 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>PuRo Sensor</title>
 	
-	<link type="text/css" rel="stylesheet" href="src/css/graph.css">
-	<link type="text/css" rel="stylesheet" href="src/css/detail.css">
-	<link type="text/css" rel="stylesheet" href="src/css/legend.css">
-	<link type="text/css" rel="stylesheet" href="css/extensions.css">
 	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
+	
 	
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<link rel="stylesheet" href="/resources/demos/style.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	
-	<!-- Datepicker --> 
-	<script type="text/javascript" language="javascript" src="datepicker/prototype-1.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/prototype-base-extensions.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/prototype-date-extensions.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/behaviour.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/datepicker.js"></script>
-	<script type="text/javascript" language="javascript" src="datepicker/behaviors.js"></script>
-	<link rel="stylesheet" href="datepicker/datepicker.css">
+	 
+	<!-- Datepicker OK -->
+	<script type="text/javascript" language="javascript" src="../datepicker/prototype-1.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/prototype-base-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/prototype-date-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/behaviour.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/datepicker.js"></script>
+	<script type="text/javascript" language="javascript" src="../datepicker/behaviors.js"></script>
+	<link rel="stylesheet" href="../datepicker/datepicker.css">
 		
-	<script src="vendor/d3.v2.js"></script>
-
-	<script src="src/js/Rickshaw.js"></script>
-	<script src="src/js/Rickshaw.Class.js"></script>
-	<script src="src/js/Rickshaw.Compat.ClassList.js"></script>
-	<script src="src/js/Rickshaw.Graph.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Stack.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Line.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Area.js"></script>
-	<script src="src/js/Rickshaw.Graph.RangeSlider.js"></script>
-	<script src="src/js/Rickshaw.Graph.HoverDetail.js"></script>
-	<script src="src/js/Rickshaw.Graph.Annotate.js"></script>
-	<script src="src/js/Rickshaw.Graph.Legend.js"></script>
-	<script src="src/js/Rickshaw.Graph.Axis.Time.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Toggle.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Order.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Highlight.js"></script>
-	<script src="src/js/Rickshaw.Graph.Smoother.js"></script>
-	<script src="src/js/Rickshaw.Graph.Unstacker.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.Time.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.RandomData.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.Color.js"></script>
-	<script src="src/js/Rickshaw.Color.Palette.js"></script>
-	<script src="src/js/Rickshaw.Series.js"></script>
-	<script src="src/js/Rickshaw.Series.FixedDuration.js"></script>
-	
-	
+	<!-- 
 	<%@ page import="data.Point" %>
 	
 	<script>  
@@ -79,7 +50,7 @@
         date = new Date(year, month, day, hour, minute);
         var to_date = date.getTime();
         
-        var url = ".jsp";
+        //var url = ".jsp";
         
         /*
         $.get(url, {from: from_date, to: to_date}, function(responseText) {
@@ -101,20 +72,19 @@
         alert(to_date);
         
       }  
-    </script>
+    </script> -->
     	
 </head>
 <body>
 	
-	<% int mode = 0; %>
 	<div id="wrapper">
 		
 		<div id="title">Arduino Healting Monitor</div>
 		
 		<div id="menu">
-				<h3><a href="select.jsp?mode=0">Real time</a></h3>
-				<h3><a href="replay.jsp?mode=1">Replay</a></h3>
-				<h3><a href="login.jsp">Log out</a></h3>
+				<h3><a href="realtime.jsp?">Real time</a></h3>
+				<h3><a href="extensions.jsp?">Replay</a></h3>
+				<h3><a href="logout.jsp">Log out</a></h3>
 		</div>
 		<div id="content">
 			<%	 
@@ -142,49 +112,9 @@
 			</div>			
 			<%}}%>
 			
-			<div id="chart_wrapper">
-				<div id="chart"></div>
-			</div>
 		</div>	
-	</div><!-- end #wrapper -->
-
-	<script>
-		var tv = 150; //deve essere sincronizzato col client/arduino
-		
-		// instantiate our graph!
-		var graph = new Rickshaw.Graph( {
-			element: document.getElementById("chart"),
-			width: 900,
-			height: 500,
-			renderer: 'line',
-			series: new Rickshaw.Series.FixedDuration([{ name: 'one' }], undefined, {
-				timeInterval: tv,
-				maxDataPoints: 100,
-				timeBase: new Date().getTime() / 1000
-			}) 
-		} );
-		
-		graph.render();
-
-		var iv = setInterval( function() {
-			var loadUrl = "randomNumber.jsp";
-			$.get(loadUrl,  
-			    null,  
-			    function(responseText) {
-			    	console.log(responseText);
-					var data = { one: responseText.random};
-		    		graph.series.addData(data);
-		    		graph.render();
-		    		$("#testo").html(responseText);
-			    },  
-			    "json"  
-			);  
-			
-		}, tv );
-					
-	</script>
-	
-	<div id="testo"></div>
+		<div id="testo"></div>
+	</div>
 
 </body>
 </html>
