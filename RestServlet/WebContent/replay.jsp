@@ -21,47 +21,47 @@
 		
 	<!-- Chart -->
 	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
-	<link type="text/css" rel="stylesheet" href="src/css/graph.css">
-	<link type="text/css" rel="stylesheet" href="src/css/detail.css">
-	<link type="text/css" rel="stylesheet" href="src/css/legend.css">
+	<link type="text/css" rel="stylesheet" href="../src/css/graph.css">
+	<link type="text/css" rel="stylesheet" href="../src/css/detail.css">
+	<link type="text/css" rel="stylesheet" href="../src/css/legend.css">
 	<link type="text/css" rel="stylesheet" href="css/extensions.css">
-	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
-	
-	<script src="vendor/d3.v2.js"></script>
+
+	<script src="..vendor/d3.v2.js"></script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
 
-	<script src="src/js/Rickshaw.js"></script>
-	<script src="src/js/Rickshaw.Class.js"></script>
-	<script src="src/js/Rickshaw.Compat.ClassList.js"></script>
-	<script src="src/js/Rickshaw.Graph.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Area.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Line.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.Bar.js"></script>
-	<script src="src/js/Rickshaw.Graph.Renderer.ScatterPlot.js"></script>
-	<script src="src/js/Rickshaw.Graph.RangeSlider.js"></script>
-	<script src="src/js/Rickshaw.Graph.HoverDetail.js"></script>
-	<script src="src/js/Rickshaw.Graph.Annotate.js"></script>
-	<script src="src/js/Rickshaw.Graph.Legend.js"></script>
-	<script src="src/js/Rickshaw.Graph.Axis.Time.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Toggle.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Order.js"></script>
-	<script src="src/js/Rickshaw.Graph.Behavior.Series.Highlight.js"></script>
-	<script src="src/js/Rickshaw.Graph.Smoother.js"></script>
-	<script src="src/js/Rickshaw.Graph.Unstacker.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.Time.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.Number.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.RandomData.js"></script>
-	<script src="src/js/Rickshaw.Fixtures.Color.js"></script>
-	<script src="src/js/Rickshaw.Color.Palette.js"></script>
-	<script src="src/js/Rickshaw.Graph.Axis.Y.js"></script>
+	<script src="../src/js/Rickshaw.js"></script>
+	<script src="../src/js/Rickshaw.Class.js"></script>
+	<script src="../src/js/Rickshaw.Compat.ClassList.js"></script>
+	<script src="../src/js/Rickshaw.Graph.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.Area.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.Line.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.Bar.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Renderer.ScatterPlot.js"></script>
+	<script src="../src/js/Rickshaw.Graph.RangeSlider.js"></script>
+	<script src="../src/js/Rickshaw.Graph.HoverDetail.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Annotate.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Legend.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Axis.Time.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Behavior.Series.Toggle.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Behavior.Series.Order.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Behavior.Series.Highlight.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Smoother.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Unstacker.js"></script>
+	<script src="../src/js/Rickshaw.Fixtures.Time.js"></script>
+	<script src="../src/js/Rickshaw.Fixtures.Number.js"></script>
+	<script src="../src/js/Rickshaw.Fixtures.RandomData.js"></script>
+	<script src="../src/js/Rickshaw.Fixtures.Color.js"></script>
+	<script src="../src/js/Rickshaw.Color.Palette.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Axis.Y.js"></script>
 
 	<script src="js/extensions.js"></script>
-	
+		
 	<!-- Project -->
 	<%@ page import="data.Point" %>
+	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
 	
 	<script>  
       function getDateAndTime(){  
@@ -113,7 +113,6 @@
     	
 </head>
 <body>
-	
 	<% int mode = 0; %>
 	<div id="wrapper">
 		
@@ -135,7 +134,7 @@
 					<input type="submit" value="Invia">
 				</form>
 				<form id="side_panel">
-					<h1>Random Data in the Future</h1>
+					<div>Random Data in the Future</div>
 					<div id="legend"></div>
 					<div id="renderer_form" class="toggler">
 						<input type="radio" name="renderer" id="area" value="area" checked>
@@ -194,7 +193,6 @@
 			</div>
 		</div>
 	</div><!-- end #wrapper -->
-
 	<script>
 
 		// set up our data series with 150 random data points
