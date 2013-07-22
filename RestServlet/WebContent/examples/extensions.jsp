@@ -1,4 +1,5 @@
 <!doctype>
+<html>
 <head>
 
 	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
@@ -47,7 +48,6 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	<link rel="stylesheet" href="/resources/demos/style.css" />
 	<script src="js/jquery-ui-timepicker-addon.js"></script>
 	
 	<script>  
@@ -110,6 +110,7 @@
 			});
 	});
 	</script>
+	
 	
 </head>
 <body>
@@ -177,6 +178,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<script>
 	
 	// set up our data series with 150 random data points
@@ -296,14 +298,9 @@
 		element: document.querySelector('form'),
 		graph: graph
 	} );
-	/*
-	//add some data every so often
-	setInterval( function() {
-		random.addData(seriesData);
-		graph.update();
 	
-	}, 3000 );
-	*/	
 	</script>
+	
 
 </body>
+</html>

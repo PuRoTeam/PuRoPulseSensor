@@ -3,7 +3,9 @@ div, span, p, td {
 }
 #content {
 	width: 1100px;
+	height: auto;
 	margin-top: 3px;
+	overflow: hidden;
 }
 #chart_container {
 	//position: relative;

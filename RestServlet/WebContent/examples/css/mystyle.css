@@ -48,8 +48,10 @@ input[type="submit"] {
 
 #wrapper {
 	width: 1100px;
+	height: auto;
 	margin: 0px auto;
-	padding: 0px;	
+	padding: 0px;
+	overflow:hidden;
 }
 
 /* Menu */
@@ -82,13 +84,15 @@ input[type="submit"] {
 
 /* Date time form */
 #datetime {
-	//border: 1px solid #000000;
-	float: right;
-	
+	border: 1px solid #FF0000;
+	width: 1100px;
+	height: auto;
+	overflow: hidden;
 }
 
 #datetime form{
 	margin-top: 5px;
+	float: right;
 	//border: 1px solid #FF0000;
 }
 
@@ -97,8 +101,9 @@ input[type="submit"] {
 }
 
 
-#content {
+#contents {
 	width: 1100px;
+	height: auto;
 	margin-top: 3px;
 	border: 1px solid #0000FF;
 }
