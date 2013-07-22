@@ -36,6 +36,12 @@ button {
 }
 
 input {
+	width:160px;
+	border: 2px solid #000000;
+}
+
+input[type="submit"] {
+	width:70px;
 	border: 2px solid #000000;
 }
 /* Wrapper */
@@ -47,7 +53,6 @@ input {
 }
 
 /* Menu */
-
 #menu {
 	overflow: hidden;
 	width: 1100px;
@@ -75,14 +80,30 @@ input {
 	text-decoration: underline;
 }
 
+/* Date time form */
+#datetime {
+	//border: 1px solid #000000;
+	float: right;
+	
+}
+
+#datetime form{
+	margin-top: 5px;
+	//border: 1px solid #FF0000;
+}
+
+#datetime div, #datetime input {
+	display: inline;
+}
+
+
 #content {
 	width: 1100px;
 	margin-top: 3px;
-	//border: 1px solid #0000FF;
+	border: 1px solid #0000FF;
 }
 
 /* Chart */
-
 #chart_wrapper {
 	width: auto;
 	//border: 1px solid #000000;
@@ -183,64 +204,6 @@ input {
 	left:270px;
 }
 
-
-/*##################################################*/
-/* Search */
-
-#search {
-	float: right;
-	width: 300px;
-	height: 110px;
-	padding: 0;
-}
-
-#search form {
-	height: 41px;
-	margin: 0;
-	padding: 50px 0 0 20px;
-}
-
-#search fieldset {
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-
-#search-text {
-	width: 195px;
-	padding: 5px 5px 4px 5px;
-	border: 1px solid #DEDEDE;
-	background: #FFFFFF;
-	text-transform: lowercase;
-	font: normal 11px Arial, Helvetica, sans-serif;
-	color: #703522;
-}
-
-#search-submit {
-	width: 50px;
-	height: 25px;
-}
-
-/* Calendar */
-
-#calendar {
-}
-
-#calendar_wrap {
-	padding: 20px;
-}
-
-#calendar table {
-	width: 100%;
-}
-
-#calendar tbody td {
-	text-align: center;
-}
-
-#calendar #next {
-	text-align: right;
-}
 
 /*Datetimepicker*/
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
