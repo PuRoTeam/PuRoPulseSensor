@@ -112,77 +112,10 @@
 	</script>
 	
 	
-</head>
-<body>
-	<div id="wrapper">
-			
-		<div id="title">Arduino Healting Monitor</div>
-		
-		<%@ include file="menu.jsp" %>
-		
-		<div id="datetime">
-			<form name="date_form" onsubmit="getDateAndTime()">
-				<div>From:</div> 
-				<input name="date_from" id="datetimepicker"/>
-				<div>To:</div>
-				<input name="date_to" id="datetimepicker2"/>
-				<input type="submit" value="Invia" />
-			</form>
-		</div>
-		
-		<div id="content">
-			<div id="sidebar">
-				<form id="side_panel">
-					<h1>Random Data</h1>
-					<section><div id="legend"></div></section>
-					<section>
-						<div id="renderer_form" class="toggler">
-							<input type="radio" name="renderer" id="area" value="area">
-							<label for="area">area</label>
-							<input type="radio" name="renderer" id="line" value="line" checked>
-							<label for="line">line</label>
-						</div>
-					</section>
-					
-					<section>
-						<div id="offset_form">
-							<label for="value">
-								<input type="radio" name="offset" id="value" value="value" checked>
-								<span>value</span>
-							</label>
-						</div>
-					</section>
-					 
-					<section>
-						<div id="interpolation_form">
-							<label for="cardinal">
-								<input type="radio" name="interpolation" id="cardinal" value="cardinal" checked>
-								<span>cardinal</span>
-							</label>
-							<label for="linear">
-								<input type="radio" name="interpolation" id="linear" value="linear">
-								<span>linear</span>
-							</label>
-							<label for="step">
-								<input type="radio" name="interpolation" id="step" value="step-after">
-								<span>step</span>
-							</label>
-						</div>
-					</section>
-				</form>
-			</div>
-			<div id="chart_container">
-				<div id="chart"></div>
-				<div id="timeline"></div>
-				<div id="slider"></div>
-			</div>
-		</div>
-	</div>
-	
 	<script>
 	
 	// set up our data series with 150 random data points
-	
+	$(document).ready(function(){
 	var seriesData = [ [], [], [], [], [], [], [], [], [] ];
 	var random = new Rickshaw.Fixtures.RandomData(150);
 	
@@ -293,13 +226,85 @@
 	
 	yAxis.render();
 	
-	
+	//Problema nel selezionare il form giusto
 	var controls = new RenderControls( {
 		element: document.querySelector('form'),
+		//element: document.getElementsById('side_panel'),
 		graph: graph
 	} );
-	
+	});
 	</script>
+	
+</head>
+<body>
+	<div id="wrapper">
+			
+		<div id="title">Arduino Healting Monitor</div>
+		
+		<%@ include file="menu.jsp" %>
+		
+		
+		
+		<div id="content">
+			<div id="sidebar">
+				<form id="side_panel">
+					<h1>Random Data</h1>
+					<section><div id="legend"></div></section>
+					<section>
+						<div id="renderer_form" class="toggler">
+							<input type="radio" name="renderer" id="area" value="area">
+							<label for="area">area</label>
+							<input type="radio" name="renderer" id="line" value="line" checked>
+							<label for="line">line</label>
+						</div>
+					</section>
+					
+					<section>
+						<div id="offset_form">
+							<label for="value">
+								<input type="radio" name="offset" id="value" value="value" checked>
+								<span>value</span>
+							</label>
+						</div>
+					</section>
+					 
+					<section>
+						<div id="interpolation_form">
+							<label for="cardinal">
+								<input type="radio" name="interpolation" id="cardinal" value="cardinal" checked>
+								<span>cardinal</span>
+							</label>
+							<label for="linear">
+								<input type="radio" name="interpolation" id="linear" value="linear">
+								<span>linear</span>
+							</label>
+							<label for="step">
+								<input type="radio" name="interpolation" id="step" value="step-after">
+								<span>step</span>
+							</label>
+						</div>
+					</section>
+				</form>
+			</div>
+			<div id="chart_container">
+				<div id="chart"></div>
+				<div id="timeline"></div>
+				<div id="slider"></div>
+			</div>
+		</div>
+		
+		<div id="datetime">
+			<form name="date_form" onsubmit="getDateAndTime()">
+				<div>From:</div> 
+				<input name="date_from" id="datetimepicker"/>
+				<div>To:</div>
+				<input name="date_to" id="datetimepicker2"/>
+				<input type="submit" value="Invia">
+			</form>
+		</div>
+	</div>
+	
+	
 	
 
 </body>
