@@ -45,6 +45,10 @@
 	<script src="../src/js/Rickshaw.Color.Palette.js"></script>
 	<script src="../src/js/Rickshaw.Series.js"></script>
 	<script src="../src/js/Rickshaw.Series.FixedDuration.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Axis.X.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Axis.Y.js"></script>
+	<script src="../src/js/Rickshaw.Graph.Axis.Time.js"></script>
+	<script src="../src/js/Rickshaw.Graph.HoverDetail.js"></script>
 	
 	<script>  
       function raj(){  
@@ -62,104 +66,98 @@
 		
 		<div id="chart_wrapper">
 			<div id="chart"></div>
+			<div id="y_axis"></div>
 		</div>
 		<p>Date: <input id="datepicker" type="text" /></p>
 		
+		<!-- 
 		<div id="sidebar">
 			<form>
 				<input type="checkbox" name="vehicle" value="Bike">I have a bike<br>
 				<input type="checkbox" name="vehicle" value="Car">I have a car
 			</form>
-		</div>
+		</div> 
+		-->
 	</div>
 		
 	<script>
 		var tv = 150; //deve essere sincronizzato col client/arduino
-		
-		// instantiate our graph!
+		var palette = new Rickshaw.Color.Palette( { scheme: 'classic9' } );
+				
 		var graph = new Rickshaw.Graph( {
 			element: document.getElementById("chart"),
 			width: 900,
 			height: 500,
 			renderer: 'line',
-			series: new Rickshaw.Series.FixedDuration([{ name: 'one' }], undefined, {
+			series: new Rickshaw.Series.FixedDuration([{ name: 'one', x: 0, y: 0 }], palette, { //mostra solo una finestra temporale e non TUTTI i dati inseriti da sempre 
 				timeInterval: tv,
-				maxDataPoints: 100,
+				maxDataPoints: 100, // grandezza finestra temporale in termini di punti visualizzati 
 				timeBase: new Date().getTime() / 1000
 			}) 
 		} );
-					
-		/*for(i = 0; i < 200; i++)				
-		{
-			var data = {one: i}
-			graph.series.addData(data);
-		}*/ 
 		
-		graph.render();
+		var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+			graph: graph
+		} );		
 		
-		//graphDataToPlot = new Array();
-		//var indexToInsert = 0; //posizione in cui inserire nuovi elemento 
-		//var indexToView = 0; //posizione del primo elemento da visualizzare 
+		/*var graph = new Rickshaw.Graph({
+			element: document.getElementById("chart"),
+			width: 900,
+			height: 500,
+			renderer: 'line',			
+			series: new Rickshaw.Series([{ name: 'This' }], [{data: [{ x: 0, y: 0 }, { x: 0.1, y: 100 }, { x: 5, y: 50 }]}])
+		    // series: [{ data: [{ x: 0, y: 0 }, { x: 0.1, y: 100 }, { x: 5, y: 50 }] }],
+		});*/
+				
+		/*var x_axes = new Rickshaw.Graph.Axis.X( {
+			graph: graph
+		} );*/
 		
-		//se il client smette di inviare dati, il grafico continua ad indicare l'ultimo valore (comportamento giusto)
-		/*var iv = setInterval( function() {
-			var loadUrl = "randomNumber.jsp";
-			$.get(loadUrl,
-				{uid: 1},  
-			    function(responseText) {
-			    	console.log(responseText.length);
-					var data = { one: responseText[0].value};
-		    		graph.series.addData(data);
-		    		graph.render();
-		    		$("#testo").html(responseText);
-			    },  
-			    "json"  
-			);  
-			
-		}, tv );*/
+		graph.render();		
+		
+		var latestTimestamp = -1; //controlla se sono stati effettivamente aggiunti nuovi punti (se il client stà continuando a scrivere)
 		
 		//se il client smette di inviare dati, il grafico continua ad indicare l'ultimo valore (comportamento giusto)
 		var iv = setInterval( function() {
 			var loadUrl = "randomNumber.jsp";
 			$.get(loadUrl,
 				{uid: 1},  
-			    function(responseText) {
-			   					
-					for(var i = 0; i < responseText.length; i++)
+			    function(responseText) { //TODO aggiungere controlli se risultato nullo? Non credo, restituisce in caso un array vuoto 
+			   		
+			    	var newPoints = false;	
+			    		
+					if(responseText.length > 0)
 					{
-						var data = { one: responseText[i].value};
+						var newLatestTimestamp = responseText[responseText.length - 1].timestamp;
+						if(latestTimestamp != newLatestTimestamp)
+						{
+							newPoints = true;
+							latestTimestamp = newLatestTimestamp;
+						}
+					}
+					
+					if(newPoints) //se non ho aggiunto nuovi punti
+					{
+						for(var i = 0; i < responseText.length; i++)
+						{
+							var data = { x: responseText[i].timestamp, y: responseText[i].value}; //le x non funzionano, se le metto ad un valore fisso mi compare un altro grafico!
+							//console.log(responseText[i].timestamp + " " + responseText[i].value);
+							graph.series.addData(data);
+							graph.render();
+						}
+					}
+					else if(!newPoints && responseText.length > 0)//se il client arduino si è fermato, anzichè mostrare gli ultimi N valori a ripetizione, mostro solo l'ultimo a ripetizione
+					{
+						var data = { x: responseText[responseText.length - 1].timestamp, y: responseText[responseText.length - 1].value};
 						graph.series.addData(data);
 						graph.render();
 					}
-					
-					
-					
-					/*var i;
-					//da mettere un controllo/booleano per evitare di aggiungere dati già aggiunti (quando client smette di trasmettere)
-					for(i = 0; i < responseText.length; i++)
-					{
-						graphDataToPlot[indexToInsert] = responseText[i].value;
-						indexToInsert++;
-					}*/
-					//console.log(indexToInsert);
-			    	
 			    },  
 			    "json"  
 			);  
-			
 		}, tv );
-		
-		//sarebbe da svuotare gli elementi già visti 
-		/*setInterval( function() {
-			var data = { one: graphDataToPlot[indexToView]};
-			indexToView++;
-			graph.series.addData(data);
-		}, tv );*/
-		
 					
 	</script>
-	
-	<div id="testo"></div>
 	
 </body>
 </html>

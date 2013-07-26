@@ -13,8 +13,12 @@ public class Shared
 {
     private static Shared instance = null;
     
-    private Map<Long, ArrayList<Point>> points = Collections.synchronizedMap(new HashMap<Long, ArrayList<Point>>());
-        
+    //TODO serve sincronizzato? Non credo!
+    //private Map<Long, ArrayList<Point>> points = Collections.synchronizedMap(new HashMap<Long, ArrayList<Point>>());
+    //synchronized(m) { func(m) } devo usare questo se lavoro con hashmap sincronizzata?
+    
+    private Map<Long, ArrayList<Point>> points = new HashMap<Long, ArrayList<Point>>();
+    
     private Shared() {}
  
     public static synchronized Shared getInstance() 

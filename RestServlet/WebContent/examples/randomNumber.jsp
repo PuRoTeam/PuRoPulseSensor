@@ -18,7 +18,7 @@
 	JSONObject jObject = new JSONObject().put("random", point_var);
 	out.println(jObject.toString());*/
 	
-	String selectedUid = "1";request.getParameter("uid");
+	String selectedUid = request.getParameter("uid");
 	long uid = -1;
 	
 	try
