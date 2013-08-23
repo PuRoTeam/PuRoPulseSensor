@@ -11,7 +11,7 @@ import java.net.Socket;
 
 public class KeyExchange 
 {
-	public int port;
+	public int port; 
 	public long primitive_root;
 	public long prime;
 	
