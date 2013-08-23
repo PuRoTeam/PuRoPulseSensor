@@ -2,7 +2,7 @@ package data;
 
 import java.util.GregorianCalendar;
 
-public class Point 
+public class Point
 {
 	private long uid;
 	private double value;

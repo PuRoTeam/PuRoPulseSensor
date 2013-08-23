@@ -9,7 +9,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class KeyExchange 
+public class KeyExchange
 {
 	public int port; 
 	public long primitive_root;

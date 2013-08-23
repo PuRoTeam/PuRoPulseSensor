@@ -1,6 +1,6 @@
 package security;
 
-public class MD5 
+public class MD5
 {
 	static final int S11 = 7;
 	static final int S12 = 12;

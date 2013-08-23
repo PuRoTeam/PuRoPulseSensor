@@ -7,7 +7,7 @@
  */
 package security;
 
-public final class XXTEA 
+public final class XXTEA
 {
 
     private static final int delta = 0x9E3779B9;

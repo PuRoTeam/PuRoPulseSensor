@@ -13,7 +13,7 @@ import com.mysql.jdbc.Connection;
 
 import data.Point;
 
-public final class MysqlConnect 
+public final class MysqlConnect
 {
     public Connection conn;
     private Statement statement;
