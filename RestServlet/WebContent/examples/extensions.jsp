@@ -101,13 +101,13 @@
 	<script  type="text/javascript">
 	$(document).ready(function(){
 		$('#datetimepicker').datetimepicker({
-		controlType: 'select',
-		timeFormat: 'hh:mm tt'
+			addSliderAccess: true,
+			sliderAccessArgs: { touchonly: false }
 		});
 		$('#datetimepicker2').datetimepicker({
-			controlType: 'select',
-			timeFormat: 'hh:mm tt'
-			});
+			addSliderAccess: true,
+			sliderAccessArgs: { touchonly: false }
+		});
 	});
 	</script>
 	
@@ -228,7 +228,8 @@
 	
 	//Problema nel selezionare il form giusto
 	var controls = new RenderControls( {
-		element: document.querySelector('form'),
+		element: document.forms['side_panel'],
+		//element: document.querySelector('form'),
 		//element: document.getElementsById('side_panel'),
 		graph: graph
 	} );
@@ -239,12 +240,20 @@
 <body>
 	<div id="wrapper">
 			
-		<div id="title">Arduino Healting Monitor</div>
+		<div id="title">Arduino Healthing Monitor</div>
 		
 		<%@ include file="menu.jsp" %>
+	
 		
-		
-		
+		<div id="datetime">
+			<form name="date_form" onsubmit="getDateAndTime()">
+				<div>From:</div> 
+				<input name="date_from" id="datetimepicker"/>
+				<div>To:</div>
+				<input name="date_to" id="datetimepicker2"/>
+				<input type="submit" value="Invia">
+			</form>
+		</div>
 		<div id="content">
 			<div id="sidebar">
 				<form id="side_panel">
@@ -293,15 +302,7 @@
 			</div>
 		</div>
 		
-		<div id="datetime">
-			<form name="date_form" onsubmit="getDateAndTime()">
-				<div>From:</div> 
-				<input name="date_from" id="datetimepicker"/>
-				<div>To:</div>
-				<input name="date_to" id="datetimepicker2"/>
-				<input type="submit" value="Invia">
-			</form>
-		</div>
+
 	</div>
 	
 	

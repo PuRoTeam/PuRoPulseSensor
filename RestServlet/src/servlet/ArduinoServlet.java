@@ -35,7 +35,7 @@ public class ArduinoServlet extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("X");
-	}
+	} 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
@@ -99,9 +99,10 @@ public class ArduinoServlet extends HttpServlet {
 					singleton.putPointsByUid(curUidInArray, pointsWithSameUid);					
 				}
 				
-				for(int j = 0; j < pointsWithSameUid.size(); j++)
-					out.println(pointsWithSameUid.get(j).getUid() + " " + pointsWithSameUid.get(j).getTimestamp() + " " + pointsWithSameUid.get(j).getValue());
+				ArrayList<Point> singletonPointSameUid = singleton.getPointsByUid(curUidInArray);
 				
+				for(int j = 0; j < singletonPointSameUid.size(); j++)
+					out.println(singletonPointSameUid.get(j).getUid() + " " + singletonPointSameUid.get(j).getTimestamp() + " " + singletonPointSameUid.get(j).getValue());				
 			}			
 		} 
 		catch (JSONException e) 

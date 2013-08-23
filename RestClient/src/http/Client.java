@@ -35,8 +35,8 @@ public class Client implements Runnable
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
       
-    	int max = 100;
-    	int size = 10;
+    	int max = 100; //massimo valore estraibile casualmente
+    	int size = 2;
     	
     	ArrayList<Double> random = new ArrayList<Double>();
     	for(int i = 0; i < size; i++)
@@ -44,11 +44,11 @@ public class Client implements Runnable
     	
     	String json = "[";
     	for(int i = 0; i < size - 1; i++)
-    		json += "{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random.get(i) +"}, ";
-    	json += "{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random.get(size - 1) +"}";
-    	json += "]";
+    		json += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(i) +"}, ";
+    	json += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(size - 1) +"}";
+    	json += "]"; 
     	
-    	System.out.println(json);
+    	//System.out.println(json);
     	
         //array di punti
         /*String json = "[{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random1 +"}," +
