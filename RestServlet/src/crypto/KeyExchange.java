@@ -54,7 +54,10 @@ public class KeyExchange
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 	
+            System.out.println("In attesa di connessioni");
+            
             String startExchange = in.readLine(); //controllo su errori
+            System.out.println(startExchange);
             String ok = "OK";
                         
             out.println(ok);
@@ -88,6 +91,7 @@ public class KeyExchange
             System.out.println(key);
             
             String endExchange = in.readLine(); //controllo su errori
+            System.out.println(endExchange);
 		} 
 		catch (IOException e) 
 		{ e.printStackTrace(); }
