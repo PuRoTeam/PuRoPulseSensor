@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -53,14 +54,14 @@ public class KeyExchange
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 	
-            String hello = in.readLine(); //controllo su errori
+            String startExchange = in.readLine(); //controllo su errori
             String ok = "OK";
                         
             out.println(ok);
             
             String key = ""; //chiave da costruire carattere per carattere
             
-            int keyLenght = 32; //32 -> 32*8 = 256 bit
+            int keyLenght = 5; //32 -> 32*8 = 256 bit
             
             for(int i = 0; i < keyLenght; i++)
             {
@@ -72,8 +73,19 @@ public class KeyExchange
             	char c = (char)newLong; //converto in ascii
             	
             	newKeyChar = "" + c; //conversione easy da char a String            	
-            	key += newKeyChar; 
+            	key += newKeyChar;
+            	
+            	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]
+            	
+            	BigInteger base = new BigInteger(String.valueOf(primitive_root));
+            	BigInteger exp = new BigInteger(String.valueOf(x));
+            	BigInteger mod = new BigInteger(String.valueOf(prime));
+            	
+            	BigInteger ret = base.modPow(exp, mod);
+            	out.println(ret);
             }
+            
+            System.out.println(key);
             
             String endExchange = in.readLine(); //controllo su errori
 		} 
