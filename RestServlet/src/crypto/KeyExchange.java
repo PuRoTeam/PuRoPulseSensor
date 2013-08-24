@@ -64,7 +64,7 @@ public class KeyExchange
             
             String key = ""; //chiave da costruire carattere per carattere
             
-            int keyLenght = 5; //32 -> 32*8 = 256 bit
+            int keyLenght = 1; //32 -> 32*8 = 256 bit
             
             for(int i = 0; i < keyLenght; i++)
             {
@@ -75,11 +75,12 @@ public class KeyExchange
             	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
             	
             	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
+            	System.out.println("Y: "+ret);
             	
             	/*----Prima leggo poi invio----*/
             	
             	String newKeyChar = in.readLine(); //bloccante
-            	
+            	System.out.println("Leggo: "+newKeyChar);
             	long newLong = Long.parseLong(newKeyChar);
             	
             	BigInteger newKeyInt = new BigInteger(String.valueOf(newLong)); //y
@@ -94,7 +95,7 @@ public class KeyExchange
             	newKeyChar = "" + c; //conversione easy da char a String            	
             	key += newKeyChar;
             	
-            	System.out.println("Prossimo byte chiave: "+newKeyChar);            	
+            	System.out.println("Prossimo byte chiave: "+newKeyLong);            	
 
             	/*----Dopo aver letto invio----*/
             	
