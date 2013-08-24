@@ -68,25 +68,36 @@ public class KeyExchange
             
             for(int i = 0; i < keyLenght; i++)
             {
+            	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave iterazione corrente
+            	
+            	BigInteger base = new BigInteger(String.valueOf(primitive_root)); //g
+            	BigInteger exp = new BigInteger(String.valueOf(x));
+            	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
+            	
+            	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
+            	
+            	/*----Prima leggo poi invio----*/
+            	
             	String newKeyChar = in.readLine(); //bloccante
             	
             	long newLong = Long.parseLong(newKeyChar);
-            	newLong %= 256; //trasformo in carattere
+            	
+            	BigInteger newKeyInt = new BigInteger(String.valueOf(newLong)); //y
+            	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //(g^xy) mod n
+            	BigInteger modChar = new BigInteger(String.valueOf(256));
+            	newKeyLong = newKeyLong.modPow(exp, modChar); //((g^xy) mod n) mod 256
+            	
+            	newLong = newKeyLong.longValue(); //trasformo in carattere
             	
             	char c = (char)newLong; //converto in ascii
             	
             	newKeyChar = "" + c; //conversione easy da char a String            	
             	key += newKeyChar;
             	
-            	System.out.println("Prossimo byte chiave: "+newKeyChar);
+            	System.out.println("Prossimo byte chiave: "+newKeyChar);            	
+
+            	/*----Dopo aver letto invio----*/
             	
-            	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]
-            	
-            	BigInteger base = new BigInteger(String.valueOf(primitive_root));
-            	BigInteger exp = new BigInteger(String.valueOf(x));
-            	BigInteger mod = new BigInteger(String.valueOf(prime));
-            	
-            	BigInteger ret = base.modPow(exp, mod);
             	out.println(ret);
             }
             
