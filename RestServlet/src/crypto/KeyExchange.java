@@ -68,27 +68,27 @@ public class KeyExchange
             
             for(int i = 0; i < keyLenght; i++)
             {
-            	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave iterazione corrente
+            	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave privata iterazione corrente
             	
             	BigInteger base = new BigInteger(String.valueOf(primitive_root)); //g
             	BigInteger exp = new BigInteger(String.valueOf(x));
             	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
             	
             	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
+            	System.out.println("Y: "+ret);
             	
             	/*----Prima leggo poi invio----*/
             	
-            	String newKeyChar = in.readLine(); //bloccante
+            	String newKeyChar = in.readLine(); //lettura bloccante
+            	System.out.println("Leggo: "+newKeyChar);
             	
-            	long newLong = Long.parseLong(newKeyChar);
+            	BigInteger newKeyInt = new BigInteger(newKeyChar); //(g^y) mod n
+            	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //((g^y)^x) mod n
             	
-            	BigInteger newKeyInt = new BigInteger(String.valueOf(newLong)); //y
-            	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //(g^xy) mod n
             	BigInteger modChar = new BigInteger(String.valueOf(256));
-            	newKeyLong = newKeyLong.modPow(exp, modChar); //((g^xy) mod n) mod 256
+            	newKeyLong = newKeyLong.mod(modChar); //((g^xy) mod n) mod 256 - trasformo in carattere
             	
-            	newLong = newKeyLong.longValue(); //trasformo in carattere
-            	
+            	long newLong = newKeyLong.longValue();            	
             	char c = (char)newLong; //converto in ascii
             	
             	newKeyChar = "" + c; //conversione easy da char a String            	
@@ -98,7 +98,7 @@ public class KeyExchange
 
             	/*----Dopo aver letto invio----*/
             	
-            	out.println(ret);
+            	out.println(ret); //invio
             }
             
             System.out.println(key);
