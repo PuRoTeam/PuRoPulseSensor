@@ -49,13 +49,13 @@ public class KeyExchange
 		{
 			serverSocket = new ServerSocket(port, 0, bindTo);
 			
-			Socket clientSocket = serverSocket.accept(); //bloccante
-            			
+			System.out.println("In attesa di connessioni");
+            Socket clientSocket = serverSocket.accept(); //bloccante
+			System.out.println("Connessione accettata!");			
+			
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-	
-            System.out.println("In attesa di connessioni");
-            
+                     
             String startExchange = in.readLine(); //controllo su errori
             System.out.println(startExchange);
             String ok = "OK";
@@ -77,6 +77,8 @@ public class KeyExchange
             	
             	newKeyChar = "" + c; //conversione easy da char a String            	
             	key += newKeyChar;
+            	
+            	System.out.println("Prossimo byte chiave: "+newKeyChar);
             	
             	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]
             	
