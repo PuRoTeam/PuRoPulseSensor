@@ -11,15 +11,17 @@ import java.net.Socket;
 
 public class KeyExchange
 {
-	public int port; 
-	public long primitive_root;
-	public long prime;
+	private int port; 
+	private long primitive_root;
+	private long prime;
+	private int keyLenght;
 	
-	public KeyExchange(int port, long primitive_root, long prime)
+	public KeyExchange(int port, long primitive_root, long prime, int keyLenght)
 	{
 		this.port = port;
 		this.primitive_root = primitive_root;
 		this.prime = prime;
+		this.keyLenght = keyLenght;
 	}
 	
 	public static void main(String[] args)
@@ -27,10 +29,11 @@ public class KeyExchange
 		int port = 1600;
 		long primitive_root = 5;
 		long prime = 25657L;
+		int keyLenght = 5; //32 -> 32*8 = 256 bit
 		
     	try
     	{
-    		KeyExchange keyEx = new KeyExchange(port, primitive_root, prime);
+    		KeyExchange keyEx = new KeyExchange(port, primitive_root, prime, keyLenght);
     		keyEx.exchange();
     	}
     	catch(Exception e)
@@ -62,8 +65,6 @@ public class KeyExchange
             //out.println(ok);
             
             String key = ""; //chiave da costruire carattere per carattere
-            
-            int keyLenght = 5; //32 -> 32*8 = 256 bit
             
             for(int i = 0; i < keyLenght; i++)
             {
@@ -104,5 +105,45 @@ public class KeyExchange
 		} 
 		catch (IOException e) 
 		{ e.printStackTrace(); }
+	}
+	
+	public int getPort()
+	{
+		return port;
+	}
+	
+	public long getPrimitiveRoot()
+	{
+		return primitive_root;
+	}
+	
+	public long getPrime()
+	{
+		return prime;
+	}
+	
+	public int getKeyLength()
+	{
+		return keyLenght;
+	}
+	
+	public void setPort(int port)
+	{
+		this.port = port;
+	}
+	
+	public void setPrimitiveRoot(long primitiveRoot)
+	{
+		this.primitive_root = primitiveRoot;
+	}
+	
+	public void setPrime(int prime)
+	{
+		this.prime = prime;
+	}
+	
+	public void setKeyLength(int keyLength)
+	{
+		this.keyLenght = keyLength;
 	}
 }
