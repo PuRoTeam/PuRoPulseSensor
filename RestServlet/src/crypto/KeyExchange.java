@@ -25,8 +25,8 @@ public class KeyExchange
 	public static void main(String[] args)
     {
 		int port = 1600;
-		long primitive_root = 2;
-		long prime = 2147802347L;
+		long primitive_root = 5;
+		long prime = 25657L;
 		
     	try
     	{
@@ -58,30 +58,25 @@ public class KeyExchange
                      
             String startExchange = in.readLine(); //controllo su errori
             System.out.println(startExchange);
-            String ok = "OK";
-                        
-            out.println(ok);
+            //String ok = "OK";
+            //out.println(ok);
             
             String key = ""; //chiave da costruire carattere per carattere
             
-            int keyLenght = 1; //32 -> 32*8 = 256 bit
+            int keyLenght = 5; //32 -> 32*8 = 256 bit
             
             for(int i = 0; i < keyLenght; i++)
             {
             	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave privata iterazione corrente
-            	
             	BigInteger base = new BigInteger(String.valueOf(primitive_root)); //g
             	BigInteger exp = new BigInteger(String.valueOf(x));
             	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
-            	
             	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
-            	System.out.println("Y: "+ret);
             	
             	/*----Prima leggo poi invio----*/
-            	
-
             	String newKeyChar = in.readLine(); //lettura bloccante
-            	System.out.println("Leggo: "+newKeyChar);
+            	System.out.println("Leggo Y altro: "+newKeyChar);
+            	System.out.println("Calcolo Y: "+ret+" ed invio");
             	
             	BigInteger newKeyInt = new BigInteger(newKeyChar); //(g^y) mod n
             	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //((g^y)^x) mod n
@@ -95,10 +90,10 @@ public class KeyExchange
             	newKeyChar = "" + c; //conversione easy da char a String            	
             	key += newKeyChar;
             	
-            	System.out.println("Prossimo byte chiave: "+newKeyLong);            	
+            	System.out.println("Prossimo byte chiave: "+newKeyLongMod); 
+            	System.out.println("");
 
             	/*----Dopo aver letto invio----*/
-            	
             	out.println(ret); //invio
             }
             
