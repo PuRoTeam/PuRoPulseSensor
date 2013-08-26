@@ -12,7 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class AES 
+public class ArduinoAES 
 {
 	public static String Encrypt(String plainText, String key) throws 
     NoSuchAlgorithmException, 
@@ -58,7 +58,7 @@ public static void main(String[] args) {
      
     String plainText = "Hello World";
     String key = "770A8A65DA156D24EE2A093277530142";
-    System.out.println("Lunghezza chiave " + key.length());
+     
     System.out.println("Plain Text: " +plainText);
      
     // Encryption

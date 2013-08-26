@@ -17,9 +17,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Client implements Runnable
+public class ArduinoClient implements Runnable
 {
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
+	public boolean runInfiniteTimes = true;
 	
 	public static void Post() 
 			throws ClientProtocolException, IOException 
@@ -36,7 +37,7 @@ public class Client implements Runnable
         HttpPost post = new HttpPost(url);
       
     	int max = 100; //massimo valore estraibile casualmente
-    	int size = 2;
+    	int size = 2; //numero di punti da inviare in ogni richiesta POST
     	
     	ArrayList<Double> random = new ArrayList<Double>();
     	for(int i = 0; i < size; i++)
@@ -133,7 +134,7 @@ public class Client implements Runnable
     {
     	try
     	{
-    		Client c = new Client();
+    		ArduinoClient c = new ArduinoClient();
     		c.run();
     	}
     	catch(Exception e)
@@ -141,8 +142,8 @@ public class Client implements Runnable
     }
 
 	public void run() {
-		boolean keepon = true;
-		while(keepon) {
+
+		while(true) {
 			try {
 				Post();
 				Thread.sleep(150);
@@ -153,9 +154,11 @@ public class Client implements Runnable
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			keepon = true;
-			if(!keepon)
-				System.out.println("Occhio, \"keepon\" disabilitato -> solo un'iterazione");
+			if(!runInfiniteTimes)
+			{
+				System.out.println("Occhio, \"runInfiniteTimes\" disabilitato -> solo un'iterazione");
+				break;
+			}
 		}
 	}
 }

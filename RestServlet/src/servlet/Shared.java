@@ -17,6 +17,7 @@ public class Shared
     //private Map<Long, ArrayList<Point>> points = Collections.synchronizedMap(new HashMap<Long, ArrayList<Point>>());
     //synchronized(m) { func(m) } devo usare questo se lavoro con hashmap sincronizzata?
     
+    private String diffieHellmanKey = "";
     private Map<Long, ArrayList<Point>> points = new HashMap<Long, ArrayList<Point>>();
     
     private Shared() {}
@@ -36,6 +37,16 @@ public class Shared
     public void putPointsByUid(long uid, ArrayList<Point> newPoints)
     {
     	points.put(new Long(uid), newPoints);
+    }
+    
+    public String getDiffieHellmanKey()
+    {
+    	return diffieHellmanKey;
+    }
+    
+    public void setDiffieHellmanKey(String diffieHellmanKey)
+    {
+    	this.diffieHellmanKey = diffieHellmanKey;
     }
     
     public static void main(String args[])

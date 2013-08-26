@@ -2,10 +2,15 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import crypto.AES;
+import crypto.KeyExchanger;
 import data.Point;
 import database.MysqlConnect;
 
@@ -34,27 +41,53 @@ public class ArduinoServlet extends HttpServlet {
 	{		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		out.println("X");
+		out.println("GET method of ArduinoServlet");
 	} 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
-	{		
-		//singleValue(request, response);
-		multivalue(request, response);	
+	{	
+		String paramJson = request.getParameter("JSON");
+		
+		//singleValue(request, response, paramJson); //plain
+		//multivalue(request, response, paramJson); //plain
+		multiCryptoValue(request, response, paramJson);
+	}
+	
+	//ricevo un array di punti criptato
+	public void multiCryptoValue(HttpServletRequest request, HttpServletResponse response, String cryptoJson) 
+			throws ServletException, IOException
+	{
+		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKey();
+
+		try 
+		{
+			String plainJson = AES.Decrypt(cryptoJson, diffieHellmanKey);
+			multivalue(request, response, plainJson);
+		} 
+		catch (InvalidKeyException e) 
+		{ e.printStackTrace(); }
+		catch (NoSuchAlgorithmException e) 
+		{ e.printStackTrace(); } 
+		catch (NoSuchPaddingException e) 
+		{ e.printStackTrace(); } 
+		catch (IllegalBlockSizeException e) 
+		{ e.printStackTrace(); } 
+		catch (BadPaddingException e) 
+		{ e.printStackTrace(); }
 	}
 	
 	//ricevo un array di punti
-	public void multivalue(HttpServletRequest request, HttpServletResponse response) 
+	public void multivalue(HttpServletRequest request, HttpServletResponse response, String plainJson) 
 			throws ServletException, IOException 
 	{
-		String json = request.getParameter("JSON"); //array di punti
+		//String json = request.getParameter("JSON"); //array di punti
 		PrintWriter out = response.getWriter();
 					
 		/* TODO da modificare in base a come è gestita la cosa da arduino - array */
 		try 
 		{
-			JSONArray jarray = new JSONArray(json);
+			JSONArray jarray = new JSONArray(plainJson);
 			Shared singleton = Shared.getInstance();
 			
 			ArrayList<Long> allUidsInJsonArray = new ArrayList<Long>();
@@ -111,15 +144,15 @@ public class ArduinoServlet extends HttpServlet {
 	}
 	
 	//ricevo solo un valore da arduino (da non cancellare finchè non si definisce per bene la comunicazione)
-	public void singleValue(HttpServletRequest request, HttpServletResponse response) 
+	public void singleValue(HttpServletRequest request, HttpServletResponse response, String plainJson) 
 			throws ServletException, IOException 
 	{
-		String json = request.getParameter("JSON"); //singolo valore
+		//String json = request.getParameter("JSON"); //singolo valore
 		PrintWriter out = response.getWriter();
 		
 		try 
 		{
-			JSONObject jobj = new JSONObject(json);
+			JSONObject jobj = new JSONObject(plainJson);
 			
 	        long uid = jobj.getLong("uid");       
 			double value = jobj.getDouble("value");
