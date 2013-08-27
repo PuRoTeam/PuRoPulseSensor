@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -61,8 +59,45 @@ public class ArduinoKeyExchange
                  
         out.println("ciao");
 
-        String key = ""; //chiave da costruire carattere per carattere
+        //String key = iterativeExchange(in, out);  //32 scambi diffie hellman
+        String key = sha256Exchange(in, out); //una sola iterazione, hash chiave con sha256
         
+        diffieHellmanKey = key;
+        
+        System.out.println(key);
+        
+        out.println("fine");
+        
+        clientSocket.close();
+        
+        return diffieHellmanKey;
+	}
+	
+	//un solo scambio e poi hash con sha256
+	public String sha256Exchange(BufferedReader in, PrintWriter out) throws IOException 
+	{		
+    	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave privata iterazione corrente
+    	BigInteger base = new BigInteger(String.valueOf(primitive_root)); //g
+    	BigInteger exp = new BigInteger(String.valueOf(x));
+    	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
+    	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
+    	
+    	out.println(ret); //invio    	
+    	String newKeyChar = in.readLine(); //lettura bloccante    	
+    	
+    	BigInteger newKeyInt = new BigInteger(newKeyChar); //(g^y) mod n
+    	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //((g^y)^x) mod n   
+    	String key = newKeyLong.toString();    	
+    	String msgDigest = SHA256.getMsgDigest(key);
+    	
+    	return msgDigest;
+	}
+	
+	//32 scambi
+	public String iterativeExchange(BufferedReader in, PrintWriter out) throws IOException
+	{
+		String key = "";
+		
         for(int i = 0; i < keyLenght; i++)
         {
         	/*----Prima scrivo poi leggo----*/
@@ -96,15 +131,7 @@ public class ArduinoKeyExchange
         	System.out.println("Prossimo byte chiave: "+newKeyLongMod);            	
         }
         
-        diffieHellmanKey = key;
-        
-        System.out.println(key);
-        
-        out.println("fine");
-        
-        clientSocket.close();
-        
-        return diffieHellmanKey;
+        return key;
 	}
 	
 	public int getPort()

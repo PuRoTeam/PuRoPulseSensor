@@ -1,12 +1,8 @@
 package servlet;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.json.JSONArray;
-
 import data.Point;
 
 public class Shared 

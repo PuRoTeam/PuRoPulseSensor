@@ -50,8 +50,8 @@ public class ArduinoServlet extends HttpServlet {
 		String paramJson = request.getParameter("JSON");
 		
 		//singleValue(request, response, paramJson); //plain
-		//multivalue(request, response, paramJson); //plain
-		multiCryptoValue(request, response, paramJson);
+		//multivalue(request, response, paramJson); //plain //ABILITARE PER PROVE NON CRIPTATE
+		multiCryptoValue(request, response, paramJson); //DISABILITARE PER PROVE NON CRIPTATE
 	}
 	
 	//ricevo un array di punti criptato
@@ -59,7 +59,8 @@ public class ArduinoServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKey();
-
+		System.out.println(diffieHellmanKey);
+		
 		try 
 		{
 			String plainJson = AES.Decrypt(cryptoJson, diffieHellmanKey);

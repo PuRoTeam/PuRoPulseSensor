@@ -29,7 +29,7 @@ public class KeyExchanger implements Runnable
 	}
 
 	//Lancia thread per ogni connessione accettata. Ogni connessione è uno scambio Diffie Hellman
-	@SuppressWarnings("resource")
+	@SuppressWarnings("resource") //per evitare warning su serverSocket non chiuse (non posso aggiungere "close" -> unreachable code)
 	public static void main(String[] args) throws IOException
 	{
 		int port = 1600;
@@ -64,47 +64,14 @@ public class KeyExchanger implements Runnable
 	                 
 	        String startExchangeMsg = in.readLine(); //controllo su errori
 	        System.out.println(startExchangeMsg);
-	        //String ok = "OK";
-	        //out.println(ok);
 	        
-	        String key = ""; //chiave da costruire carattere per carattere
-	        
-	        for(int i = 0; i < keyLength; i++)
-	        {
-	        	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave privata iterazione corrente
-	        	BigInteger base = new BigInteger(String.valueOf(primitive_root)); //g
-	        	BigInteger exp = new BigInteger(String.valueOf(x));
-	        	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
-	        	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
-	        	
-	        	/*----Prima leggo poi invio----*/
-	        	String newKeyChar = in.readLine(); //lettura bloccante
-	        	System.out.println("Leggo Y altro: "+newKeyChar);
-	        	System.out.println("Calcolo Y: "+ret+" ed invio");
-	        	
-	        	BigInteger newKeyInt = new BigInteger(newKeyChar); //(g^y) mod n
-	        	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //((g^y)^x) mod n
-	        	
-	        	BigInteger modChar = new BigInteger(String.valueOf(256));
-	        	BigInteger newKeyLongMod = newKeyLong.mod(modChar); //((g^xy) mod n) mod 256 - trasformo in carattere
-	        	
-	        	long newLong = newKeyLongMod.longValue();            	
-	        	char c = (char)newLong; //converto in ascii
-	        	
-	        	newKeyChar = "" + c; //conversione easy da char a String            	
-	        	key += newKeyChar;
-	        	
-	        	System.out.println("Prossimo byte chiave: "+newKeyLongMod); 
-	        	System.out.println("");
-	
-	        	/*----Dopo aver letto invio----*/
-	        	out.println(ret); //invio
-	        }
+	        //String key = iterativeExchange(in, out);  //32 scambi diffie hellman
+	        String key = sha256Exchange(in, out); //una sola iterazione, hash chiave con sha256
 	        
 	        diffieHellmanKey = key;
-	        Shared singleton = Shared.getInstance();
-	        singleton.setDiffieHellmanKey(diffieHellmanKey);
-	        System.out.println(key);
+	        Shared.getInstance().setDiffieHellmanKey(diffieHellmanKey);
+	     	        
+	        System.out.println(Shared.getInstance().getDiffieHellmanKey());
 	        
 	        String endExchangeMsg = in.readLine(); //controllo su errori
 	        System.out.println(endExchangeMsg);
@@ -113,6 +80,66 @@ public class KeyExchanger implements Runnable
 		}
 		catch(IOException e)
 		{ e.printStackTrace(); }
+	}
+	
+	//un solo scambio e poi hash con sha256
+	public String sha256Exchange(BufferedReader in, PrintWriter out) throws IOException 
+	{		
+    	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave privata iterazione corrente
+    	BigInteger base = new BigInteger(String.valueOf(primitive_root)); //g
+    	BigInteger exp = new BigInteger(String.valueOf(x));
+    	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
+    	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
+    	
+    	String newKeyChar = in.readLine(); //lettura bloccante
+    	out.println(ret); //invio
+    	
+    	BigInteger newKeyInt = new BigInteger(newKeyChar); //(g^y) mod n
+    	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //((g^y)^x) mod n   
+    	String key = newKeyLong.toString();    	
+    	String msgDigest = SHA256.getMsgDigest(key);
+    	
+    	return msgDigest;
+	}
+	
+	//32 scambi
+	public String iterativeExchange(BufferedReader in, PrintWriter out) throws IOException 
+	{
+		String key = ""; //chiave da costruire carattere per carattere
+		
+        for(int i = 0; i < keyLength; i++)
+        {
+        	long x = (long)(Math.random()*(prime - 2) + 2); //[2, p-1]  chiave privata iterazione corrente
+        	BigInteger base = new BigInteger(String.valueOf(primitive_root)); //g
+        	BigInteger exp = new BigInteger(String.valueOf(x));
+        	BigInteger modPrime = new BigInteger(String.valueOf(prime)); //n   
+        	BigInteger ret = base.modPow(exp, modPrime); //(g^x) mod n
+        	
+        	/*----Prima leggo poi invio----*/
+        	String newKeyChar = in.readLine(); //lettura bloccante
+        	System.out.println("Leggo Y altro: "+newKeyChar);
+        	System.out.println("Calcolo Y: "+ret+" ed invio");
+        	
+        	BigInteger newKeyInt = new BigInteger(newKeyChar); //(g^y) mod n
+        	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //((g^y)^x) mod n
+        	
+        	BigInteger modChar = new BigInteger(String.valueOf(256));
+        	BigInteger newKeyLongMod = newKeyLong.mod(modChar); //((g^xy) mod n) mod 256 - trasformo in carattere
+        	
+        	long newLong = newKeyLongMod.longValue();            	
+        	char c = (char)newLong; //converto in ascii
+        	
+        	newKeyChar = "" + c; //conversione easy da char a String            	
+        	key += newKeyChar;
+        	
+        	System.out.println("Prossimo byte chiave: "+newKeyLongMod); 
+        	System.out.println("");
+
+        	/*----Dopo aver letto invio----*/
+        	out.println(ret); //invio
+        }
+        
+        return key;
 	}
 	
 	public Socket getClientSocket()
