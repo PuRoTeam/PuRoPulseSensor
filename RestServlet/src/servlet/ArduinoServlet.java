@@ -23,10 +23,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import crypto.AES;
+import crypto.KeyExchangeManager;
 import crypto.KeyExchanger;
 import data.Point;
 import database.MysqlConnect;
 
+/*
+Under normal circumstances, a servlet is only destroyed at shutdown (ie when the application container, such as Tomcat, is shut down). 
+Regarding your question about requests, a servlet is designed to handle many requests. It is said that the servlet is application-scoped, whereas the request has its own scope.
+*/
 @WebServlet("/ArduinoServlet")
 public class ArduinoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -36,6 +41,12 @@ public class ArduinoServlet extends HttpServlet {
         super();
     }
 
+    //eseguito solo una vola all'avvio della Web Application. In ogni caso il metodo "start" di KeyExchangeManager può essere chiamato solo una volta
+	public void init() throws ServletException 
+	{
+		super.init();	
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{		

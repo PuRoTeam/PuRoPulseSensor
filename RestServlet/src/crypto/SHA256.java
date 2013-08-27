@@ -3,7 +3,6 @@ package crypto;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 public class SHA256 
@@ -12,7 +11,13 @@ public class SHA256
 	{
 		byte byteDigest[] = getByteMsgDigest(msg);
 		String msgDigest = Hex.encodeHexString(byteDigest);
-        
+        		
+        /*StringBuilder sb = new StringBuilder();        
+        for (byte b : byteDigest)
+        	sb.append(String.format("%02X", b));
+		
+        String msgDigest = sb.toString();*/
+        		
         return msgDigest;
 	}
 	

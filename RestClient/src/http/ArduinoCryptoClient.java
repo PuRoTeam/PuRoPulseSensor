@@ -23,7 +23,7 @@ import crypto.ArduinoKeyExchange;
 public class ArduinoCryptoClient implements Runnable
 {
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
-	public boolean runInfiniteTimes = false;
+	public boolean runInfiniteTimes = true;
 	
 	int port;
 	long primitive_root;

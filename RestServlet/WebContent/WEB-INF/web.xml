@@ -17,4 +17,7 @@
     <servlet-name>ArduinoServlet</servlet-name>
     <url-pattern>/index.html</url-pattern>
   </servlet-mapping>
+  <listener>
+		<listener-class>servlet.ArduinoServletContextListener</listener-class>
+  </listener>
 </web-app>

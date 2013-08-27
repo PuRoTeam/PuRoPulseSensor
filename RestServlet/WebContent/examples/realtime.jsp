@@ -59,7 +59,7 @@
     </script>
 </head>
 <body>
-	<div id="title">Arduino Healting Monitor</div>
+	<div id="title">Arduino Healthing Monitor</div>
 	<div id="wrapper">
 		
 		<%@ include file="menu.jsp" %>

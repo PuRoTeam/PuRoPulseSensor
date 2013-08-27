@@ -27,10 +27,9 @@ public class KeyExchanger implements Runnable
 		this.keyLength = keyLength;		
 		diffieHellmanKey = "";
 	}
-
+	
 	//Lancia thread per ogni connessione accettata. Ogni connessione è uno scambio Diffie Hellman
-	@SuppressWarnings("resource") //per evitare warning su serverSocket non chiuse (non posso aggiungere "close" -> unreachable code)
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		int port = 1600;
 		long primitive_root = 5;
@@ -40,19 +39,24 @@ public class KeyExchanger implements Runnable
 		ServerSocket serverSocket = null; //TCP
 		InetAddress bindTo = null; //accetta connessioni da chiunque
 	
-		serverSocket = new ServerSocket(port, 0, bindTo);
-		
-		while(true)
+		try
 		{
-			System.out.println("In attesa di connessioni");
-	        Socket clientSocket = serverSocket.accept(); //bloccante
-			System.out.println("Connessione accettata!");
+			serverSocket = new ServerSocket(port, 0, bindTo);
 			
-			KeyExchanger newKeyExchanger = new KeyExchanger(clientSocket, primitive_root, prime, keyLength);
-			
-			Thread thread = new Thread(newKeyExchanger); //thread che serve la richiesta
-			thread.start();		
+			while(true)
+			{
+				System.out.println("In attesa di connessioni");
+		        Socket clientSocket = serverSocket.accept(); //bloccante
+				System.out.println("Connessione accettata!");
+				
+				KeyExchanger newKeyExchanger = new KeyExchanger(clientSocket, primitive_root, prime, keyLength);
+				
+				Thread thread = new Thread(newKeyExchanger); //thread che serve la richiesta
+				thread.start();		
+			}
 		}
+		catch(IOException e)
+		{ e.printStackTrace(); }
 	}
 	
 	public void run() 
