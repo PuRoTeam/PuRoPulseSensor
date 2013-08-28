@@ -12,7 +12,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 
 public class AES 
 {
@@ -47,6 +46,8 @@ public class AES
 	    return new String(decryptedTextBytes);
 	}*/
  
+	/*--------------------------------------------------*/
+	
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
@@ -70,9 +71,9 @@ public class AES
 		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 		 
 		byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8")); //per il plainText possiamo usare anche questa funzione
-		 
+		
 		return new Base64().encodeAsString(encryptedTextBytes);
-	}	
+	}
 
 	public static String Decrypt(String encryptedText, String key) throws 
 				NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, 
@@ -91,13 +92,85 @@ public class AES
 		 
 		return new String(decryptedTextBytes);
 	}
-
+	
+	/*--------------------------------------------------*/
+	
+	/*
+	//Con funzioni damiano 
+	public static String EncryptProva(String plainText, String key) throws Exception
+	{
+		byte keyInByte[] = string2Bytes(key);
+		
+		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
+		 
+		// Instantiate the cipher
+		Cipher cipher = Cipher.getInstance("AES");
+		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+		 
+		byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8")); //per il plainText possiamo usare anche questa funzione
+		
+		return bytes2String(encryptedTextBytes);
+	}
+	
+	public static String DecryptProva(String encryptedText, String key) throws Exception
+	{
+		byte keyInByte[] = string2Bytes(key); 
+		
+		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
+		
+		// Instantiate the cipher
+		Cipher cipher = Cipher.getInstance("AES");
+		cipher.init(Cipher.DECRYPT_MODE, keySpec);
+		 
+		byte[] encryptedTextBytes = string2Bytes(encryptedText);
+		byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
+		 
+		return bytes2String(decryptedTextBytes);
+	}*/
+	
+	/*--------------------------------------------------*/
+	
+	public static String bytes2String(byte a[])
+	{
+		String s = "";
+		for(int i=0; i<a.length; i++)		
+			s = s + (char)a[i];		
+		return s;
+	}
+	
+	public static byte[] string2Bytes(String s)
+	{
+		byte[] a = new byte[s.length()];
+		for(int i=0; i<s.length(); i++)		
+			a[i] = (byte)s.charAt(i);
+		return a;
+	}
+	
+	/*--------------------------------------------------*/
+	
 	public static void main(String[] args) 
 	{
-		myExample();
+		voidProva();
+		//myExample();
 	}
-
-	public static void myExample()
+	
+	public static void voidProva()
+	{		
+		String key = "770A8A65DA156D24EE2A093277530142";
+		String plainText = "a test string000";
+		try
+		{
+		    String encryptedText = Encrypt(plainText, key);
+		    System.out.println(encryptedText);
+		    
+		    String decryptedText = Decrypt(encryptedText, key);
+		    System.out.println(decryptedText);
+		}
+		catch (Exception e) 
+		{ e.printStackTrace(); }
+	}
+	
+	public static void shaAndAesProva()
 	{
 		String plainText = "123456";
 	    MessageDigest md;
