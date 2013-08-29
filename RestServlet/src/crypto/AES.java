@@ -1,52 +1,23 @@
 package crypto;
 
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 
 public class AES 
-{
-	/*public static String EncryptOriginal(String plainText, String key) throws 
-				NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, 
-				IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException 
-    {
-	    SecretKeySpec keySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-	     
-	    // Instantiate the cipher
-	    Cipher cipher = Cipher.getInstance("AES");
-	    cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-	     
-	    byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8"));
-	     
-	    return new Base64().encodeAsString(encryptedTextBytes);
-    }
-	
-	public static String DecryptOriginal(String encryptedText, String key) throws 
-				NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, 
-				IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException 
-	{
-	    SecretKeySpec keySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-	 
-	    // Instantiate the cipher
-	    Cipher cipher = Cipher.getInstance("AES");
-	    cipher.init(Cipher.DECRYPT_MODE, keySpec);
-	     
-	    byte[] encryptedTextBytes = Base64.decodeBase64(encryptedText);
-	    byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
-	     
-	    return new String(decryptedTextBytes);
-	}*/
- 
-	/*--------------------------------------------------*/
+{	
+	public static final String algorithm = "AES";
+	public static final String transformation = "AES";//"AES/CBC/NoPadding (128)";
 	
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
@@ -58,10 +29,11 @@ public class AES
         return data;
     }
 	
-	public static String Encrypt(String plainText, String key) throws 
-				NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, 
-				IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException  
+	/*public static String EncryptBase64(String plainText, String key)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException,
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException 
 	{
+		//SecretKeySpec keySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
 		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi
 		
 		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
@@ -75,10 +47,11 @@ public class AES
 		return new Base64().encodeAsString(encryptedTextBytes);
 	}
 
-	public static String Decrypt(String encryptedText, String key) throws 
-				NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, 
-				IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException   
+	public static String DecryptBase64(String encryptedText, String key)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, 
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException 
 	{
+		//SecretKeySpec keySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
 		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi 
 		
 		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
@@ -91,57 +64,57 @@ public class AES
 		byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
 		 
 		return new String(decryptedTextBytes);
-	}
-	
-	/*--------------------------------------------------*/
-	
-	/*
-	//Con funzioni damiano 
-	public static String EncryptProva(String plainText, String key) throws Exception
-	{
-		byte keyInByte[] = string2Bytes(key);
-		
-		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
-		 
-		// Instantiate the cipher
-		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-		 
-		byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8")); //per il plainText possiamo usare anche questa funzione
-		
-		return bytes2String(encryptedTextBytes);
-	}
-	
-	public static String DecryptProva(String encryptedText, String key) throws Exception
-	{
-		byte keyInByte[] = string2Bytes(key); 
-		
-		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
-		
-		// Instantiate the cipher
-		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.DECRYPT_MODE, keySpec);
-		 
-		byte[] encryptedTextBytes = string2Bytes(encryptedText);
-		byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
-		 
-		return bytes2String(decryptedTextBytes);
 	}*/
 	
-	/*--------------------------------------------------*/
-	
-	public static String bytes2String(byte a[])
+	public static String Encrypt(String plainText, String key)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, 
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException 
 	{
-		String s = "";
-		for(int i=0; i<a.length; i++)		
-			s = s + (char)a[i];		
-		return s;
+		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi
+
+		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, algorithm);
+		 
+		// Instantiate the cipher
+		Cipher cipher = Cipher.getInstance(transformation);
+		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+		 
+		byte[] plainTextBytes = stringToBytes(plainText);
+		
+		byte[] encryptedTextBytes = cipher.doFinal(plainTextBytes); //per il plainText possiamo usare anche questa funzione
+		
+		return Hex.encodeHexString(encryptedTextBytes);
 	}
 	
-	public static byte[] string2Bytes(String s)
+	public static String Decrypt(String encryptedText, String key) 
+			throws NoSuchAlgorithmException, NoSuchPaddingException, 
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException  
+	{
+		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi 
+		
+		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, algorithm);
+		
+		// Instantiate the cipher
+		Cipher cipher = Cipher.getInstance(transformation);
+		cipher.init(Cipher.DECRYPT_MODE, keySpec);
+		 
+		byte[] encryptedTextBytes = hexStringToByteArray(encryptedText);
+		byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
+		
+		return bytesToString(decryptedTextBytes);
+	}
+	
+	public static String bytesToString(byte a[])
+	{
+		String s = "";
+		for(int i = 0; i < a.length; i++)		
+			s += (char)a[i];		
+		return s;
+	}
+
+	public static byte[] stringToBytes(String s)
 	{
 		byte[] a = new byte[s.length()];
-		for(int i=0; i<s.length(); i++)		
+		for(int i = 0; i < s.length(); i++)		
 			a[i] = (byte)s.charAt(i);
 		return a;
 	}
@@ -150,21 +123,54 @@ public class AES
 	
 	public static void main(String[] args) 
 	{
-		voidProva();
-		//myExample();
+		//shaAndAesProva();
+		encryptDecrypt();
+		//prova();
 	}
 	
-	public static void voidProva()
-	{		
-		String key = "770A8A65DA156D24EE2A093277530142";
-		String plainText = "a test string000";
+	public static void prova()
+	{
 		try
 		{
+			String message="Message to Decode";
+	
+			KeyGenerator key = KeyGenerator.getInstance("AES");
+			key.init(256);
+	
+			SecretKey s = key.generateKey();
+			byte[] raw = s.getEncoded();
+			System.out.println(raw.length);
+	
+			SecretKeySpec sskey= new SecretKeySpec(raw, "AES");
+	
+			Cipher c = Cipher.getInstance("AES");
+	
+			c.init(Cipher.ENCRYPT_MODE, sskey);
+	
+			byte[] encrypted = c.doFinal(message.getBytes());
+			System.out.println("encrypted string: " + Hex.encodeHexString(encrypted));
+		}
+		catch(Exception e)
+		{ e.printStackTrace(); }
+	}
+	
+	public static void encryptDecrypt()
+	{	
+		String plainText = "2222222222222222";
+		System.out.println("PlainText: " + plainText);
+		
+		byte keyByte[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32};
+		String key = Hex.encodeHexString(keyByte);
+		//String key = "770A8A65DA156D24EE2A093277530142";
+		System.out.println("Key: " + key);
+		try
+		{
+			//"dfbf252518738b0aafddedf1e010cd90";
 		    String encryptedText = Encrypt(plainText, key);
-		    System.out.println(encryptedText);
+		    System.out.println("EncryptedText: " + encryptedText);
 		    
 		    String decryptedText = Decrypt(encryptedText, key);
-		    System.out.println(decryptedText);
+		    System.out.println("DecryptedText: " + decryptedText);
 		}
 		catch (Exception e) 
 		{ e.printStackTrace(); }
@@ -173,66 +179,19 @@ public class AES
 	public static void shaAndAesProva()
 	{
 		String plainText = "123456";
-	    MessageDigest md;
+		System.out.println("PlainText: " + plainText);
 		try 
 		{			
 			String key = SHA256.getMsgDigest(plainText);			
-		    System.out.println(key);
+		    System.out.println("Key: " + key);
 		    
 		    String encryptedText = Encrypt(plainText, key);
-		    System.out.println(encryptedText);
+		    System.out.println("EncryptedText: " + encryptedText);
 		    
 		    String decryptedText = Decrypt(encryptedText, key);
-		    System.out.println(decryptedText);
+		    System.out.println("DecryptedText: " + decryptedText);
 		} 
 		catch (Exception e) 
 		{ e.printStackTrace(); }
 	}
-
-	/*public static void internetExample()
-	{
-		   String plainText = "Hello World";
-		    String key = "770A8A65DA156D24EE2A093277530142";
-		    //String key =   "8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92";
-		    
-		    System.out.println("Lunghezza chiave " + key.length());
-		    System.out.println("Plain Text: " +plainText);
-		     
-		    // Encryption
-		    String encryptedText = null;
-		    try {
-		        encryptedText = EncryptOriginal(plainText, key);
-		        System.out.println("Encrypted Text: " +encryptedText);
-		    } catch (InvalidKeyException e) {
-		        e.printStackTrace();
-		    } catch (NoSuchAlgorithmException e) {
-		        e.printStackTrace();
-		    } catch (NoSuchPaddingException e) {
-		        e.printStackTrace();
-		    } catch (IllegalBlockSizeException e) {
-		        e.printStackTrace();
-		    } catch (BadPaddingException e) {
-		        e.printStackTrace();
-		    } catch (UnsupportedEncodingException e) {
-		        e.printStackTrace();
-		    }
-		     
-		    // Decryption
-		    try {
-		        String decryptedText = DecryptOriginal(encryptedText, key);
-		        System.out.println("Decrypted Text: " +decryptedText);
-		    } catch (InvalidKeyException e) {
-		        e.printStackTrace();
-		    } catch (NoSuchAlgorithmException e) {
-		        e.printStackTrace();
-		    } catch (NoSuchPaddingException e) {
-		        e.printStackTrace();
-		    } catch (IllegalBlockSizeException e) {
-		        e.printStackTrace();
-		    } catch (BadPaddingException e) {
-		        e.printStackTrace();
-		    } catch (UnsupportedEncodingException e) {
-		        e.printStackTrace();
-		    }
-	}*/
 }

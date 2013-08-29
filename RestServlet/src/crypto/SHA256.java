@@ -39,13 +39,22 @@ public class SHA256
 	
     public static void main(String[] args) throws Exception
     {
+    	//byteExample();
     	//internetExample();
-		myExample();
+		//myExample();
+    	prova();
     }
-	
+    
+    public static void prova() throws Exception
+    {
+    	byte byteDigest[] = {0, 1, 10, 11};    	
+    	String hex = Hex.encodeHexString(byteDigest);
+    	System.out.println(hex);
+    }
+    
     public static void myExample() throws Exception
     {
-    	String password = "123456";
+    	String password = "Hello";
     	String digest = getMsgDigest(password);
     	
     	System.out.println(digest);
