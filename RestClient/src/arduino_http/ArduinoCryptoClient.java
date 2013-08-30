@@ -1,9 +1,10 @@
-package http;
+package arduino_http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.UnknownHostException;
+import java.security.Security;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -16,8 +17,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import crypto.ArduinoAES;
-import crypto.ArduinoKeyExchange;
+import crypto.AES;
+import arduino_crypto.ArduinoKeyExchange;
 
 //Invio di punti cruptati
 public class ArduinoCryptoClient implements Runnable
@@ -72,7 +73,7 @@ public class ArduinoCryptoClient implements Runnable
     		plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(i) +"}, ";
     	plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(size - 1) +"}";
     	plainJson += "]"; 
-    	
+    	    	
         //array di punti
         /*String json = "[{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random1 +"}," +
         			   "{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random2 + "}," +
@@ -81,7 +82,7 @@ public class ArduinoCryptoClient implements Runnable
     	
     	try
     	{    		
-    		String cryptoJson = ArduinoAES.Encrypt(plainJson, key);
+    		String cryptoJson = AES.EncryptIVFromKey(plainJson, key);
     		
             ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();            
             params.add(new BasicNameValuePair("JSON", cryptoJson));    
@@ -118,13 +119,16 @@ public class ArduinoCryptoClient implements Runnable
 	
     public static void main(String[] args)
     {
+		if(Security.getProvider(AES.providerName) == null);
+			Security.addProvider(AES.provider);
+			
     	try
     	{
     		int port = 1600;
     		long primitive_root = 5;
     		long prime = 25657L;
     		int keyLength = 32; //32 -> 32*8 = 256 bit
-    		
+    		    		
     		ArduinoCryptoClient cryptoClient = new ArduinoCryptoClient(port, primitive_root, prime, keyLength);
     		Thread thread = new Thread(cryptoClient); //un solo thread che invia richieste in serie
     		thread.start();

@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.Security;
 
 public class KeyExchangeManager extends Thread
-{
-	private static KeyExchangeManager instance = null;
-		
+{		
 	public void run() 
 	{
 		int port = 1600;
@@ -18,7 +17,7 @@ public class KeyExchangeManager extends Thread
 		
 		ServerSocket serverSocket = null; //TCP
 		InetAddress bindTo = null; //accetta connessioni da chiunque
-	
+		
 		try
 		{
 			serverSocket = new ServerSocket(port, 0, bindTo);

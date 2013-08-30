@@ -12,12 +12,6 @@ public class SHA256
 		byte byteDigest[] = getByteMsgDigest(msg);
 		String msgDigest = Hex.encodeHexString(byteDigest);
         		
-        /*StringBuilder sb = new StringBuilder();        
-        for (byte b : byteDigest)
-        	sb.append(String.format("%02X", b));
-		
-        String msgDigest = sb.toString();*/
-        		
         return msgDigest;
 	}
 	
@@ -28,7 +22,7 @@ public class SHA256
 		try 
 		{
 			md = MessageDigest.getInstance("SHA-256");
-			md.update(msg.getBytes()); 
+			md.update(Utility.stringToBytes(msg)); 
 			byteDigest = md.digest();
 		}
 		catch (NoSuchAlgorithmException e) 
@@ -39,80 +33,18 @@ public class SHA256
 	
     public static void main(String[] args) throws Exception
     {
-    	//byteExample();
-    	//internetExample();
-		//myExample();
-    	prova();
-    }
-    
-    public static void prova() throws Exception
-    {
-    	byte byteDigest[] = {0, 1, 10, 11};    	
-    	String hex = Hex.encodeHexString(byteDigest);
-    	System.out.println(hex);
+		myExample();
     }
     
     public static void myExample() throws Exception
     {
-    	String password = "Hello";
-    	String digest = getMsgDigest(password);
+    	byte keyByte[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+    	String key = Hex.encodeHexString(keyByte);
+    	System.out.println(key);
+    	
+    	String digest = getMsgDigest(key);
     	
     	System.out.println(digest);
     	System.out.println(digest.length());
     }
-    
-	public static void internetExample() throws Exception
-	{
-    	String password = "123456";
-    	 
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        
-        md.update(password.getBytes());
- 
-        byte byteData[] = md.digest();            
-       
-        //String c = new Base64().encodeAsString(byteData);
-        
-
-        
-        for(int i = 0; i < byteData.length; i++)
-        	System.out.println();
-        String key = new String(byteData, 0, byteData.length, "ASCII");
-        //String key = new String(byteData);
-        //String key = new String(byteData, "UTF8");;
-        //String key = bytesToStringUTFCustom(byteData);
-        System.out.println(key);
-        
-        key = "";
-        
-        for(int i = 0; i < byteData.length; i++)
-        {
-        	char curChar = (char)byteData[i];
-        	key += "" + curChar;
-        }
-        System.out.println(key);
-        
-        StringBuilder sb1 = new StringBuilder();
-        for (byte b : byteData)
-        	sb1.append(String.format("%02X", b));
-        
-        System.out.println("Hex format : " + sb1.toString());        
-        
-        //convert the byte to hex format method 1
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < byteData.length; i++) {
-         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
- 
-        System.out.println("Hex format : " + sb.toString());
- 
-        //convert the byte to hex format method 2
-        StringBuffer hexString = new StringBuffer();
-    	for (int i=0;i<byteData.length;i++) {
-    		String hex=Integer.toHexString(0xff & byteData[i]);
-   	     	if(hex.length()==1) hexString.append('0');
-   	     	hexString.append(hex);
-    	}
-    	System.out.println("Hex format : " + hexString.toString());
-	}
 }

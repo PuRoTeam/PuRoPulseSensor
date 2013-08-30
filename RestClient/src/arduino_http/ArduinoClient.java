@@ -1,4 +1,4 @@
-package http;
+package arduino_http;
 
 import java.io.BufferedReader;
 import java.io.IOException;

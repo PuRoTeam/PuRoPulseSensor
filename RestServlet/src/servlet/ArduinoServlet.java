@@ -2,8 +2,10 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -70,11 +72,10 @@ public class ArduinoServlet extends HttpServlet {
 			throws ServletException, IOException
 	{
 		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKey();
-		System.out.println(diffieHellmanKey);
-		
+				
 		try 
 		{
-			String plainJson = AES.Decrypt(cryptoJson, diffieHellmanKey);
+			String plainJson = AES.DecryptIVFromKey(cryptoJson, diffieHellmanKey);
 			multivalue(request, response, plainJson);
 		} 
 		catch (InvalidKeyException e) 
@@ -86,6 +87,10 @@ public class ArduinoServlet extends HttpServlet {
 		catch (IllegalBlockSizeException e) 
 		{ e.printStackTrace(); } 
 		catch (BadPaddingException e) 
+		{ e.printStackTrace(); } 
+		catch (NoSuchProviderException e) 
+		{ e.printStackTrace(); } 
+		catch (InvalidAlgorithmParameterException e) 
 		{ e.printStackTrace(); }
 	}
 	

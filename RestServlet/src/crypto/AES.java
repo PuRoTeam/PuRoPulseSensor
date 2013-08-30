@@ -1,196 +1,128 @@
 package crypto;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Provider;
+import java.security.Security;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
+import org.bouncycastle.jce.provider.*;
 
 public class AES 
 {	
 	public static final String algorithm = "AES";
-	public static final String transformation = "AES";//"AES/CBC/NoPadding (128)";
-	
-    public static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                                 + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
-    }
-	
-	/*public static String EncryptBase64(String plainText, String key)
-			throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException,
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException 
+	public static final String transformation = "AES/CBC/PKCS7Padding";//ECB, NoPadding, PKCS5Padding, PKCS7Padding
+	public static final String providerName = "BC"; //BC
+	public static final Provider provider = new BouncyCastleProvider();
+
+	public static String EncryptIVFromKey(String plainText, String key)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, NoSuchProviderException, InvalidAlgorithmParameterException
 	{
-		//SecretKeySpec keySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi
+		String digest = SHA256.getMsgDigest(key);
+		String iv = digest.substring(0, digest.length()/2);
 		
-		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
-		 
-		// Instantiate the cipher
-		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-		 
-		byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8")); //per il plainText possiamo usare anche questa funzione
-		
-		return new Base64().encodeAsString(encryptedTextBytes);
+		return Encrypt(plainText, key, iv);
 	}
-
-	public static String DecryptBase64(String encryptedText, String key)
-			throws NoSuchAlgorithmException, NoSuchPaddingException, 
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException 
-	{
-		//SecretKeySpec keySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi 
-		
-		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, "AES");
-		
-		// Instantiate the cipher
-		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.DECRYPT_MODE, keySpec);
-		 
-		byte[] encryptedTextBytes = Base64.decodeBase64(encryptedText);
-		byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
-		 
-		return new String(decryptedTextBytes);
-	}*/
-	
-	public static String Encrypt(String plainText, String key)
-			throws NoSuchAlgorithmException, NoSuchPaddingException, 
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException 
-	{
-		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi
-
+			
+	public static String Encrypt(String plainText, String key, String iv)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, NoSuchProviderException, InvalidAlgorithmParameterException 
+	{				
+		byte keyInByte[] = Utility.hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi
 		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, algorithm);
-		 
+		
+		byte ivBytes[] = Utility.hexStringToByteArray(iv);
+		IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
+		
 		// Instantiate the cipher
-		Cipher cipher = Cipher.getInstance(transformation);
-		cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+		Cipher cipher = null;
+		if(!providerName.equals(""))
+			cipher = Cipher.getInstance(transformation, providerName);
+		else
+			cipher = Cipher.getInstance(transformation);		
+				
+		cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 		 
-		byte[] plainTextBytes = stringToBytes(plainText);
+		byte[] plainTextBytes = Utility.stringToBytes(plainText);
 		
 		byte[] encryptedTextBytes = cipher.doFinal(plainTextBytes); //per il plainText possiamo usare anche questa funzione
 		
 		return Hex.encodeHexString(encryptedTextBytes);
 	}
 	
-	public static String Decrypt(String encryptedText, String key) 
-			throws NoSuchAlgorithmException, NoSuchPaddingException, 
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException  
+	public static String DecryptIVFromKey(String plainText, String key)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, NoSuchProviderException, InvalidAlgorithmParameterException
 	{
-		byte keyInByte[] = hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi 
+		String digest = SHA256.getMsgDigest(key);
+		String iv = digest.substring(0, digest.length()/2);
 		
-		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, algorithm);
-		
-		// Instantiate the cipher
-		Cipher cipher = Cipher.getInstance(transformation);
-		cipher.init(Cipher.DECRYPT_MODE, keySpec);
-		 
-		byte[] encryptedTextBytes = hexStringToByteArray(encryptedText);
-		byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
-		
-		return bytesToString(decryptedTextBytes);
+		return Decrypt(plainText, key, iv);
 	}
 	
-	public static String bytesToString(byte a[])
-	{
-		String s = "";
-		for(int i = 0; i < a.length; i++)		
-			s += (char)a[i];		
-		return s;
-	}
-
-	public static byte[] stringToBytes(String s)
-	{
-		byte[] a = new byte[s.length()];
-		for(int i = 0; i < s.length(); i++)		
-			a[i] = (byte)s.charAt(i);
-		return a;
+	public static String Decrypt(String encryptedText, String key, String iv) 
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, NoSuchProviderException, InvalidAlgorithmParameterException   
+	{		
+		byte keyInByte[] = Utility.hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi 
+		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, algorithm);
+		
+		byte ivBytes[] = Utility.hexStringToByteArray(iv);
+		IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
+		
+		// Instantiate the cipher
+		Cipher cipher = null;
+		if(!providerName.equals(""))
+			cipher = Cipher.getInstance(transformation, providerName);
+		else
+			cipher = Cipher.getInstance(transformation);	
+		
+		
+		cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+		 
+		byte[] encryptedTextBytes = Utility.hexStringToByteArray(encryptedText);
+		byte[] decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
+		
+		return Utility.bytesToString(decryptedTextBytes);
 	}
 	
 	/*--------------------------------------------------*/
 	
 	public static void main(String[] args) 
-	{
-		//shaAndAesProva();
+	{	
+		if(Security.getProvider(providerName) == null);
+			Security.addProvider(provider);
+		
 		encryptDecrypt();
-		//prova();
 	}
-	
-	public static void prova()
-	{
-		try
-		{
-			String message="Message to Decode";
-	
-			KeyGenerator key = KeyGenerator.getInstance("AES");
-			key.init(256);
-	
-			SecretKey s = key.generateKey();
-			byte[] raw = s.getEncoded();
-			System.out.println(raw.length);
-	
-			SecretKeySpec sskey= new SecretKeySpec(raw, "AES");
-	
-			Cipher c = Cipher.getInstance("AES");
-	
-			c.init(Cipher.ENCRYPT_MODE, sskey);
-	
-			byte[] encrypted = c.doFinal(message.getBytes());
-			System.out.println("encrypted string: " + Hex.encodeHexString(encrypted));
-		}
-		catch(Exception e)
-		{ e.printStackTrace(); }
-	}
-	
+		
 	public static void encryptDecrypt()
 	{	
-		String plainText = "2222222222222222";
+		String plainText = "123456789012345678901234567890123456789012345678";
 		System.out.println("PlainText: " + plainText);
 		
-		byte keyByte[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32};
-		String key = Hex.encodeHexString(keyByte);
-		//String key = "770A8A65DA156D24EE2A093277530142";
+		byte keyByte[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+		String key = Hex.encodeHexString(keyByte);		
 		System.out.println("Key: " + key);
+		
 		try
 		{
-			//"dfbf252518738b0aafddedf1e010cd90";
-		    String encryptedText = Encrypt(plainText, key);
+		    String encryptedText = EncryptIVFromKey(plainText, key);
 		    System.out.println("EncryptedText: " + encryptedText);
 		    
-		    String decryptedText = Decrypt(encryptedText, key);
+		    String decryptedText = DecryptIVFromKey(encryptedText, key);
 		    System.out.println("DecryptedText: " + decryptedText);
 		}
-		catch (Exception e) 
-		{ e.printStackTrace(); }
-	}
-	
-	public static void shaAndAesProva()
-	{
-		String plainText = "123456";
-		System.out.println("PlainText: " + plainText);
-		try 
-		{			
-			String key = SHA256.getMsgDigest(plainText);			
-		    System.out.println("Key: " + key);
-		    
-		    String encryptedText = Encrypt(plainText, key);
-		    System.out.println("EncryptedText: " + encryptedText);
-		    
-		    String decryptedText = Decrypt(encryptedText, key);
-		    System.out.println("DecryptedText: " + decryptedText);
-		} 
 		catch (Exception e) 
 		{ e.printStackTrace(); }
 	}

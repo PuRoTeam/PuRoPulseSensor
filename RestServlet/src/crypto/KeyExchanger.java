@@ -75,7 +75,7 @@ public class KeyExchanger implements Runnable
 	        diffieHellmanKey = key;
 	        Shared.getInstance().setDiffieHellmanKey(diffieHellmanKey);
 	     	        
-	        System.out.println(Shared.getInstance().getDiffieHellmanKey());
+	        //System.out.println(Shared.getInstance().getDiffieHellmanKey());
 	        
 	        String endExchangeMsg = in.readLine(); //controllo su errori
 	        System.out.println(endExchangeMsg);

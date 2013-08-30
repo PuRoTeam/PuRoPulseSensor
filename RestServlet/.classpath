@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/java-json.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.25-bin.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bcprov-jdk15on-149.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

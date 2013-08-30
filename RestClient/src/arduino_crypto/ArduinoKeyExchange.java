@@ -1,4 +1,4 @@
-package crypto;
+package arduino_crypto;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import crypto.SHA256;
 
 //esegue solo diffie hellman
 public class ArduinoKeyExchange 
