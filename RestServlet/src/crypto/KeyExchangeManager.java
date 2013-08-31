@@ -4,10 +4,17 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.Security;
 
 public class KeyExchangeManager extends Thread
-{		
+{	
+	public static void main(String[] args)
+	{
+		KeyExchangeManager managerThread = new KeyExchangeManager();
+   	 	managerThread.start();
+	}
+	
+	//KeyExchangeManager è un (unico) thread che si pone in attesa di connessioni.
+	//Quando ne riceve una la passa ad un thread KeyExchanger
 	public void run() 
 	{
 		int port = 1600;
