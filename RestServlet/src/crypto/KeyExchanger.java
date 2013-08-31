@@ -79,11 +79,16 @@ public class KeyExchanger implements Runnable
 	        
 	        String endExchangeMsg = in.readLine(); //controllo su errori
 	        System.out.println(endExchangeMsg);
-	        
-	        clientSocket.close();
 		}
 		catch(IOException e)
 		{ e.printStackTrace(); }
+		finally
+		{
+			try
+			{ clientSocket.close();	}
+			catch(IOException e)
+			{ e.printStackTrace(); }
+		}
 	}
 	
 	//un solo scambio e poi hash con sha256
