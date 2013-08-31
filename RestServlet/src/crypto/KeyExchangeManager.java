@@ -7,6 +7,11 @@ import java.net.Socket;
 
 public class KeyExchangeManager extends Thread
 {	
+	public static final int port = 1600;
+	public static final long primitive_root = 2;
+	public static final long prime = 13;
+	public static final int keyLength = 32; //32 -> 32*8 = 256 bit
+	
 	public static void main(String[] args)
 	{
 		KeyExchangeManager managerThread = new KeyExchangeManager();
@@ -16,12 +21,7 @@ public class KeyExchangeManager extends Thread
 	//KeyExchangeManager è un (unico) thread che si pone in attesa di connessioni.
 	//Quando ne riceve una la passa ad un thread KeyExchanger
 	public void run() 
-	{
-		int port = 1600;
-		long primitive_root = 5;
-		long prime = 25657L;
-		int keyLength = 32; //32 -> 32*8 = 256 bit
-		
+	{		
 		ServerSocket serverSocket = null; //TCP
 		InetAddress bindTo = null; //accetta connessioni da chiunque
 		
