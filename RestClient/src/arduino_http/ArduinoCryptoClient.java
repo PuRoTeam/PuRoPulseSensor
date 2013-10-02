@@ -18,6 +18,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import crypto.AES;
+import crypto.KeyExchangeData;
 import arduino_crypto.ArduinoKeyExchange;
 
 //Invio di punti cruptati
@@ -43,8 +44,7 @@ public class ArduinoCryptoClient implements Runnable
 			throws ClientProtocolException, UnknownHostException, IOException 
 	{		
 		ArduinoKeyExchange clientKeyEx = new ArduinoKeyExchange(port, primitive_root, prime, keyLength);
-		String dhKey = clientKeyEx.exchange();
-		
+		String dhKey = clientKeyEx.exchange();		
 		return dhKey;
 	}
 	
@@ -73,6 +73,7 @@ public class ArduinoCryptoClient implements Runnable
     		plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(i) +"}, ";
     	plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(size - 1) +"}";
     	plainJson += "]"; 
+    	    	
     	    	
         //array di punti
         /*String json = "[{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random1 +"}," +
@@ -124,10 +125,10 @@ public class ArduinoCryptoClient implements Runnable
 			
     	try
     	{
-    		int port = 1600;
-    		long primitive_root = 5;
-    		long prime = 25657L;
-    		int keyLength = 32; //32 -> 32*8 = 256 bit
+    		int port = KeyExchangeData.port;
+    		long primitive_root = KeyExchangeData.primitive_root;
+    		long prime = KeyExchangeData.prime;
+    		int keyLength = KeyExchangeData.keyLenght; //32 -> 32*8 = 256 bit
     		    		
     		ArduinoCryptoClient cryptoClient = new ArduinoCryptoClient(port, primitive_root, prime, keyLength);
     		Thread thread = new Thread(cryptoClient); //un solo thread che invia richieste in serie

@@ -71,7 +71,7 @@ public class KeyExchanger implements Runnable
     	
     	String newKeyChar = in.readLine(); //lettura bloccante
     	out.println(ret); //invio
-    	
+    	    	
     	BigInteger newKeyInt = new BigInteger(newKeyChar); //(g^y) mod n
     	BigInteger newKeyLong = newKeyInt.modPow(exp, modPrime); //((g^y)^x) mod n   
     	String key = newKeyLong.toString();    	

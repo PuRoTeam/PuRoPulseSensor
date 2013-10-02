@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import crypto.KeyExchangeData;
 import crypto.SHA256;
 
 //esegue solo diffie hellman
@@ -31,12 +32,12 @@ public class ArduinoKeyExchange
 	
 	public static void main(String[] args)
     {
-		int port = 1600;
-		long primitive_root = 5;
-		long prime = 25657L;
-		int keyLenght = 32; //32 -> 32*8 = 256 bit
+		int port = KeyExchangeData.port;
+		long primitive_root = KeyExchangeData.primitive_root;
+		long prime = KeyExchangeData.prime;
+		int keyLength = KeyExchangeData.keyLenght; //32 -> 32*8 = 256 bit
 		
-		ArduinoKeyExchange clientKeyEx = new ArduinoKeyExchange(port, primitive_root, prime, keyLenght);
+		ArduinoKeyExchange clientKeyEx = new ArduinoKeyExchange(port, primitive_root, prime, keyLength);
 		try 
 		{
 			clientKeyEx.exchange();

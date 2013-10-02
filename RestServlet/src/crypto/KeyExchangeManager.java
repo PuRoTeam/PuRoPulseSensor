@@ -7,10 +7,10 @@ import java.net.Socket;
 
 public class KeyExchangeManager extends Thread
 {	
-	public static final int port = 1600;
-	public static final long primitive_root = 2;
-	public static final long prime = 13;
-	public static final int keyLength = 32; //32 -> 32*8 = 256 bit
+	int port = KeyExchangeData.port;
+	long primitive_root = KeyExchangeData.primitive_root;
+	long prime = KeyExchangeData.prime;
+	int keyLength = KeyExchangeData.keyLenght; //32 -> 32*8 = 256 bit
 	
 	public static void main(String[] args)
 	{

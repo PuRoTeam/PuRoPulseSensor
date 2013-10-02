@@ -71,11 +71,13 @@ public class ArduinoServlet extends HttpServlet {
 	public void multiCryptoValue(HttpServletRequest request, HttpServletResponse response, String cryptoJson) 
 			throws ServletException, IOException
 	{
+		System.out.println("cryptoJson: " + cryptoJson);
 		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKey();
-				
+		
 		try 
 		{
 			String plainJson = AES.DecryptIVFromKey(cryptoJson, diffieHellmanKey);
+			System.out.println("plainJson: " + plainJson);
 			multivalue(request, response, plainJson);
 		} 
 		catch (InvalidKeyException e) 

@@ -141,7 +141,7 @@
 						for(var i = 0; i < responseText.length; i++)
 						{
 							var data = { x: responseText[i].timestamp, y: responseText[i].value}; //le x non funzionano, se le metto ad un valore fisso mi compare un altro grafico!
-							//console.log(responseText[i].timestamp + " " + responseText[i].value);
+							console.log(responseText[i].timestamp + " " + responseText[i].value);
 							graph.series.addData(data);
 							graph.render();
 						}
