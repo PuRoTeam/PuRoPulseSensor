@@ -62,7 +62,6 @@ public class ArduinoServlet extends HttpServlet {
 	{	
 		String paramJson = request.getParameter("JSON");
 		
-		//singleValue(request, response, paramJson); //plain
 		//multivalue(request, response, paramJson); //plain //ABILITARE PER PROVE NON CRIPTATE
 		multiCryptoValue(request, response, paramJson); //DISABILITARE PER PROVE NON CRIPTATE
 	}
@@ -146,6 +145,9 @@ public class ArduinoServlet extends HttpServlet {
 						Point newPoint = new Point(curUidJsonElement, curValue, curTimestamp);
 						
 						pointsWithSameUid.add(newPoint);
+						
+						MysqlConnect mysql = MysqlConnect.getDbCon();
+						int result = mysql.insertPoint(newPoint);	
 					}
 					
 					singleton.putPointsByUid(curUidInArray, pointsWithSameUid);					
@@ -158,12 +160,15 @@ public class ArduinoServlet extends HttpServlet {
 			}			
 		} 
 		catch (JSONException e) 
+		{ e.printStackTrace(); } 
+		catch (SQLException e) 
 		{ e.printStackTrace(); }
-		
 	}
 	
+	
+	
 	//ricevo solo un valore da arduino (da non cancellare finchè non si definisce per bene la comunicazione)
-	public void singleValue(HttpServletRequest request, HttpServletResponse response, String plainJson) 
+	/*public void singleValue(HttpServletRequest request, HttpServletResponse response, String plainJson) 
 			throws ServletException, IOException 
 	{
 		//String json = request.getParameter("JSON"); //singolo valore
@@ -197,5 +202,5 @@ public class ArduinoServlet extends HttpServlet {
 		{ e.printStackTrace(); } 
 		catch (SQLException e) 
 		{ e.printStackTrace(); }
-	}
+	}*/
 }
