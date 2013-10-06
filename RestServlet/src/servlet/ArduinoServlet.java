@@ -64,6 +64,11 @@ public class ArduinoServlet extends HttpServlet {
 		
 		//multivalue(request, response, paramJson); //plain //ABILITARE PER PROVE NON CRIPTATE
 		multiCryptoValue(request, response, paramJson); //DISABILITARE PER PROVE NON CRIPTATE
+		
+		PrintWriter out = response.getWriter();
+		out.println("Ricevuto");
+		out.flush();
+		response.flushBuffer();
 	}
 	
 	//ricevo un array di punti criptato
@@ -100,7 +105,7 @@ public class ArduinoServlet extends HttpServlet {
 			throws ServletException, IOException 
 	{
 		//String json = request.getParameter("JSON"); //array di punti
-		PrintWriter out = response.getWriter();
+		//PrintWriter out = response.getWriter();
 					
 		/* TODO da modificare in base a come è gestita la cosa da arduino - array */
 		try 
@@ -155,8 +160,8 @@ public class ArduinoServlet extends HttpServlet {
 				
 				ArrayList<Point> singletonPointSameUid = singleton.getPointsByUid(curUidInArray);
 				
-				for(int j = 0; j < singletonPointSameUid.size(); j++)
-					out.println(singletonPointSameUid.get(j).getUid() + " " + singletonPointSameUid.get(j).getTimestamp() + " " + singletonPointSameUid.get(j).getValue());				
+				//for(int j = 0; j < singletonPointSameUid.size(); j++)
+				//	out.println(singletonPointSameUid.get(j).getUid() + " " + singletonPointSameUid.get(j).getTimestamp() + " " + singletonPointSameUid.get(j).getValue());				
 			}			
 		} 
 		catch (JSONException e) 
