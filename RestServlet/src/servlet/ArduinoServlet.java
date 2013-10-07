@@ -46,7 +46,7 @@ public class ArduinoServlet extends HttpServlet {
     //eseguito solo una vola all'avvio della Web Application. In ogni caso il metodo "start" di KeyExchangeManager può essere chiamato solo una volta
 	public void init() throws ServletException 
 	{
-		super.init();	
+		super.init();
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -6,6 +6,14 @@
 #include <string.h>
 
 byte arduinoMAC[] = {0x90, 0xA2 , 0xDA, 0x0D, 0xD9, 0x35};
+
+/*
+boolean tesisti = true;
+IPAddress arduinoIP(160,80,97,135);
+IPAddress dns_server(8,8,8,8);
+IPAddress gateway(160,80,80,1);
+IPAddress subnet(255,255,0,0);*/
+
 EthernetClient client;
 byte* mykey=NULL;
 byte* my_iv;
@@ -16,38 +24,37 @@ uint8_t* hash;
 int iter = 0;
 int value = 0; //SOLO PER TEST
 int delayms = 500;
-IPAddress local(192,168,1,100);
-
-
+IPAddress serverIP(192,168,1,101);
+//IPAddress serverIP(160,80,97,128);
 
 void setup()
 {  
   Serial.println("Se non funziona, controlla l'indirizzo del Server!");
-  //IPAddress arduinoIP(192,168,1,177); 
   
   Serial.begin(115200);
   
   Serial.println("Arduino");
   
-  if(Ethernet.begin(arduinoMAC) == 0){
-    Serial.println("Failed to configure Ethernet using DHCP");
-    //Ethernet.begin(arduinoMAC, arduinoIP);
+  /*if(tesisti) {
+    Ethernet.begin(arduinoMAC, arduinoIP, dns_server, gateway, subnet);
   }
+  else
+  {
+    if(Ethernet.begin(arduinoMAC) == 0) 
+      Serial.println("Failed to configure Ethernet using DHCP");    
+  }*/
   
-  client.connect(local, 1600);
+  if(Ethernet.begin(arduinoMAC) == 0) 
+    Serial.println("Failed to configure Ethernet using DHCP");    
+  
+  client.connect(serverIP, 1600);
   
   if(client.connected()){
     Serial.println("OK");
     mykey = (byte*) malloc(32*sizeof(byte));
-    
-    //Serial.print("freeMemoryI=");
-    //Serial.println(freeMemory());
-    
+        
     myDiffieHellman(g, p, mykey);
-    
-    //Serial.print("freeMemoryC=");
-    //Serial.println(freeMemory());
-    
+        
     // 7. Inizilizzazione dell'IV eseguendo l'hash della chiave e copiandolo nell'IV
     char* keys = (char*) byte2StringHex(mykey, 32);
     
@@ -68,20 +75,14 @@ void setup()
     
     free(keys);
     
-    //Serial.print("freeMemoryD=");
-    //Serial.println(freeMemory());
-    
     client.stop();
   }else
-    Serial.println("Impossible connecting to DH server...");
+    Serial.println("Impossible connecting to Diffie Hellman server...");
 
-  if(client.connect(local, 8080))
+  if(client.connect(serverIP, 8080))
     Serial.println("Connected to Tomcat");
   else
     Serial.println("Connection failed");
-
-  Serial.print("freeMemoryE=");
-  Serial.println(freeMemory());
   
   //SOLO PER TEST
   // if analog input pin 0 is unconnected, random analog
@@ -95,14 +96,6 @@ void setup()
 void loop()
 {
   Serial.println("Loop...");
-
-  Serial.print("freeMemoryA=");
-  Serial.println(freeMemory());
-  
-  //if(client.connected())
-  //  do_stuff();
-  //else
-  //  client.connect(local, 8080); --> riprova a connetterti
     
     if(mykey!=NULL && client.connected()){
     //if(mykey!=NULL){
@@ -132,19 +125,11 @@ void loop()
     char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);
     
     //char plainjson[] = "[{\"uid\":1,\"timestamp\":5,\"value\":1}]";
-    //String plainjson = "[{\"uid\":1,\"timestamp\":5,\"value\":1}]"; //////////////////
-                     //[{\"uid\":1,\"timestamp\":1,\"value\":1}]
-  
-    Serial.print("value: ");
-    Serial.println(value);
     
     sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
   
     Serial.print("strlen(plainjson): ");
-    Serial.println(strlen(plainjson));
-  
-    Serial.print("freeMemoryD=");
-    Serial.println(freeMemory());      
+    Serial.println(strlen(plainjson));    
   
     Serial.print("plainjson: ");
     Serial.println(plainjson);
@@ -152,7 +137,6 @@ void loop()
     //String myplains = "1234567890123456789012345678901234567890123456";
     
     int plainsize = strlen(plainjson);
-    //int plainsize = plainjson.length(); ///////////////////
     int mount = sizeof(byte)*plainsize;
     int blocks = 1;
     
@@ -168,10 +152,7 @@ void loop()
     //string2BytesString(plainjson, myplain); //////////////////////
   
     padding(myplain, plainsize, blocks*N_BLOCK);
-    
-    //Serial.print("freeMemoryB=");
-    //Serial.println(freeMemory());
-  
+      
     AES aes;
   
     aes.set_key(mykey, 256);
@@ -180,18 +161,6 @@ void loop()
       aes.encrypt(myplain, mycipher);
     else
       aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
-
-    //Serial.print("my_iv: ");
-    //Serial.println(byte2StringHex(my_iv, 16));
-    
-    /*Serial.print("mycipher: ");
-    Serial.println(byte2StringHex(mycipher, blocks*N_BLOCK));
-    
-    Serial.print("myplain: ");
-    Serial.println(byte2StringHex(myplain, blocks*N_BLOCK));
-    
-    Serial.print("plainjson: ");
-    Serial.println(plainjson);*/
        
     free(myplain);  
        
@@ -201,24 +170,15 @@ void loop()
     
     if(client.connected())
       sendPOST();
-        
-    //Serial.print("freeMemoryC=");
-    //Serial.println(freeMemory());
-    
+            
     free(mycipher);
-    free(myciphers);
-    
-    //Serial.print("freeMemoryD=");
-    //Serial.println(freeMemory());
-    
-    free(plainjson);
-  
-    
+    free(myciphers);        
+    free(plainjson);    
   }
   else if(!client.connected())
   {
     client.stop(); //prima di riconnettermi devo stoppare il client!
-    client.connect(local, 8080); //riprova a connetterti
+    client.connect(serverIP, 8080); //riprova a connetterti
   
   }  
   /*iter++;
