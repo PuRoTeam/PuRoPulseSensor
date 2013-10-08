@@ -151,8 +151,8 @@ public class ArduinoServlet extends HttpServlet {
 						
 						pointsWithSameUid.add(newPoint);
 						
-						MysqlConnect mysql = MysqlConnect.getDbCon();
-						int result = mysql.insertPoint(newPoint);	
+						//MysqlConnect mysql = MysqlConnect.getDbCon();
+						//int result = mysql.insertPoint(newPoint);	
 					}
 					
 					singleton.putPointsByUid(curUidInArray, pointsWithSameUid);					
@@ -166,8 +166,8 @@ public class ArduinoServlet extends HttpServlet {
 		} 
 		catch (JSONException e) 
 		{ e.printStackTrace(); } 
-		catch (SQLException e) 
-		{ e.printStackTrace(); }
+		/*catch (SQLException e) 
+		{ e.printStackTrace(); }*/
 	}
 	
 	

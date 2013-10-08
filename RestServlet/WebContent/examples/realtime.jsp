@@ -89,10 +89,12 @@
 			width: 900,
 			height: 500,
 			renderer: 'line',
+			max: 600,
+			min: 400,
 			series: new Rickshaw.Series.FixedDuration([{ name: 'one', x: 0, y: 0 }], palette, { //mostra solo una finestra temporale e non TUTTI i dati inseriti da sempre 
 				timeInterval: tv,
 				maxDataPoints: 100, // grandezza finestra temporale in termini di punti visualizzati 
-				timeBase: new Date().getTime() / 1000
+				timeBase: new Date().getTime() / 1000				
 			}) 
 		} );
 		
