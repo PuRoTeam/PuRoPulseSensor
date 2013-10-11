@@ -83,7 +83,7 @@
 	<!-- Inclusione classe java Data -->
 	<%@ page import="data.Point" %>
 	
-	<!-- HighCharts -->
+	<!-- HighCharts 
 	<script type="text/javascript">
 	var timeinterval = 5000;
 	$(function () {
@@ -100,6 +100,7 @@
 	                type: 'spline',
 	                animation: false,//Highcharts.svg, // don't animate in old IE
 	                marginRight: 30,
+	                /*
 	                events: {
 	                    load: function() {
 	                        // set up the updating of the chart each second
@@ -111,6 +112,7 @@
 		                    }, 100000);	//Modificato
 	                    }
 	                }
+	        		*/
 	            },
 	            title: {
 	                text: 'Live random data'
@@ -176,14 +178,46 @@
 	    });
 	    
 	});
+	</script> -->
+	<!-- HighStock -->
+	<script type="text/javascript">
+		$(function() {
+		$.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function(data) {
+	
+			// Create the chart
+			$('#container').highcharts('StockChart', {
+			    chart: {
+			    	zoomType: 'x'
+			    },
+	
+			    rangeSelector: {
+			        selected: 1
+			    },
+	
+			    title: {
+			        text: 'AAPL Stock Price'
+			    },
+			    
+			    series: [{
+			        name: 'AAPL Stock Price',
+			        data: data,
+			        type: 'spline',
+			        tooltip: {
+			        	valueDecimals: 2
+			        }
+			    }]
+			});
+		});
+	});
 	</script>
 	
 
 </head>
 <body>
-	<script type="text/javascript" src="highcharts/js/highcharts.js" ></script>
-	<script type="text/javascript" src="highcharts/js/modules/exporting.js" ></script>
-	<script type="text/javascript" src="highcharts/js/themes/dark-blue.js" ></script>
+	<script type="text/javascript" src="highstock/js/highstock.js" ></script>
+	<script type="text/javascript" src="highstock/js/modules/exporting.js" ></script>
+	<script type="text/javascript" src="highstock/js/themes/dark-blue.js" ></script>
+
 
 	<div id="title">Arduino Healthing Monitor</div>
 	<div id="wrapper">
@@ -200,6 +234,7 @@
 		</div>
 		<div id="chart_wrapper">
 			<div id="container"></div>
+			
 		</div>
 	</div>
 

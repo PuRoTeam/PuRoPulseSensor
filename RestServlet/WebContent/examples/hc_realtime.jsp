@@ -64,7 +64,7 @@
 	                            var x = (new Date()).getTime(), // current time    
 	                            y = Math.random();
 	                            series.addPoint([x, y], true, true);
-		                    }, 100000);	//Modificato
+		                    }, 1000);	//Modificato
 	                    }
 	                }
 	            },
