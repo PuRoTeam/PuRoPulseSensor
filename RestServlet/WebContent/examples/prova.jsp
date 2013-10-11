@@ -1,13 +1,16 @@
 <!doctype>
 <html>
 <head>
+    <title>PuRo Sensor - Prova</title>
+    <link type="text/css" rel="stylesheet" href="css/mystyle.css">
     
     <!-- Datetime picker -->
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	
+	<script src="datepicker/jquery-ui-timepicker-addon.js"></script>
 	<link rel="stylesheet" href="/resources/demos/style.css" />
-	<script src="js/jquery-ui-timepicker-addon.js"></script>
 	
 	<script>  
       function getDateAndTime(){  
@@ -70,8 +73,13 @@
 		});
 	});
 	</script>
+	<script>
+		$(function() {
+		$( "#datepicker" ).datepicker();
+		});
+	</script>
 	
-	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
+	
 
 </head>
 <body>
@@ -94,8 +102,16 @@
 		
 		<div id="content">
 			<div id="sidebar">
-				
+				<form name="date_form" onsubmit="getDateAndTime()">
+					<div>From:</div> 
+					<input name="date_from" class="datetimepicker"/>
+					<div>To:</div>
+					<input name="date_to" class="datetimepicker2"/>
+					<br/><br/>
+					<input type="submit" value="Invia">
+				</form>
 			</div>
+			
 		</div>
 	</div>
 

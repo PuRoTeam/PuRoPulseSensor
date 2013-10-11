@@ -7,23 +7,21 @@
 	
 	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
 	
-	
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-	<link rel="stylesheet" href="/resources/demos/style.css" />
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	
+	<!-- Inclusione libreria jquery con theme Trontastic -->
+	<link rel="stylesheet" href="jquery/jquery-ui-1.10.3.css" />
+	<script src="jquery/jquery-1.10.2.js"></script>
+	<script src="jquery/jquery-ui-1.10.3.js"></script>
 	 
 	<!-- Datepicker OK -->
-	<script type="text/javascript" language="javascript" src="../datepicker/prototype-1.js"></script>
-	<script type="text/javascript" language="javascript" src="../datepicker/prototype-base-extensions.js"></script>
-	<script type="text/javascript" language="javascript" src="../datepicker/prototype-date-extensions.js"></script>
-	<script type="text/javascript" language="javascript" src="../datepicker/behaviour.js"></script>
-	<script type="text/javascript" language="javascript" src="../datepicker/datepicker.js"></script>
-	<script type="text/javascript" language="javascript" src="../datepicker/behaviors.js"></script>
-	<link rel="stylesheet" href="../datepicker/datepicker.css">
+	<script type="text/javascript" language="javascript" src="datepicker/prototype-1.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/prototype-base-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/prototype-date-extensions.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/behaviour.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/datepicker.js"></script>
+	<script type="text/javascript" language="javascript" src="datepicker/behaviors.js"></script>
+	<link rel="stylesheet" href="datepicker/datepicker.css">
 		
-	<!-- 
+	 
 	<%@ page import="data.Point" %>
 	
 	<script>  
@@ -72,7 +70,7 @@
         alert(to_date);
         
       }  
-    </script> -->
+    </script> 
     	
 </head>
 <body>
@@ -81,38 +79,38 @@
 		
 		<div id="title">Arduino Healting Monitor</div>
 		
-		<div id="menu">
-				<h3><a href="realtime.jsp?">Real time</a></h3>
-				<h3><a href="extensions.jsp?">Replay</a></h3>
-				<h3><a href="logout.jsp">Log out</a></h3>
-		</div>
+		<%@ include file="menu.jsp" %>
+		
 		<div id="content">
 			<%	 
 				String r = request.getParameter("mode");
 				if(r != null){
 					if(new Integer(r) == 1){
-			%>
-			<div id="sidebar">
-				<form name="date_form" onsubmit="getDateAndTime()">
-					<div>From:</div> 
-					<input name="date_from" class="datetimepicker"/>
-					<div>To:</div>
-					<input name="date_to" class="datetimepicker"/>
-					<br/><br/>
-					<input type="submit" value="Invia">
-				</form>
-			</div>
-			<%}else{%> 
-			<div id="infoID">
-				<div>Hi!</div> 
-				<div><% out.print(session.getAttribute("sUserID"));%></div>
-				<div><% out.print(session.getAttribute("sUserName"));%></div>
-				<br/>
-				<br/>
-			</div>			
-			<%}}%>
-			
-		</div>	
+						%>
+						<div id="sidebar">
+							<form name="date_form" onsubmit="getDateAndTime()">
+								<div>From:</div> 
+								<input name="date_from" class="datetimepicker"/>
+								<div>To:</div>
+								<input name="date_to" class="datetimepicker"/>
+								<br/><br/>
+								<input type="submit" value="Invia">
+							</form>
+						</div>
+						<%
+					}else{
+					%> 
+					<div id="infoID">
+						<div>Hi!</div> 
+						<div><% out.print(session.getAttribute("sUserID"));%></div>
+						<div><% out.print(session.getAttribute("sUserName"));%></div>
+						<br/>
+						<br/>
+					</div>			
+					<%
+					}
+				}%>
+		</div><!-- end content -->
 		<div id="testo"></div>
 	</div>
 

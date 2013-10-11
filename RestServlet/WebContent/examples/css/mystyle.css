@@ -98,7 +98,6 @@ input[type="submit"] {
 	display: inline;
 }
 
-
 #contents {
 	width: 1100px;
 	height: auto;
@@ -107,8 +106,8 @@ input[type="submit"] {
 
 /* Chart */
 #chart_wrapper {
-	width: auto;
-	//border: 1px solid #000000;
+	width: 75%;
+	//border: 5px solid #000000;
 	float: right;
 }
 
@@ -120,7 +119,7 @@ input[type="submit"] {
 	width: auto;
 	color: #000000;
 	margin-left: 10px;
-	//border: 1px solid #FF0000;
+	border: 2px solid #FF0000;
 	//background-color: #A9D0F5;
 }
 

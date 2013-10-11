@@ -13,31 +13,31 @@
     String message="User login successfully ";
     
     try{
-    String sqlOption="SELECT * FROM usermaster where"
-                    +" sUserID=? and sPassword=password(?) and sStatus='A'";
-    
-    psdoLogin=conn.prepareStatement(sqlOption);
-    psdoLogin.setString(1,sUserID);
-    psdoLogin.setString(2,sPassword);
-    
-    rsdoLogin=psdoLogin.executeQuery();
-    
-    if(rsdoLogin.next())
-    {
-      String sUserName=rsdoLogin.getString("sFirstName")+" "+rsdoLogin.getString("sLastName");
-     
-      session.setAttribute("sUserID",rsdoLogin.getString("sUserID"));
-      session.setAttribute("iUserType",rsdoLogin.getString("iUserType"));
-      session.setAttribute("iUserLevel",rsdoLogin.getString("iUserLevel"));
-      session.setAttribute("sUserName",sUserName);
-     
-      response.sendRedirect("select.jsp?error="+message);
-    }
-    else
-    {
-      message="No user or password matched" ;
-      response.sendRedirect("login.jsp?error="+message);
-    }
+      String sqlOption="SELECT * FROM usermaster where"
+                      +" sUserID=? and sPassword=password(?) and sStatus='A'";
+      
+      psdoLogin=conn.prepareStatement(sqlOption);
+      psdoLogin.setString(1,sUserID);
+      psdoLogin.setString(2,sPassword);
+      
+      rsdoLogin=psdoLogin.executeQuery();
+      
+      if(rsdoLogin.next())
+      {
+        String sUserName=rsdoLogin.getString("sFirstName")+" "+rsdoLogin.getString("sLastName");
+       
+        session.setAttribute("sUserID",rsdoLogin.getString("sUserID"));
+        session.setAttribute("iUserType",rsdoLogin.getString("iUserType"));
+        session.setAttribute("iUserLevel",rsdoLogin.getString("iUserLevel"));
+        session.setAttribute("sUserName",sUserName);
+       
+        response.sendRedirect("select.jsp?error="+message);
+      }
+      else
+      {
+        message="No user or password matched" ;
+        response.sendRedirect("login.jsp?error="+message);
+      }
     }
     catch(Exception e)
     {
