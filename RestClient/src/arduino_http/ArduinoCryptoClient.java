@@ -26,6 +26,7 @@ public class ArduinoCryptoClient implements Runnable
 {
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
 	public boolean runInfiniteTimes = true;
+	public int msBetweenRequest = 1000; //150
 	
 	int port;
 	long primitive_root;
@@ -148,7 +149,7 @@ public class ArduinoCryptoClient implements Runnable
 			while(true)
 			{
 				Post(diffieHellmanKey);
-				Thread.sleep(150);
+				Thread.sleep(msBetweenRequest);
 				
 				if(!runInfiniteTimes)
 				{
