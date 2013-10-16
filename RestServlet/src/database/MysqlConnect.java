@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.mysql.jdbc.Connection;
@@ -86,51 +85,62 @@ public final class MysqlConnect
     	
     	long newUid = point.getUid();
     	double newValue = point.getValue();
-    	long newTimestamp = point.getTimestamp();//.getTimeInMillis();
+    	long newTimestamp = point.getTimestamp();
     	
     	String query = "INSERT INTO " + tpTableName +" (" + tpUid + ", "+ tpValue + ", " + tpTimestamp + ") " + 
     				   "VALUES (" + newUid +"," + newValue + "," + newTimestamp + ")";
     	return insert(query);
     }
     
-    public ArrayList<Point> getPointsByDate(GregorianCalendar start, GregorianCalendar end) throws SQLException
+    
+    
+    public ArrayList<Point> getArrayOfPointsFromQuery(String query) throws SQLException
     {
-    	String tpTableName = TableInfo.TablePoint.toString();
-    	String tpTimestamp = TableInfo.TPointTimestamp.toString();
+    	ResultSet resultSet = query(query);
     	
-    	long lstart = start.getTimeInMillis();
-    	long lend = end.getTimeInMillis();
-    	
-//    	SELECT * 
-//    	FROM  `point` 
-//    	WHERE TIMESTAMP > 1 & TIMESTAMP <2000000000000000000000
-//    	LIMIT 0 , 30
-    	
-    	String query = "SELECT * FROM " + tpTableName + " " + 
-    				   "WHERE " + tpTimestamp + " > " + lstart + " AND " + tpTimestamp + " < " + lend;
-    	
-    	System.out.println(query);
-    	ResultSet rs = query(query);
+    	if(resultSet == null)
+    		return null;
     	
     	ArrayList<Point> pointlist = new ArrayList<Point>();
     	
-	    while (rs.next ()) 
+	    while (resultSet.next()) 
 	    {
-	    	long newUid = rs.getLong("uid");
-	    	double newDouble = rs.getDouble("value");
-	    	long newTimestamp = rs.getLong("timestamp");
+	    	long newUid = resultSet.getLong("uid");
+	    	double newDouble = resultSet.getDouble("value");
+	    	long newTimestamp = resultSet.getLong("timestamp");
 	    	    			
 	    	Point newPoint = new Point(newUid, newDouble, newTimestamp);
 	    	pointlist.add(newPoint);   
 	    }
-    	//devo chiudere resultset?
+	    resultSet.close();
+	    
+    	return pointlist;
+    }
+
+    public ArrayList<Point> getPointsByUidAndDate(Long uid, Long dateFrom, Long dateTo) throws SQLException
+    {
+    	String tpTableName = TableInfo.TablePoint.toString();
+    	String tpTimestamp = TableInfo.TPointTimestamp.toString();
+    	String tpUid = TableInfo.TPointUid.toString(); 
+    	
+    	String query = "SELECT * FROM " + tpTableName + " WHERE 1"; //"WHERE 1" è comodissimo per la concatenazione
+    	
+    	if(uid != null)
+    		query += " AND " + tpUid + " = " + uid;
+    	if(dateFrom != null)
+    		query += " AND " + tpTimestamp + " > " + dateFrom;
+    	if(dateTo != null)
+    		query += " AND " + tpTimestamp + " < " + dateTo;
+
+    	ArrayList<Point> pointlist = getArrayOfPointsFromQuery(query);
+    	
     	return pointlist;
     }
     
     /* ------------------------------------------Funzioni Di Test-------------------------------------- */
     /* ------------------------------------------------------------------------------------------------ */
     /* ------------------------------------------------------------------------------------------------ */
-    
+
     public static void main(String[] args)
     {
     	//testInsertSelect();
@@ -157,11 +167,15 @@ public final class MysqlConnect
     	System.out.println(gc.getTimeInMillis());    	
     	System.out.println(giorno + "/" + mese + "/" + anno + " " + ore + ":" + min + ":" + sec + ":" + msec);*/
     	
-    	MysqlConnect mysql = MysqlConnect.getDbCon();
+    	MysqlConnect mysql = MysqlConnect.getDbCon();    	
     	
     	try 
     	{
-			ArrayList<Point> points = mysql.getPointsByDate(start, end);
+    		//start.getTimeInMillis()
+    		//end.getTimeInMillis()
+    		ArrayList<Point> points = mysql.getPointsByUidAndDate(new Long(1), null, null);
+    		
+			System.out.println("Numero di punti: " + points.size());
 			
 			for(int i = 0; i < points.size(); i++)
 			{

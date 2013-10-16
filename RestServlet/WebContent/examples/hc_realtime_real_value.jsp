@@ -61,13 +61,13 @@
 	                    	var latestTimestamp = -1; //controlla se sono stati effettivamente aggiunti nuovi punti (se il client stà continuando a scrivere)	                    	
 	                        // set up the updating of the chart each second
 	                        var series = this.series[0];	                        
-	            			var loadUrl = "randomNumber.jsp";
+	            			var loadUrl = "getPointsFromShared.jsp";
 	                        
 	                        setInterval(function() {
 	                        	
 		            			$.get(loadUrl,
 			            				{uid: 1},  
-			            			    function(responseText) { //TODO aggiungere controlli se risultato nullo? Non credo, restituisce in caso un array vuoto
+			            			    function(responseText) {
 			            			   		
 			            			    	var newPoints = false;	
 			            			    		

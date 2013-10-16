@@ -35,9 +35,6 @@
 	}
 	catch(NumberFormatException e)
 	{
-		//se manco un array vuoto e non lo gestisco e provo a leggere il campo value mi dà giustamente:
-		//Uncaught TypeError: Cannot read property 'value' of undefined 
-		//out.println("error"); //TODO meglio dare un errore? Come gestirlo?
 		out.println("[]"); //array vuoto
 	}
 	

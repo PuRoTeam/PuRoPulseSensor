@@ -121,7 +121,7 @@
 		
 		//se il client smette di inviare dati, il grafico continua ad indicare l'ultimo valore (comportamento giusto)
 		var iv = setInterval( function() {
-			var loadUrl = "randomNumber.jsp";
+			var loadUrl = "getPointsFromShared.jsp";
 			$.get(loadUrl,
 				{uid: 1},  
 			    function(responseText) { //TODO aggiungere controlli se risultato nullo? Non credo, restituisce in caso un array vuoto 
