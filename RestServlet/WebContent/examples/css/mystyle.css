@@ -9,7 +9,7 @@ h1, h2,*/ h3 {
 	margin: 0px;
 	padding: 0px;
 	color: #FFFFFF;
-	background-color: #003399;
+	//background-color: #003399;
 }
 
 p, ul, ol {
@@ -44,6 +44,17 @@ input[type="submit"] {
 	width:70px;
 	border: 2px solid #000000;
 }
+ /* Title */
+
+#title{
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+
+}
+
 /* Wrapper */
 
 #wrapper {
@@ -60,8 +71,9 @@ input[type="submit"] {
 	padding: 1px;
 	background-color: #003399;
 	background-image: -moz-linear-gradient(0% 100% 90deg,#003399, #003399, #0044CC 56%);
-	//-moz-border-radius: 15px 15px 0 0;
-	//border-radius: 15px 15px 0 0 ;
+	-moz-border-radius: 10px 10px 0px 0px;
+	border-radius: 10px 10px 0px 0px;
+	
 }
 
 #menu a{
@@ -81,23 +93,6 @@ input[type="submit"] {
 	text-decoration: underline;
 }
 
-/* Date time form */
-#datetime {
-	width: 1100px;
-	overflow: hidden;
-}
-
-#datetime form{
-	margin-top: 5px;
-	margin-right: 5px;
-	margin-bottom: 5px;
-	float: right;
-}
-
-#datetime div, #datetime input {
-	display: inline;
-}
-
 #contents {
 	width: 1100px;
 	height: auto;
@@ -106,51 +101,23 @@ input[type="submit"] {
 
 /* Chart */
 #chart_wrapper {
-	width: 75%;
-	//border: 5px solid #000000;
+	width: 80%;
 	float: right;
+	margin-top: 5px;
 }
-
 
 /* Sidebar */
 
 #sidebar {
 	float: left;
-	width: auto;
+	margin-top: 5px;
+	padding-top: 10px;
+	width: 19%;
 	color: #000000;
-	margin-left: 10px;
-	border: 2px solid #FF0000;
-	//background-color: #A9D0F5;
-}
-
-#sidebar ul {
-	padding: 0px;
-	list-style: none;
-}
-
-#sidebar li {
-	margin: 0;
-	padding: 0;
-}
-
-#sidebar li ul {
-	margin-bottom: 10px;
-	padding: 10px 10px 10px 20px;
-	background: #FFFFFF;
-}
-
-#sidebar li li {
-	line-height: 30px;
-	padding-left: 3px;
-}
-
-#sidebar h3 {
-	height: 40px;
-	padding: 0px 0px 0px 15px;
-	line-height: 40px;
 	background: #003399;
 	background-image: -moz-linear-gradient(0% 100% 90deg,#003399, #003399, #0044CC 56%);
-	color: #FFFFFF;
+	-moz-border-radius: 10px 10px 0px 0px;
+	border-radius: 10px 10px 0px 0px;
 }
 
 #sidebar a:hover {
@@ -159,19 +126,31 @@ input[type="submit"] {
 
 #infoID {
 	float: left;
-	width: auto;
-	color: #000000;	
-	//border: 1px solid #FF0000;
-	//background-color: #A9D0F5;
+	color: #000000;
 }
 
-#title{
-	text-align: center;
-	text-transform: uppercase;
-	font-size: 20px;
-	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+/* Date time form */
+#datetime {
+	overflow: hidden;
+	padding-left: 10px;
+	float: left;
+}
 
+#datetime form{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	float: left;
+}
+
+#datetime div, #datetime input {
+	display: inline;
+	float: left;
+}
+
+#idate{
+	display: inline;
+	float: left;
+	margin-top: 5px;
 }
 
 /* Footer */
