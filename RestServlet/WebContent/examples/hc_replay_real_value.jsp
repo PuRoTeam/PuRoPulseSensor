@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="jquery/jquery-ui-timepicker-addon.js" ></script>
 
 	<script>
-	
+		
 		function getDateAndTime() {  
 			var datefrom = document.forms["date_form"]["date_from"].value;
      		var dateto = document.forms["date_form"]["date_to"].value;
@@ -40,33 +40,38 @@
 		     date = new Date(year, month, day, hour, minute);
 		     var to_date = date.getTime();
      
-		     var url = "getPointsFromDatabase.jsp";       
+		     var url = "getPointsFromDatabase.jsp";   
 		     
 		     $.get(url, {uid: 1, dateFrom: from_date, dateTo: to_date}, function(responseText) {
-		    	 		
-		    	 var mydata = [];
-		    	 //$('#container').highcharts().series[0]
-		    	 //$('#container').highcharts().series[0].remove();
-		    	 //$('#container').highcharts().addSeries(mydata);
+		    	 
+		    	 var pup = [], i;
+		    	 
+                 for (i = -25; i <= 0; i++) {
+                	 pup.push({
+                         x: 0,
+                         y: 0
+                     });
+                 }
+		    	 
+		    	 $('#container').highcharts().series[0].setData(pup);
+		    	 //var mydata = [];
 		    	 
 		    	 for(var i = 0; i < responseText.length; i++) {
 					
 					var x = responseText[i].timestamp;
 	                var y = responseText[i].value;
-                    
-	                console.log(x); 
-	                console.log(y);
 	                
-					mydata.push({x: x, y: y});
-					//$('#container').highcharts().series[0].addPoint([x, y], true, true);
+	                //mydata.push({x: x, y: y});
+					$('#container').highcharts().series[0].addPoint([x, y], true, true);
 				}
+		    	 
 		    	 /*$('#container').highcharts().series[0].update(
 		    		 {
 		    		 data: mydata,
 		    		 type: 'areaspline'
 		    		 }
 		    	 );*/
-		    	$('#container').highcharts().series[0].setData(mydata);
+		    	//$('#container').highcharts().series[0].setData(mydata);
 		    },  
 		    "json"  
 			);
@@ -91,7 +96,7 @@
 	
 	<!-- HighStock -->
 	<script type="text/javascript">
-		var grafico;	
+		var mychart;	
 	
 		$(function ()
 		{
@@ -159,7 +164,9 @@
 					<div><h3>To:</h3>
 					<input name="date_to" id="datetimepicker2"/>
 					</div>
-					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">					
+					<div>
+					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">
+					</div>					
 				</form>
 			</div>	
 		</div>
