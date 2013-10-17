@@ -54,7 +54,7 @@
 					var x = responseText[i].timestamp;
 	                var y = responseText[i].value;
                     
-	                console.log(x);
+	                console.log(x); 
 	                console.log(y);
 	                
 					mydata.push({x: x, y: y});
