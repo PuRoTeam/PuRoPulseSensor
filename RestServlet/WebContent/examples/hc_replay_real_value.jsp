@@ -44,17 +44,29 @@
 		     
 		     $.get(url, {uid: 1, dateFrom: from_date, dateTo: to_date}, function(responseText) {
 		    	 		
-		    	 var data = [];
-		    	 $('#container').highcharts().series[0].remove();
-		    	 $('#container').highcharts().addSeries(data);
+		    	 var mydata = [];
+		    	 //$('#container').highcharts().series[0]
+		    	 //$('#container').highcharts().series[0].remove();
+		    	 //$('#container').highcharts().addSeries(mydata);
 		    	 
 		    	 for(var i = 0; i < responseText.length; i++) {
 					
-					var x = responseText[i].timestamp,
-	                y = responseText[i].value;
-                    					
-					$('#container').highcharts().series[0].addPoint([x, y], true, true);
+					var x = responseText[i].timestamp;
+	                var y = responseText[i].value;
+                    
+	                console.log(x); 
+	                console.log(y);
+	                
+					mydata.push({x: x, y: y});
+					//$('#container').highcharts().series[0].addPoint([x, y], true, true);
 				}
+		    	 /*$('#container').highcharts().series[0].update(
+		    		 {
+		    		 data: mydata,
+		    		 type: 'areaspline'
+		    		 }
+		    	 );*/
+		    	$('#container').highcharts().series[0].setData(mydata);
 		    },  
 		    "json"  
 			);
