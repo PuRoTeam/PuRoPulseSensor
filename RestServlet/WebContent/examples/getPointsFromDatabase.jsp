@@ -32,7 +32,7 @@
 		ArrayList<Point> points = mysql.getPointsByUidAndDate(uid, dateFrom, dateTo);
 		
 		JSONArray json = new JSONArray(points); //non posso convertire direttamente in json, perchè devo levare la colonna uid
-		
+				
 		out.println(json.toString());	
 	}
 	catch(SQLException e)

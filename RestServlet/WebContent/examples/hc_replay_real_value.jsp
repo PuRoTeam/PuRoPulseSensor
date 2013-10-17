@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="jquery/jquery-ui-timepicker-addon.js" ></script>
 
 	<script>
+	
 		function getDateAndTime() {  
 			var datefrom = document.forms["date_form"]["date_from"].value;
      		var dateto = document.forms["date_form"]["date_to"].value;
@@ -45,25 +46,30 @@
 		     date = new Date(year, month, day, hour, minute);
 		     var to_date = date.getTime();
      
-		     /*var url = "getPointsFromDatabase.jsp";       
+		     var url = "getPointsFromDatabase.jsp";       
 		     
-		     $.get(url, {uid: 1, from: from_date, to: to_date}, function(responseText) {
-				for(var i = 0; i < responseText.length; i++) {
+		     $.get(url, {uid: 1, dateFrom: from_date, dateTo: to_date}, function(responseText) {
+		    	 
+		    	 //$('#container').highcharts().series[0].remove();
+		    	 
+		    	 for(var i = 0; i < responseText.length; i++) {
+					
 					var x = responseText[i].timestamp,
 	                y = responseText[i].value;
-					$('#container').highcharts.series.addPoint([x, y], true, true);
+                    
+					$('#container').highcharts().series[0].addPoint([x, y], true, true);
 				}
 		    },  
 		    "json"  
-			);*/
+			);
 		     
 		     /*alert("day"+day+"\n"+
 		     		"month"+month+"\n"+
 		     		"year"+year+"\n"+
 		     		"hour"+hour+"\n"+
-		     		"minute"+minute+"\n");
-		     alert(from_date);
-		     alert(to_date);*/
+		     		"minute"+minute+"\n");*/
+		     //alert(from_date);
+		     //alert(to_date);
      
    		}  
     </script>
@@ -85,7 +91,8 @@
 	
 	<!-- HighStock -->
 	<script type="text/javascript">
-					
+		var grafico;	
+	
 		$(function ()
 		{
 			// Create the chart
@@ -93,7 +100,7 @@
 				chart: {
 			    	zoomType: 'x',
 			    	
-	                events: {	                	
+	                /*events: {	                	
 	                    load: function() {
 	                        var series = this.series[0];	                        
 	            			var loadUrl = "getPointsFromDatabase.jsp";
@@ -111,7 +118,7 @@
 		            			    "json"  
 		            			);  
                     	}	                	
-	                }
+	                }*/
 				},
 	
 			    rangeSelector: {
@@ -123,18 +130,21 @@
 			    },
 			    
 			    series: [{
+			    	id: "PRIMA",
 			        name: 'AAPL Stock Price',
 		            data: (function() 
 		               		{	            			
 			                    // generate an array of random data
-			                    var data = [],	i;
+			                    var data = [];
+			                    var i;
 			    
 			                    for (i = -25; i <= 0; i++) {
-			                        data.push({
+			                    	data.push({
 			                            x: 0,
 			                            y: 0
 			                        });
 			                    }
+			                    
 			                    return data;
 		               		})(),
 			        //data: data,

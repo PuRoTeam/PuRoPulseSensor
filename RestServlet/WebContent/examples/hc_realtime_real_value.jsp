@@ -101,7 +101,7 @@
 			            			    },  
 			            			    "json"  
 			            			);  
-		                    }, 1000);	//Modificato 
+		                    }, 300);	//Modificato 
                     	}
 	                	
 	                    /*load: function() {
