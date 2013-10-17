@@ -27,12 +27,6 @@
 		     var year = datefrom.substring(6,10);
 		     var hour = datefrom.substring(11,13);
 		     var minute = datefrom.substring(14,16);
-
-		     /*alert("day"+day+"\n"+
-		     		"month"+month+"\n"+
-		     		"year"+year+"\n"+
-		     		"hour"+hour+"\n"+
-		     		"minute"+minute+"\n");*/
      
 		     var date = new Date(year, month, day, hour, minute);
 		     var from_date = date.getTime();
@@ -49,27 +43,21 @@
 		     var url = "getPointsFromDatabase.jsp";       
 		     
 		     $.get(url, {uid: 1, dateFrom: from_date, dateTo: to_date}, function(responseText) {
-		    	 
-		    	 //$('#container').highcharts().series[0].remove();
+		    	 		
+		    	 var data = [];
+		    	 $('#container').highcharts().series[0].remove();
+		    	 $('#container').highcharts().addSeries(data);
 		    	 
 		    	 for(var i = 0; i < responseText.length; i++) {
 					
 					var x = responseText[i].timestamp,
 	                y = responseText[i].value;
-                    
+                    					
 					$('#container').highcharts().series[0].addPoint([x, y], true, true);
 				}
 		    },  
 		    "json"  
 			);
-		     
-		     /*alert("day"+day+"\n"+
-		     		"month"+month+"\n"+
-		     		"year"+year+"\n"+
-		     		"hour"+hour+"\n"+
-		     		"minute"+minute+"\n");*/
-		     //alert(from_date);
-		     //alert(to_date);
      
    		}  
     </script>
@@ -98,27 +86,7 @@
 			// Create the chart
 			$('#container').highcharts('StockChart', {
 				chart: {
-			    	zoomType: 'x',
-			    	
-	                /*events: {	                	
-	                    load: function() {
-	                        var series = this.series[0];	                        
-	            			var loadUrl = "getPointsFromDatabase.jsp";
-              	                        	
-	            			$.get(loadUrl,
-		            				{uid: 1},  
-		            			    function(responseText) {
-	            						for(var i = 0; i < responseText.length; i++) {
-	        	                            var x = responseText[i].timestamp,
-	        	                            y = responseText[i].value;
-	        	                   
-	        	                            series.addPoint([x, y], true, true);
-	            						}
-		            			    },  
-		            			    "json"  
-		            			);  
-                    	}	                	
-	                }*/
+			    	zoomType: 'x',		
 				},
 	
 			    rangeSelector: {
@@ -179,7 +147,7 @@
 					<div><h3>To:</h3>
 					<input name="date_to" id="datetimepicker2"/>
 					</div>
-					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">
+					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">					
 				</form>
 			</div>	
 		</div>
