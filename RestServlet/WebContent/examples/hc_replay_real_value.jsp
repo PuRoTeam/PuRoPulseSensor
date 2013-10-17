@@ -168,18 +168,23 @@
 	<div id="wrapper">
 	
 		<%@ include file="menu.jsp" %>
-		<div id="datetime">
-			<form name="date_form">
-				<div>From:</div> 
-				<input name="date_from" id="datetimepicker"/>
-				<div>To:</div>
-				<input name="date_to" id="datetimepicker2"/>
-				<input type="button" value="Invia" onclick="getDateAndTime()">
-			</form>
+		<div id="sidebar">
+			<div id="infoID">
+			</div>
+			<div id="datetime">
+				<form name="date_form">
+					<div><h3>From:</h3>
+					<input name="date_from" id="datetimepicker"/>
+					</div>
+					<div><h3>To:</h3>
+					<input name="date_to" id="datetimepicker2"/>
+					</div>
+					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">
+				</form>
+			</div>	
 		</div>
 		<div id="chart_wrapper">
 			<div id="container"></div>
-			
 		</div>
 	</div>
 

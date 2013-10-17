@@ -53,7 +53,7 @@
 	        var chart;
 	        $('#container').highcharts({
 	            chart: {
-	                type: 'spline',
+	                type: 'line',
 	                animation: false,//Highcharts.svg, // don't animate in old IE
 	                marginRight: 30,
 	                events: {	                	
@@ -120,7 +120,7 @@
 	            },
 	            xAxis: {
 	                type: 'datetime',
-	                tickInterval: 5000,
+	                tickInterval: 500,
 	                gridLineWidth: 1,
 	                labels: {
 	                    rotation: 30
@@ -138,7 +138,7 @@
 	                    width: 1,
 	                    color: '#808080'
 	                }],
-	                max: 600,
+	                max: 200,
 	                min: 0
 	            },
 	            
@@ -192,6 +192,11 @@
 	<div id="wrapper">
 	
 		<%@ include file="menu.jsp" %>
+		<div id="sidebar">
+			<div id="infoID">
+				<h3>Sensor#</h3> 
+			</div>
+		</div>
 		<div id="chart_wrapper">
 			<div id="container"></div>
 		</div>				
