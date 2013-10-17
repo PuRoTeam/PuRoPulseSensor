@@ -50,7 +50,6 @@
 	            }
 	        });
 	    
-	        var chart;
 	        $('#container').highcharts({
 	            chart: {
 	                type: 'line',
@@ -71,8 +70,7 @@
 			            			   		
 			            			    	var newPoints = false;	
 			            			    		
-			            					if(responseText.length > 0)
-			            					{
+			            					if(responseText.length > 0) {
 			            						console.log(responseText[responseText.length - 1].timestamp);
 			            						
 			            						var newLatestTimestamp = responseText[responseText.length - 1].timestamp;
@@ -83,17 +81,17 @@
 			            						}
 			            					}
 			            					
-			            					if(newPoints) //se non ho aggiunto nuovi punti
-			            					{
+			            					if(newPoints) { //se non ho aggiunto nuovi punti 
 			            						for(var i = 0; i < responseText.length; i++)
 			            						{
 			        	                            var x = responseText[i].timestamp,
 			        	                            y = responseText[i].value;
-			        	                            series.addPoint([x, y], true, true);
+			        	                            series.addPoint([x, y], false, true); //redraw = false, shift = true
+			        	                            //se metto shift = false, tutti i punti creati vengono mostrati (finestra di punti infinita)
 			            						}
+			            						$('#container').highcharts().redraw();
 			            					}
-			            					else if(!newPoints && responseText.length > 0)//se il client arduino si è fermato, anzichè mostrare gli ultimi N valori a ripetizione, mostro solo l'ultimo a ripetizione
-			            					{
+			            					else if(!newPoints && responseText.length > 0) { //se il client arduino si è fermato, anzichè mostrare gli ultimi N valori a ripetizione, mostro solo l'ultimo a ripetizione
 		        	                            var x = responseText[responseText.length - 1].timestamp,
 		        	                            y = responseText[responseText.length - 1].value;
 		        	                            series.addPoint([x, y], true, true);
@@ -101,18 +99,8 @@
 			            			    },  
 			            			    "json"  
 			            			);  
-		                    }, 300);	//Modificato 
+		                    }, 500);	//Modificato 
                     	}
-	                	
-	                    /*load: function() {
-	                        // set up the updating of the chart each second
-	                        var series = this.series[0];
-	                        setInterval(function() {
-	                            var x = (new Date()).getTime(), // current time    
-	                            y = Math.random();
-	                            series.addPoint([x, y], true, true);
-		                    }, 1000);	//Modificato 
-	                    }*/
 	                }
 	            },
 	            title: {

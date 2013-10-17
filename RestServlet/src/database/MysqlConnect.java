@@ -128,10 +128,12 @@ public final class MysqlConnect
     	if(uid != null)
     		query += " AND " + tpUid + " = " + uid;
     	if(dateFrom != null)
-    		query += " AND " + tpTimestamp + " > " + dateFrom;
+    		query += " AND " + tpTimestamp + " >= " + dateFrom;
     	if(dateTo != null)
-    		query += " AND " + tpTimestamp + " < " + dateTo;
+    		query += " AND " + tpTimestamp + " <= " + dateTo;
 
+    	System.out.println("MysqlConnect: " + query);
+    	
     	ArrayList<Point> pointlist = getArrayOfPointsFromQuery(query);
     	
     	return pointlist;

@@ -43,35 +43,22 @@
 		     var url = "getPointsFromDatabase.jsp";   
 		     
 		     $.get(url, {uid: 1, dateFrom: from_date, dateTo: to_date}, function(responseText) {
+		     		    	 
+		    	 var pup = new Array();
+		    	 var i;
 		    	 
-		    	 var pup = [], i;
-		    	 
-                 for (i = -25; i <= 0; i++) {
-                	 pup.push({
-                         x: 0,
-                         y: 0
-                     });
-                 }
+		    	 pup.length = responseText.length;
 		    	 
 		    	 $('#container').highcharts().series[0].setData(pup);
-		    	 //var mydata = [];
 		    	 
 		    	 for(var i = 0; i < responseText.length; i++) {
 					
 					var x = responseText[i].timestamp;
 	                var y = responseText[i].value;
 	                
-	                //mydata.push({x: x, y: y});
-					$('#container').highcharts().series[0].addPoint([x, y], true, true);
+					$('#container').highcharts().series[0].addPoint([x, y], false, false, false); //redraw = false, shift = false, animation = false (su questo sono indeciso, di default true)
 				}
-		    	 
-		    	 /*$('#container').highcharts().series[0].update(
-		    		 {
-		    		 data: mydata,
-		    		 type: 'areaspline'
-		    		 }
-		    	 );*/
-		    	//$('#container').highcharts().series[0].setData(mydata);
+		    	$('#container').highcharts().redraw(); //ridisegniamo il grafico solo dopo aver aggiunto tutti i punti
 		    },  
 		    "json"  
 			);
@@ -118,21 +105,12 @@
 			    	id: "PRIMA",
 			        name: 'AAPL Stock Price',
 		            data: (function() 
-		               		{	            			
-			                    // generate an array of random data
-			                    var data = [];
-			                    var i;
-			    
-			                    for (i = -25; i <= 0; i++) {
-			                    	data.push({
-			                            x: 0,
-			                            y: 0
-			                        });
-			                    }
-			                    
+		               	   {
+		            			var data = new Array();
+	                    		data.push({x: 0, y: 0}); //inserisco almeno un punto perchè altrimenti non disegna nulla
 			                    return data;
 		               		})(),
-			        //data: data,
+		            //data: data,
 			        type: 'spline',
 			        tooltip: {
 			        	valueDecimals: 2
