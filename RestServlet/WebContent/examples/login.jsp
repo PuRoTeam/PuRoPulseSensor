@@ -7,7 +7,8 @@
 %>
 <html>
 <head>
-	<title>User Login JSP</title>
+	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
+	<title>Pulse Sensor - Login</title>
 	<script>
 		function trim(s) 
 		{
@@ -32,12 +33,13 @@
 	</script>
 </head>
 
-<body>
-	<div><%=error%></div>
-	<form name="frmLogin" onSubmit="return validate();" action="doLogin.jsp" method="post">
-		User Name <input type="text" name="sUserName" /><br />
-		Password <input type="password" name="sPwd" /><br />
+<body style="background-color: #323B55">
+	<img id="slick-banner" src="css/header.png">
+	<form id="slick-login" name="frmLogin" onSubmit="return validate();" action="doLogin.jsp" method="post">
+		<label>Username</label><input type="text" name="sUserName"  placeholder="Username"/>
+		<label>Password</label><input type="password" name="sPwd" placeholder="Password"/>
 		<input type="submit" name="sSubmit" value="Submit" />
 	</form>
+	<div><%=error%></div>
 </body>
 </html>

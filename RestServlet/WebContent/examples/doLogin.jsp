@@ -42,6 +42,7 @@
     catch(Exception e)
     {
         e.printStackTrace();
+        response.sendRedirect("login.jsp?error="+message);
     }
     
     /// close object and connection
