@@ -13,31 +13,8 @@
 	<script src="jquery/jquery-1.10.2.js"></script>
 	<script src="jquery/jquery-ui-1.10.3.js"></script>
 	
-	<!-- Datetimepicker -->
-	<script type="text/javascript" src="jquery/jquery-ui-timepicker-addon.js" ></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-		$('#datetimepicker').datetimepicker({ showSecond: true,dateFormat: 'yy-mm-dd',timeFormat: 'hh:mm:ss'});
-		});
-	</script>
-	<!--
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#datetimepicker').datetimepicker({
-				addSliderAccess: true,
-				sliderAccessArgs: { touchonly: false }
-			});
-			$('#datetimepicker2').datetimepicker({
-				addSliderAccess: true,
-				sliderAccessArgs: { touchonly: false }
-			});
-		});
-	</script>
-	-->
-	
 	<!-- Inclusione classe java Data -->
-	<%@ page import="data.Point" %>
-	
+	<%@ page import="data.Point" %>	
 	
 	<!-- HighCharts -->
 	<script type="text/javascript">
@@ -67,7 +44,7 @@
 		            			$.get(loadUrl,
 			            				{uid: 1},  
 			            			    function(responseText) {
-			            			   		
+
 			            			    	var newPoints = false;	
 			            			    		
 			            					if(responseText.length > 0) {
@@ -81,40 +58,66 @@
 			            						}
 			            					}
 			            					
-			            					if(newPoints) { //se non ho aggiunto nuovi punti 
+			            					if(newPoints) { //se ho aggiunto nuovi punti 
+			            						
+			            						/*//reimposto la visualizzazione dei punti (e non solo di una linea continua)
+			            						//casomai l'avessi disattivata quando il client si era stoppato
+				            					$('#container').highcharts().series[0].update({
+				            						marker: {
+		            					            	enabled: false //true
+		            					        	}
+				            					});*/
+			            						
 			            						for(var i = 0; i < responseText.length; i++)
 			            						{
 			        	                            var x = responseText[i].timestamp,
 			        	                            y = responseText[i].value;
 			        	                            series.addPoint([x, y], false, true); //redraw = false, shift = true
 			        	                            //se metto shift = false, tutti i punti creati vengono mostrati (finestra di punti infinita)
-			            						}
-			            						$('#container').highcharts().redraw();
+			            						}			            						
 			            					}
 			            					else if(!newPoints && responseText.length > 0) { //se il client arduino si è fermato, anzichè mostrare gli ultimi N valori a ripetizione, mostro solo l'ultimo a ripetizione
-		        	                            var x = responseText[responseText.length - 1].timestamp,
+		        	                            //var x = responseText[responseText.length - 1].timestamp,
+		        	                            var x = new Date().getTime(); //in modo da continuare ad aggiungere punti e mostrare una linea continua
 		        	                            y = responseText[responseText.length - 1].value;
-		        	                            series.addPoint([x, y], true, true);
+		        	                            series.addPoint([x, y], false, true);
+		        	                            
+		        	                            /*//meglio mostrare una linea continua che una serie di punti tutti attaccati
+				            					$('#container').highcharts().series[0].update({
+				            						marker: {
+		            					            	enabled: false
+		            					        	}
+				            					});*/
 			            					}
+			            					
+			            					$('#container').highcharts().redraw(); //disegno tutto alla fine
 			            			    },  
 			            			    "json"  
 			            			);  
-		                    }, 500);	//Modificato 
+		                    }, 16);	//Circa 60 FPS
                     	}
 	                }
 	            },
+	            plotOptions: {
+	                line: {
+	                    marker: {
+	                        enabled: false
+	                    }
+	                }
+	            },	            
 	            title: {
 	                text: 'Live random data'
 	            },
 	            xAxis: {
 	                type: 'datetime',
-	                tickInterval: 500,
+	                tickInterval: 1000,//500
 	                gridLineWidth: 1,
 	                labels: {
-	                    rotation: 30
+	                    rotation: 30, //30
+	                    align: 'left'
 	                },
-	                dateTimeLabelFormats: {
-	                	millisecond: '%H:%M:%S.%L',
+	                dateTimeLabelFormats: {	                	
+	                	millisecond: '%H:%M:%S.%L'
 	                }
 	            },
 	            yAxis: {
@@ -148,15 +151,12 @@
 	                name: 'Random data',
 		            data: (function() 
                		{
-	                    // generate an array of random data
-	                    var data = [],
-	                    	time = (new Date()).getTime(), 
-	                    	i;
+	                    var data = new Array(), time = (new Date()).getTime(), i;
 	    				
 	                    for (i = -19; i <= 0; i++) {
 	                        data.push({
-	                            x: time + i * 1000, //Modificato
-	                            y: 0//Math.random()
+	                            x: time + i * 500,
+	                            y: 0
 	                        });
 	                    }
 	                    return data;

@@ -45,7 +45,6 @@ public class ArduinoServlet extends HttpServlet {
         super();
     }
 
-    //eseguito solo una vola all'avvio della Web Application. In ogni caso il metodo "start" di KeyExchangeManager può essere chiamato solo una volta
 	public void init() throws ServletException 
 	{
 		super.init();
@@ -64,7 +63,7 @@ public class ArduinoServlet extends HttpServlet {
 	{	
 		String paramJson = request.getParameter("JSON");
 		
-		//multivalue(request, response, paramJson); //plain //ABILITARE PER PROVE NON CRIPTATE
+		//multivalue(request, response, paramJson); //ABILITARE PER PROVE NON CRIPTATE
 		multiCryptoValue(request, response, paramJson); //DISABILITARE PER PROVE NON CRIPTATE
 		
 		PrintWriter out = response.getWriter();
@@ -77,13 +76,13 @@ public class ArduinoServlet extends HttpServlet {
 	public void multiCryptoValue(HttpServletRequest request, HttpServletResponse response, String cryptoJson) 
 			throws ServletException, IOException
 	{
-		System.out.println("cryptoJson: " + cryptoJson);
+		//System.out.println("cryptoJson: " + cryptoJson);
 		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKey();
 		
 		try 
 		{
 			String plainJson = AES.DecryptIVFromKey(cryptoJson, diffieHellmanKey);
-			System.out.println("plainJson: " + plainJson);
+			//System.out.println("plainJson: " + plainJson);
 			multivalue(request, response, plainJson);
 		} 
 		catch (InvalidKeyException e) 
@@ -105,11 +104,7 @@ public class ArduinoServlet extends HttpServlet {
 	//ricevo un array di punti
 	public void multivalue(HttpServletRequest request, HttpServletResponse response, String plainJson) 
 			throws ServletException, IOException 
-	{
-		//String json = request.getParameter("JSON"); //array di punti
-		//PrintWriter out = response.getWriter();
-					
-		/* TODO da modificare in base a come è gestita la cosa da arduino - array */
+	{					
 		try 
 		{
 			JSONArray jarray = new JSONArray(plainJson);
@@ -145,10 +140,7 @@ public class ArduinoServlet extends HttpServlet {
 					{
 						double curValue = curJsonElement.getDouble("value");
 						long curTimestamp = curJsonElement.getLong("timestamp");
-						
-						//GregorianCalendar curGTimestamp = new GregorianCalendar();
-						//curGTimestamp.setTimeInMillis(curTimestamp);
-						
+												
 						Point newPoint = new Point(curUidJsonElement, curValue, curTimestamp);
 						
 						pointsWithSameUid.add(newPoint);

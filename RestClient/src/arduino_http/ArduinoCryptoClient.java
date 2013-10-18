@@ -26,7 +26,7 @@ public class ArduinoCryptoClient implements Runnable
 {
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
 	public boolean runInfiniteTimes = true;
-	public int msBetweenRequest = 150; //150
+	public int msBetweenRequest = 400; //150
 	
 	int port;
 	long primitive_root;
@@ -74,7 +74,6 @@ public class ArduinoCryptoClient implements Runnable
     		plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(i) +"}, ";
     	plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(size - 1) +"}";
     	plainJson += "]"; 
-    	    	
     	    	
         //array di punti
         /*String json = "[{\"uid\":1,\"timestamp\":1374256224200,\"value\":" + random1 +"}," +
