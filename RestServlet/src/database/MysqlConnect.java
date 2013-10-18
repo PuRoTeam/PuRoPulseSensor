@@ -199,8 +199,8 @@ public final class MysqlConnect
 
     public static void main(String[] args)
     {
-    	testGetUser();
-    	//testInsertUser();
+    	//testGetUser();
+    	testInsertUser();
     	//testInsertSelect();
     	//testGetPointsByDate();    	
     }
@@ -222,7 +222,8 @@ public final class MysqlConnect
     
     public static void testInsertUser()
     {
-    	User user = new User("Claudio", "Pupparo", "MisterPup", "prova");
+    	User user = new User("Damiano", "Rossato", "Tank", "prova");
+    	//User user = new User("Claudio", "Pupparo", "MisterPup", "prova");
     	MysqlConnect mysql = MysqlConnect.getDbCon(); 
     	
     	try 

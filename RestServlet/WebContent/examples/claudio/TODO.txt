@@ -1,0 +1,7 @@
+- Correggere gestione millisecondi in replay (credo sia problema di javascript, confrontando con http://www.ruddwire.com/handy-code/date-to-millisecond-calculators/)
+- Correggere posizione scritta di errore quando sbagli login
+- Rendere più carina la pagina "checkIfLogged.jsp" (parte quando provi a contattare una pagina interna, ma non sei loggato)
+- Il logout al momento è immediato
+- Eliminare le due text box per selezione data (quelle interne al grafico) dentro a replay
+- Cambiare nome grafico replay
+- Il grafico di realtime, lo facciamo con i punti o con la linea continua? Perchè se poi il client si stoppa e vengono mostrati tanti punti vicini è brutto.
