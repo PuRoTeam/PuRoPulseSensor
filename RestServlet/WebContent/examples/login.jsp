@@ -1,5 +1,13 @@
 <%@ page contentType="text/html; charset=iso-8859-1" language="java" %>
 <%
+
+	//TODO TEST
+	/*if(session.getAttribute("userName") != null) 
+	{
+		out.write("User logged as " + session.getAttribute("userName"));
+		return;
+	}*/
+
 	String error=request.getParameter("error");
 	if(error==null || error=="null"){
 		error="";
@@ -40,6 +48,6 @@
 		<label>Password</label><input type="password" name="sPwd" placeholder="Password"/>
 		<input type="submit" name="sSubmit" value="Submit" />
 	</form>
-	<div><%=error%></div>
+	<div><strong><%=error%></strong></div>
 </body>
 </html>

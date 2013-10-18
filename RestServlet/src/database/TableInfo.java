@@ -7,10 +7,17 @@ public enum TableInfo
 	TPointValue("value"),
 	TPointTimestamp("timestamp"),
 	
+	TablePatient("patient"),
+	TPatientUid("uid"),
+	TPatientFirstName("firstname"),
+	TPatientLastName("lastname"),
+	
 	TableUser("user"),
 	TUserUid("uid"),
-	TUserName("name"),
-	TUserLastName("lastname");
+	TUserFirstName("firstname"),
+	TUserLastName("lastname"),
+	TUserUserName("username"),
+	TUserPassword("password");
 	    
     private final String typeId;
 

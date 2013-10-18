@@ -10,7 +10,9 @@ import java.util.GregorianCalendar;
 
 import com.mysql.jdbc.Connection;
 
+import crypto.SHA256;
 import data.Point;
+import data.User;
 
 public final class MysqlConnect
 {
@@ -69,6 +71,56 @@ public final class MysqlConnect
         int result = statement.executeUpdate(insertQuery);
         return result; 
     }
+ 
+    public User userExists(String username, String password) throws SQLException
+    {
+    	String tuTableName = TableInfo.TableUser.toString();
+    	String tuFirstName = TableInfo.TUserFirstName.toString();
+    	String tuLastName = TableInfo.TUserLastName.toString();
+    	String tuUserName = TableInfo.TUserUserName.toString();
+    	String tuPassword = TableInfo.TUserPassword.toString();
+    	
+    	String query = "SELECT * FROM " + tuTableName + " WHERE "
+    				   + tuUserName + "='" + username + "' AND " + tuPassword + "='" + SHA256.getMsgDigest(password) + "'";
+    	
+    	ResultSet resultSet = query(query);
+    	
+    	if(resultSet == null)
+    		return null;
+    	
+    	User user = null;
+    	
+	    while(resultSet.next()) 
+	    {
+	    	String firstName = resultSet.getString(tuFirstName);
+	    	String lastName = resultSet.getString(tuLastName);
+	    	String userName = resultSet.getString(tuUserName);
+	    	user = new User(firstName, lastName, userName, password); //dentro viene fatto l'hash della password
+	    }
+	    resultSet.close();
+	    
+    	return user;
+    }
+    
+    public int insertUser(User user) throws SQLException
+    {
+    	String tuTableName = TableInfo.TableUser.toString();
+    	String tuFirstName = TableInfo.TUserFirstName.toString();
+    	String tuLastName = TableInfo.TUserLastName.toString();
+    	String tuUserName = TableInfo.TUserUserName.toString();
+    	String tuPassword = TableInfo.TUserPassword.toString();
+    	
+    	String firstName = user.getFirstName();
+    	String lastName = user.getLastName();
+    	String userName = user.getUserName();
+    	String password = user.getHashOfPassword();
+    	
+    	String query = "INSERT INTO " + tuTableName +" (" + tuFirstName + ", "+ tuLastName + ", " + tuUserName + ", " + tuPassword + ") " +
+    				   "VALUES ('" + firstName +"','" + lastName + "','" + userName + "','" + password + "')";
+    	//INSERT INTO `user`(`name`, `lastname`, `username`, `password`) VALUES ("c", "c", "c", "c")
+    	System.out.println(query);
+    	return insert(query);
+    }
     
     /**
      * @desc Method to insert new point
@@ -92,10 +144,12 @@ public final class MysqlConnect
     	return insert(query);
     }
     
-    
-    
     public ArrayList<Point> getArrayOfPointsFromQuery(String query) throws SQLException
     {
+    	String tpTimestamp = TableInfo.TPointTimestamp.toString();
+    	String tpUid = TableInfo.TPointUid.toString(); 
+    	String tpValue = TableInfo.TPointValue.toString();
+    	
     	ResultSet resultSet = query(query);
     	
     	if(resultSet == null)
@@ -105,9 +159,9 @@ public final class MysqlConnect
     	
 	    while (resultSet.next()) 
 	    {
-	    	long newUid = resultSet.getLong("uid");
-	    	double newDouble = resultSet.getDouble("value");
-	    	long newTimestamp = resultSet.getLong("timestamp");
+	    	long newUid = resultSet.getLong(tpUid);
+	    	double newDouble = resultSet.getDouble(tpValue);
+	    	long newTimestamp = resultSet.getLong(tpTimestamp);
 	    	    			
 	    	Point newPoint = new Point(newUid, newDouble, newTimestamp);
 	    	pointlist.add(newPoint);   
@@ -145,10 +199,40 @@ public final class MysqlConnect
 
     public static void main(String[] args)
     {
+    	testGetUser();
+    	//testInsertUser();
     	//testInsertSelect();
-    	testGetPointsByDate();    	
+    	//testGetPointsByDate();    	
     }
  
+    public static void testGetUser()
+    {
+    	MysqlConnect mysql = MysqlConnect.getDbCon(); 
+    	try 
+    	{
+			User user = mysql.userExists("MisterPup", "prova");
+			if(user != null)
+				System.out.println(user.getUserName() + " " + user.getHashOfPassword());
+			else
+				System.out.println("User does not exist");
+		} 
+    	catch (SQLException e) 
+    	{ e.printStackTrace(); }
+    }
+    
+    public static void testInsertUser()
+    {
+    	User user = new User("Claudio", "Pupparo", "MisterPup", "prova");
+    	MysqlConnect mysql = MysqlConnect.getDbCon(); 
+    	
+    	try 
+    	{
+			mysql.insertUser(user);
+		} 
+    	catch (SQLException e) 
+    	{ e.printStackTrace(); }
+    }
+    
     public static void testGetPointsByDate()
     {	
     	GregorianCalendar start = new GregorianCalendar();
