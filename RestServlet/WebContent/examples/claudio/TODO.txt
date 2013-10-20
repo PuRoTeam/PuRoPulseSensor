@@ -5,3 +5,5 @@
 - Eliminare le due text box per selezione data (quelle interne al grafico) dentro a replay
 - Cambiare nome grafico replay
 - Il grafico di realtime, lo facciamo con i punti o con la linea continua? Perchè se poi il client si stoppa e vengono mostrati tanti punti vicini è brutto.
+- Messaggio di errore in caso di database mancante
+- Gestione timestamp da arduino
