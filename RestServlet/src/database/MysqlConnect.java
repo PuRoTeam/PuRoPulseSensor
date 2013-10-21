@@ -83,6 +83,32 @@ public final class MysqlConnect
         return result; 
     }
  
+    public ArrayList<Long> getPatientUid()  throws SQLException
+    {
+    	String tpTableName = TableInfo.TablePatient.toString();
+    	String tpUid = TableInfo.TPatientUid.toString();
+    	
+    	String query = "SELECT " + tpUid + " FROM " + tpTableName;
+    	System.out.println(query);
+    	
+    	ResultSet resultSet = query(query);
+    	
+    	if(resultSet == null)
+    		return null;
+    	
+    	ArrayList<Long> uidList = new ArrayList<Long>();
+    	
+	    while (resultSet.next()) 
+	    {
+	    	Long newUid = new Long(resultSet.getLong(tpUid));
+	    	uidList.add(newUid);   
+	    }
+	    resultSet.close();
+	    
+    	return uidList;
+    	
+    }
+    
     public User userExists(String username, String password) throws SQLException
     {
     	String tuTableName = TableInfo.TableUser.toString();
@@ -210,12 +236,27 @@ public final class MysqlConnect
 
     public static void main(String[] args)
     {
+    	testGetPatientUid();
     	//testGetUser();
-    	testInsertUser();
+    	//testInsertUser();
     	//testInsertSelect();
     	//testGetPointsByDate();    	
     }
  
+    public static void testGetPatientUid()
+    {
+    	MysqlConnect mysql = MysqlConnect.getDbCon(); 
+    	
+    	try 
+    	{
+			ArrayList<Long> uidList = mysql.getPatientUid();
+			for(int i = 0; i < uidList.size(); i++)
+				System.out.println(uidList.get(i));
+		} 
+    	catch (SQLException e) 
+    	{ e.printStackTrace(); }
+    }
+    
     public static void testGetUser()
     {
     	MysqlConnect mysql = MysqlConnect.getDbCon(); 

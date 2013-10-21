@@ -21,7 +21,7 @@ import crypto.AES;
 import crypto.KeyExchangeData;
 import arduino_crypto.ArduinoKeyExchange;
 
-//Invio di punti cruptati
+//Invio di punti criptati
 public class ArduinoCryptoClient implements Runnable
 {
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
@@ -55,6 +55,13 @@ public class ArduinoCryptoClient implements Runnable
 		multiCryptoValue(diffieHellmanKey);
 	}
 	
+	//Di quanti giorni vuoi deferire la data. Per test sul grafico replay e date picker
+	public long deferDate(int dayToDefer)
+	{
+		long millisecToDefer = dayToDefer*24*60*60*1000;
+		return millisecToDefer;
+	}
+	
 	//invio un array di punti criptato
 	public void multiCryptoValue(String key)
 			throws ClientProtocolException, IOException	
@@ -69,10 +76,16 @@ public class ArduinoCryptoClient implements Runnable
     	for(int i = 0; i < size; i++)
     		random.add(Math.random()*max);
     	
+    	int dayToDefer = 2; //TODO 2 giorni
+    	
     	String plainJson = "[";
     	for(int i = 0; i < size - 1; i++)
-    		plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(i) +"}, ";
-    	plainJson += "{\"uid\":1,\"timestamp\":" + System.currentTimeMillis() + ",\"value\":" + random.get(size - 1) +"}";
+    	{
+    		long curTimestamp = System.currentTimeMillis() + deferDate(dayToDefer);    		
+    		plainJson += "{\"uid\":1,\"timestamp\":" + curTimestamp + ",\"value\":" + random.get(i) +"}, ";
+    	}
+    	long curTimestamp = System.currentTimeMillis() + deferDate(dayToDefer);
+    	plainJson += "{\"uid\":1,\"timestamp\":" + curTimestamp + ",\"value\":" + random.get(size - 1) +"}";
     	plainJson += "]"; 
     	    	
         //array di punti

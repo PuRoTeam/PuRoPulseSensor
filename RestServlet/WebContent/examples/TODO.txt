@@ -3,3 +3,4 @@
 - Eliminare le due text box per selezione data (quelle interne al grafico) dentro a replay
 - Gestione timestamp da arduino
 - Quando mi loggo non devo vedere più il grafico. Grafico personalizzato per ogni utente che vede?
+- Forse meglio gestire le cose tramite POST e non GET (tipo messaggi di errore)

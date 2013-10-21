@@ -2,8 +2,9 @@ function getDateAndTime() {
 	
 	var datefrom = document.forms["date_form"]["date_from"].value;
 	var dateto = document.forms["date_form"]["date_to"].value;
-    var day = datefrom.substring(0,2);
-    var month = datefrom.substring(3,5);
+	
+    var month = datefrom.substring(0,2);
+    var day = datefrom.substring(3,5);
 	var year = datefrom.substring(6,10);
     var hour = datefrom.substring(11,13);
 	var minute = datefrom.substring(14,16);
@@ -11,15 +12,17 @@ function getDateAndTime() {
 	var date = new Date(year, month, day, hour, minute);
 	var from_date = date.getTime();
 	     
-	day = dateto.substring(0,2);
-	month = dateto.substring(3,5);
+	month = dateto.substring(0,2);
+	day = dateto.substring(3,5);
 	year = dateto.substring(6,10);
 	hour = dateto.substring(11,13);
 	minute = dateto.substring(14,16);
 	     
 	date = new Date(year, month, day, hour, minute);
 	var to_date = date.getTime();
- 
+
+	//alert(day + ' ' + month + ' ' + year + ' ' + hour + ' ' + minute + '----' + to_date);
+	
 	var url = "getPointsFromDatabase.jsp";   
  
 	$.get(url, {uid: 1, dateFrom: from_date, dateTo: to_date}, function(responseText) {

@@ -15,11 +15,11 @@
 	if(mysql != null){
 		User user = mysql.userExists(userName, password);	
 		
-		if(user != null) {//successo	
+		if(user != null){//successo	
 			session.setAttribute("userName", userName);
 			response.sendRedirect("home.jsp"); //redirect a home
 		}
-		else {//fallimento	
+		else{//fallimento	
 	        String message = "No user or password matched" ;
 	        response.sendRedirect("login.jsp?error=" + message);
 		}
@@ -28,7 +28,4 @@
 		String message = "No database found" ;
         response.sendRedirect("login.jsp?error=" + message);
 	}
-	
-	
-	
 %>
