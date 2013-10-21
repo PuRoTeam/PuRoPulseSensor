@@ -18,7 +18,7 @@
 	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
 	<title>Pulse Sensor - Login</title>
 	
-	<script type="text/javascript" language="javascript" src="my_javascript/utility.js"></script>
+	<script type="text/javascript" src="my_javascript/utility.js"></script>
 	<script>
 		function validate()
 		{

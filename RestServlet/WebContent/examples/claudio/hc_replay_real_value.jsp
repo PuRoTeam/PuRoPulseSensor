@@ -41,12 +41,11 @@
 			    },
 	
 			    title: {
-			        text: 'AAPL Stock Price'
+			        text: 'Pulse Sensor Replay'
 			    },
 			    
 			    series: [{
-			    	id: "PRIMA",
-			        name: 'AAPL Stock Price',
+			    	name: 'replay',
 		            data: (function() 
 		               	   {
 		            			var data = new Array();
