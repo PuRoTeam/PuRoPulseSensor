@@ -3,6 +3,7 @@
 <%@ page import="database.MysqlConnect" %>
 <html>
 
+<%@ include file="checkIfLogged.jsp" %>
 	
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -37,8 +38,12 @@
 		                        
 		                        setInterval(function() {
 		                        	
+		                        	//il problema è che tipo buffera le richieste, e quando cambio la selezione, per un pò alterna richieste con vecchio uid a richieste con nuovo uid (con casini per il grafico)
+		                        	if(selectedUid == -1) //se non ho selezionato uid, non faccio richieste
+		                        		return;
+		                        	
 			            			$.get(loadUrl,
-				            				{uid: 1},  
+				            				{uid: selectedUid},  
 				            			    function(responseText) {
 	
 				            			    	var newPoints = false;	
@@ -74,7 +79,7 @@
 				            			    },  
 				            			    "json"  
 				            			);  
-			                    }, 16);	//Circa 60 FPS
+			                    }, 150);	//16 == Circa 60 FPS
 	                    	}
 		                }
 		            },
@@ -86,7 +91,7 @@
 		                }
 		            },	            
 		            title: {
-		                text: 'Live random data'
+		                text: 'Pulse Sensor Realtime'
 		            },
 		            xAxis: {
 		                type: 'datetime',
@@ -161,7 +166,7 @@
 			</div>
 			<div id="uid">
 				<label>UID</label>
-				<select>
+				<select id="uidSelection" onchange="selectUid()">
 					<option></option>
 					<%
 					MysqlConnect mysql = MysqlConnect.getDbCon();

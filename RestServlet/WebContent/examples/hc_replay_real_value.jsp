@@ -1,4 +1,7 @@
 <!DOCTYPE HTML>
+<%@page import="java.util.ArrayList"%>
+<%@ page import="database.MysqlConnect" %>
+
 <html>
 
 <%@ include file="checkIfLogged.jsp" %>
@@ -66,6 +69,24 @@
 	<div id="wrapper">	
 		<div id="sidebar">
 			<div id="infoID">
+				<label>Welcome</label>
+				<%
+					out.print(session.getAttribute("userName"));
+				%>
+			</div>
+			<div id="uid">
+				<label>UID</label>
+				<select id="uidSelection" onchange="selectUid()">
+					<option></option>
+					<%
+					MysqlConnect mysql = MysqlConnect.getDbCon();
+					ArrayList<Long> arr = mysql.getPatientUid();
+					
+					for(int i=0; i<arr.size(); i++) {
+						out.print("<option>" + arr.get(i) + "</option>");
+					}
+					%>
+				</select>
 			</div>
 			<div id="datetime">
 				<form name="date_form">

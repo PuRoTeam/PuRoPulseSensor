@@ -1,3 +1,16 @@
+var selectedUid = -1;
+
+function selectUid() {
+	var selectBox = document.getElementById("uidSelection");			
+	var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+	if(selectedValue != '')
+		selectedUid = selectedValue;
+	else
+		selectedUid = -1;
+	
+	//alert('selectedUid ' + selectedUid);
+}
+
 function getDateAndTime() {
 	
 	var datefrom = document.forms["date_form"]["date_from"].value;
@@ -25,23 +38,25 @@ function getDateAndTime() {
 	
 	var url = "getPointsFromDatabase.jsp";   
  
-	$.get(url, {uid: 1, dateFrom: from_date, dateTo: to_date}, function(responseText) {
+	if(selectedUid != -1)
+	{
+		$.get(url, {uid: selectedUid, dateFrom: from_date, dateTo: to_date}, function(responseText) {
+					
+			var newData = new Array();	 
+			newData.length = responseText.length;
+		 
+			$('#container').highcharts().series[0].setData(newData);
+		 
+			for(var i = 0; i < responseText.length; i++) {
+				var x = responseText[i].timestamp;
+				var y = responseText[i].value;
+	        
+				$('#container').highcharts().series[0].addPoint([x, y], false, false, false); //redraw = false, shift = false, animation = false (su questo sono indeciso, di default true)
+			}
+			$('#container').highcharts().redraw(); //ridisegniamo il grafico solo dopo aver aggiunto tutti i punti
 		
-		var newData = new Array();	 
-		newData.length = responseText.length;
-	 
-		$('#container').highcharts().series[0].setData(newData);
-	 
-		for(var i = 0; i < responseText.length; i++) {
-			var x = responseText[i].timestamp;
-			var y = responseText[i].value;
-        
-			$('#container').highcharts().series[0].addPoint([x, y], false, false, false); //redraw = false, shift = false, animation = false (su questo sono indeciso, di default true)
-		}
-		$('#container').highcharts().redraw(); //ridisegniamo il grafico solo dopo aver aggiunto tutti i punti
-	
-	}, "json");
- 
+		}, "json");
+	}
 } 
 
 function trim(s) {

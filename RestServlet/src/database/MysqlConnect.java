@@ -89,7 +89,7 @@ public final class MysqlConnect
     	String tpUid = TableInfo.TPatientUid.toString();
     	
     	String query = "SELECT " + tpUid + " FROM " + tpTableName;
-    	System.out.println(query);
+    	//System.out.println(query);
     	
     	ResultSet resultSet = query(query);
     	
@@ -155,7 +155,7 @@ public final class MysqlConnect
     	String query = "INSERT INTO " + tuTableName +" (" + tuFirstName + ", "+ tuLastName + ", " + tuUserName + ", " + tuPassword + ") " +
     				   "VALUES ('" + firstName +"','" + lastName + "','" + userName + "','" + password + "')";
     	//INSERT INTO `user`(`name`, `lastname`, `username`, `password`) VALUES ("c", "c", "c", "c")
-    	System.out.println(query);
+    	//System.out.println(query);
     	return insert(query);
     }
     
@@ -223,7 +223,7 @@ public final class MysqlConnect
     	if(dateTo != null)
     		query += " AND " + tpTimestamp + " <= " + dateTo;
 
-    	System.out.println("MysqlConnect: " + query);
+    	//System.out.println("MysqlConnect: " + query);
     	
     	ArrayList<Point> pointlist = getArrayOfPointsFromQuery(query);
     	
