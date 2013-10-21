@@ -16,21 +16,24 @@ import data.User;
 
 public final class MysqlConnect
 {
-    public Connection conn;
-    private Statement statement;
+    public static Connection conn;
+    private static Statement statement;
     public static MysqlConnect db;
+    
+    private static final String url= "jdbc:mysql://localhost:3306/";
+    private static final String dbName = "chart";
+    private static final String driver = "com.mysql.jdbc.Driver";
+    private static final String userName = "root";
+    private static final String password = "stealer";
     
     private MysqlConnect() 
     {
-        String url= "jdbc:mysql://localhost:3306/";
-        String dbName = "chart";
-        String driver = "com.mysql.jdbc.Driver";
-        String userName = "root";
-        String password = "stealer";
-        
         try {
             Class.forName(driver).newInstance();
             this.conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
+            if(this.conn == null){
+            	
+            }
         }
         catch (Exception sqle) {
             sqle.printStackTrace();
@@ -42,10 +45,18 @@ public final class MysqlConnect
      */
     public static synchronized MysqlConnect getDbCon() 
     {
-        if ( db == null ) {
-            db = new MysqlConnect();
+    	try {
+            Class.forName(driver).newInstance();
+            conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
+            if(conn != null){
+            	if(db == null ) {
+                    db = new MysqlConnect();
+                }
+            }
+        }catch (Exception sqle) {
+            sqle.printStackTrace();
         }
-        return db; 
+    	return db;
     }
     /**
      *

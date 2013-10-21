@@ -12,14 +12,23 @@
 		password = "";
 
 	MysqlConnect mysql = MysqlConnect.getDbCon();
-	User user = mysql.userExists(userName, password);
-	
-	if(user != null) {//successo	
-		session.setAttribute("userName", userName);
-		response.sendRedirect("home.jsp"); //redirect a home
+	if(mysql != null){
+		User user = mysql.userExists(userName, password);	
+		
+		if(user != null) {//successo	
+			session.setAttribute("userName", userName);
+			response.sendRedirect("home.jsp"); //redirect a home
+		}
+		else {//fallimento	
+	        String message = "No user or password matched" ;
+	        response.sendRedirect("login.jsp?error=" + message);
+		}
 	}
-	else {//fallimento	
-        String message = "No user or password matched" ;
+	else{
+		String message = "No database found" ;
         response.sendRedirect("login.jsp?error=" + message);
 	}
+	
+	
+	
 %>

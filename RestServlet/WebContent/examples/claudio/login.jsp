@@ -17,12 +17,9 @@
 <head>
 	<link type="text/css" rel="stylesheet" href="css/mystyle.css">
 	<title>Pulse Sensor - Login</title>
+	
+	<script type="text/javascript" language="javascript" src="my_javascript/utility.js"></script>
 	<script>
-		function trim(s) 
-		{
-		    return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
-		}
-
 		function validate()
 		{
 		    if(trim(document.frmLogin.sUserName.value)=="")
@@ -47,7 +44,7 @@
 		<label>Username</label><input type="text" name="sUserName"  placeholder="Username"/>
 		<label>Password</label><input type="password" name="sPwd" placeholder="Password"/>
 		<input type="submit" name="sSubmit" value="Submit" />
+		<div id="error"><%=error%></div>
 	</form>
-	<div><strong><%=error%></strong></div>
 </body>
 </html>

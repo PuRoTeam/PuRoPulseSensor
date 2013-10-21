@@ -40,3 +40,7 @@ function getDateAndTime() {
 	}, "json");
  
 } 
+
+function trim(s) {
+    return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
+}

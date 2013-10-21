@@ -194,6 +194,13 @@ input[type="submit"] {
 }
 
 /* Login CSS */
+#error{
+	color: #FFFFFF;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 10px;	
+}
+
 #slick-login{
 	width: 220px;
 	height: 155px;
