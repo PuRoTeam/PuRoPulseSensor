@@ -116,8 +116,8 @@ input[type="submit"] {
 	color: #000000;
 	background: #003399;
 	background-image: -moz-linear-gradient(0% 100% 90deg,#003399, #003399, #0044CC 56%);
-	-moz-border-radius: 10px 10px 0px 0px;
-	border-radius: 10px 10px 0px 0px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 }
 
 #sidebar a:hover {
@@ -125,9 +125,29 @@ input[type="submit"] {
 }
 
 #infoID {
+	margin: 10px 0px 20px 20px;
 	float: left;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+#uid {
+	margin: 0px 0px 20px 20px;
+	float: left;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+#uid select{
+	background-color: #FFFFFF;
+	width: 80px; 
 	color: #000000;
 }
+
+#uid label{
+	margin-right: 60px; 
+}
+
 
 /* Date time form */
 #datetime {
