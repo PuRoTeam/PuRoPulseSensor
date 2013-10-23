@@ -140,8 +140,13 @@ public class ArduinoServlet extends HttpServlet {
 					{
 						double curValue = curJsonElement.getDouble("value");
 						long curTimestamp = curJsonElement.getLong("timestamp");
-												
-						Point newPoint = new Point(curUidJsonElement, curValue, curTimestamp);
+						
+						ShareTime st = Shared.getInstance().getShareTime();
+						long now = st.getNow();
+						
+						long realCurTimeStamp = now + (curTimestamp-st.getTimestampArduino());
+						
+						Point newPoint = new Point(curUidJsonElement, curValue, realCurTimeStamp);
 						
 						pointsWithSameUid.add(newPoint);
 						
@@ -154,11 +159,12 @@ public class ArduinoServlet extends HttpServlet {
 					
 					singleton.putPointsByUid(curUidInArray, pointsWithSameUid);					
 				}
+				//TODO commentare se si usa arduino
+				PrintWriter out = response.getWriter();
+				ArrayList<Point> singletonPointSameUid = singleton.getPointsByUid(curUidInArray);
 				
-				//ArrayList<Point> singletonPointSameUid = singleton.getPointsByUid(curUidInArray);
-				
-				//for(int j = 0; j < singletonPointSameUid.size(); j++)
-				//	out.println(singletonPointSameUid.get(j).getUid() + " " + singletonPointSameUid.get(j).getTimestamp() + " " + singletonPointSameUid.get(j).getValue());				
+				for(int j = 0; j < singletonPointSameUid.size(); j++)
+					out.println(singletonPointSameUid.get(j).getUid() + " " + singletonPointSameUid.get(j).getTimestamp() + " " + singletonPointSameUid.get(j).getValue());				
 			}			
 		} 
 		catch (JSONException e) 

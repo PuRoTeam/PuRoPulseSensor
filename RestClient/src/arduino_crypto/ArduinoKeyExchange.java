@@ -71,9 +71,16 @@ public class ArduinoKeyExchange
         
         out.println("fine");
         
+        writeInitialTimestamp(out);
+        
         clientSocket.close();
         
         return diffieHellmanKey;
+	}
+	
+	public void writeInitialTimestamp(PrintWriter out) throws IOException  
+	{
+		out.println(System.currentTimeMillis());
 	}
 	
 	//un solo scambio e poi hash con sha256

@@ -15,6 +15,7 @@ public class Shared
     
     private String diffieHellmanKey = "";
     private Map<Long, ArrayList<Point>> points = new HashMap<Long, ArrayList<Point>>();
+    private ShareTime shareTime;
     
     private Shared() {}
  
@@ -77,4 +78,12 @@ public class Shared
     	//JSONArray ar = new JSONArray(ap1);
     	//System.out.println(ar.toString());
     }
+
+	public ShareTime getShareTime() {
+		return shareTime;
+	}
+
+	public void setShareTime(ShareTime shareTime) {
+		this.shareTime = shareTime;
+	}
 }

@@ -25,7 +25,7 @@ import arduino_crypto.ArduinoKeyExchange;
 public class ArduinoCryptoClient implements Runnable
 {
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
-	public boolean runInfiniteTimes = true;
+	public boolean runInfiniteTimes = false;
 	public int msBetweenRequest = 400; //150
 	
 	int port;
@@ -76,7 +76,7 @@ public class ArduinoCryptoClient implements Runnable
     	for(int i = 0; i < size; i++)
     		random.add(Math.random()*max);
     	
-    	int dayToDefer = 2; //TODO 2 giorni
+    	int dayToDefer = 0; //TODO 2 giorni
     	
     	String plainJson = "[";
     	for(int i = 0; i < size - 1; i++)

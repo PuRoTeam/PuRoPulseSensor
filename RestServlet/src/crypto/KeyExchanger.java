@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import servlet.ShareTime;
 import servlet.Shared;
 
 public class KeyExchanger implements Runnable
@@ -48,6 +49,9 @@ public class KeyExchanger implements Runnable
 	        
 	        String endExchangeMsg = in.readLine(); //controllo su errori
 	        System.out.println(endExchangeMsg);
+	        
+	        String initialTimestamp = in.readLine();
+	        Shared.getInstance().setShareTime(new ShareTime(System.currentTimeMillis(), Long.parseLong(initialTimestamp)));
 		}
 		catch(IOException e)
 		{ e.printStackTrace(); }
