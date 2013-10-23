@@ -157,21 +157,31 @@ input[type="submit"] {
 }
 
 #datetime form{
-	margin-top: 5px;
-	margin-bottom: 5px;
 	float: left;
+	display: block;
 }
 
-#datetime div, #datetime input {
-	display: inline;
+#date_form label {
+	color: #FFFFFF;
+	font-weight: bold;
 	float: left;
+	margin: 10px 0px 10px 10px;
 }
 
-#idate{
-	display: inline;
-	float: left;
-	margin-top: 5px;
+#date_form input {
+	width: 120px;
+	float: right;
+	margin: 10px 10px 5px 10px;
+	border: 0px solid #FFFF00;
 }
+
+#date_form input[type="submit"]{
+	width: 120px;
+	margin: 10px 10px 0px 10px;
+	border: 2px solid #000000;
+}
+
+
 
 /* Footer */
 

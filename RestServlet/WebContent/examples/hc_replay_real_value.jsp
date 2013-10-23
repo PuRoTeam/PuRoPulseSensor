@@ -89,16 +89,12 @@
 				</select>
 			</div>
 			<div id="datetime">
-				<form name="date_form">
-					<div><h3>From:</h3>
+				<form name="date_form" id="date_form">
+					<label>From:</label>
 					<input name="date_from" id="datetimepicker"/>
-					</div>
-					<div><h3>To:</h3>
+					<label>To:</label>
 					<input name="date_to" id="datetimepicker2"/>
-					</div>
-					<div>
-					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">
-					</div>					
+					<input id="idate" type="submit" value="Invia" onclick="getDateAndTime()">
 				</form>
 			</div>	
 		</div>
