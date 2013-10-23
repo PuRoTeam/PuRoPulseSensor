@@ -27,7 +27,8 @@
 		if(mode == null)
 			mode = "";			
 	%>
-	<div id="title">Arduino Health Monitor</div>
+	<!-- <div id="title">Arduino Health Monitor</div>-->
+	<img style="margin: 0px 10px 0px 300px" src="css/header.png">
 	
 	<div id="wrapper">	
 		<jsp:include page="menu.jsp"/>
