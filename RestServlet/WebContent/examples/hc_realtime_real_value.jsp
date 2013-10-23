@@ -4,6 +4,24 @@
 <html>
 
 <%@ include file="checkIfLogged.jsp" %>
+
+<%
+String selUid = request.getParameter("selUid");
+Long selectedUid = new Long(-1);
+
+if(selUid == null)
+	selUid = "";
+else
+{
+	try
+	{
+		selectedUid = Long.parseLong(selUid);
+	}
+	catch(NumberFormatException e)
+	{}
+}
+	
+%>
 	
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -39,11 +57,15 @@
 		                        setInterval(function() {
 		                        	
 		                        	//il problema è che tipo buffera le richieste, e quando cambio la selezione, per un pò alterna richieste con vecchio uid a richieste con nuovo uid (con casini per il grafico)
-		                        	if(selectedUid == -1) //se non ho selezionato uid, non faccio richieste
-		                        		return;
+		                        	//if(selectedUid == -1) //se non ho selezionato uid, non faccio richieste
+		                        	//	return;
 		                        	
+		                        	<%
+		                        	if(!selectedUid.equals(new Long(-1)))
+		                        	{	
+		                        	%>		                        	
 			            			$.get(loadUrl,
-				            				{uid: selectedUid},  
+				            				{uid: <%=selectedUid%>},  
 				            			    function(responseText) {
 	
 				            			    	var newPoints = false;	
@@ -78,7 +100,10 @@
 				            					$('#container').highcharts().redraw(); //disegno tutto alla fine
 				            			    },  
 				            			    "json"  
-				            			);  
+				            			);
+			            			<%
+		                        	}
+			            			%>
 			                    }, 150);	//16 == Circa 60 FPS
 	                    	}
 		                }
@@ -160,23 +185,27 @@
 		<div id="sidebar">
 			<div id="infoID">
 				<label>Welcome</label>
-				<%
-					out.print(session.getAttribute("userName"));
-				%>
+				<%=session.getAttribute("userName") %>
 			</div>
 			<div id="uid">
 				<label>UID</label>
-				<select id="uidSelection" onchange="selectUid()">
-					<option></option>
-					<%
-					MysqlConnect mysql = MysqlConnect.getDbCon();
-					ArrayList<Long> arr = mysql.getPatientUid();
-					
-					for(int i=0; i<arr.size(); i++) {
-						out.print("<option>" + arr.get(i) + "</option>");
-					}
-					%>
-				</select>
+				<form id="formUidSelection" action="home.jsp?mode=realtime" method="POST">
+					<select id="uidSelection" onchange="selectUidRealtime()">
+						<option><%=" "%></option>
+						<%
+						MysqlConnect mysql = MysqlConnect.getDbCon();
+						ArrayList<Long> arr = mysql.getPatientUid();
+						
+						for(int i=0; i<arr.size(); i++) {
+							if(arr.get(i).equals(selectedUid))
+								out.print("<option value=\"" + arr.get(i) + "\" selected>" + arr.get(i) + "</option>");
+							else
+								out.print("<option value=\"" + arr.get(i) + "\">" + arr.get(i) + "</option>");
+						}
+						%>
+					</select>
+					<input type="hidden" value="" name="selUid" id="selUid"/>
+				</form>
 			</div>
 		</div>
 		<div id="chart_wrapper">

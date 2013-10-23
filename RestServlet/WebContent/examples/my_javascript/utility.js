@@ -11,6 +11,18 @@ function selectUid() {
 	//alert('selectedUid ' + selectedUid);
 }
 
+function selectUidRealtime() {
+	selectUid();
+
+	var hiddenSelectedUid = document.getElementById("selUid");
+	hiddenSelectedUid.value = selectedUid;
+	//alert(hiddenSelectedUid.value);
+	//alert(document.getElementById("selUid").value);
+	var formUidSelection = document.getElementById("formUidSelection");
+	
+	formUidSelection.submit();
+}
+
 function getDateAndTime() {
 	
 	var datefrom = document.forms["date_form"]["date_from"].value;
@@ -21,8 +33,8 @@ function getDateAndTime() {
 	var year = datefrom.substring(6,10);
     var hour = datefrom.substring(11,13);
 	var minute = datefrom.substring(14,16);
- 
-	var date = new Date(year, month, day, hour, minute);
+	
+	var date = new Date(year, month - 1, day, hour, minute);
 	var from_date = date.getTime();
 	     
 	month = dateto.substring(0,2);
@@ -30,11 +42,11 @@ function getDateAndTime() {
 	year = dateto.substring(6,10);
 	hour = dateto.substring(11,13);
 	minute = dateto.substring(14,16);
-	     
-	date = new Date(year, month, day, hour, minute);
+	
+	date = new Date(year, month - 1, day, hour, minute, 0, 0);
 	var to_date = date.getTime();
 
-	//alert(day + ' ' + month + ' ' + year + ' ' + hour + ' ' + minute + '----' + to_date);
+	//alert(date.getDate() + ' ' + date.getMonth() + ' ' + date.getFullYear() + ' ' + date.getHours() + ' ' + date.getMinutes() + '----' + to_date);
 	
 	var url = "getPointsFromDatabase.jsp";   
  
