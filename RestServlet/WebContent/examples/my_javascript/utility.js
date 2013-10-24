@@ -56,8 +56,61 @@ function getDateAndTime() {
 					
 			var newData = new Array();	 
 			newData.length = responseText.length;
-		 
+			
+			$('#container').highcharts().destroy();
+			
+			$('#container').highcharts('StockChart', {
+				chart: {
+			    	zoomType: 'x',		
+				},
+	
+			    rangeSelector: {
+			        selected: 1,
+			        inputEnabled: false,
+			        buttons: [{
+			        	type: 'second',
+			        	count: 30,
+			        	text: '30s'
+			        }, {
+			        	type: 'minute',
+			        	count: 1,
+			        	text: '1m'
+			        }, {
+			        	type: 'minute',
+			        	count: 10,
+			        	text: '10m'
+			        }, {
+			        	type: 'minute',
+			        	count: 60,
+			        	text: '1h'
+			        }, {
+			        	type: 'all',
+			        	text: 'All'
+			        }]
+			    },
+	
+			    title: {
+			        text: 'Pulse Sensor Replay'
+			    },
+			    
+			    series: [{
+			    	name: 'replay',
+		            data: (function() 
+		               	   {
+		            			var data = new Array();
+	                    		data.push({x: 0, y: 0}); //inserisco almeno un punto perchè altrimenti non disegna nulla
+			                    return data;
+		               		})(),
+		            //data: data,
+			        type: 'spline',
+			        tooltip: {
+			        	valueDecimals: 2
+			        }
+			    }]
+			});
+			
 			$('#container').highcharts().series[0].setData(newData);
+			
 		 
 			for(var i = 0; i < responseText.length; i++) {
 				var x = responseText[i].timestamp;

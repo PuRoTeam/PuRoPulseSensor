@@ -223,7 +223,7 @@ public final class MysqlConnect
     	if(dateTo != null)
     		query += " AND " + tpTimestamp + " <= " + dateTo;
 
-    	System.out.println("MysqlConnect: " + query);
+    	//System.out.println("MysqlConnect: " + query);
     	
     	ArrayList<Point> pointlist = getArrayOfPointsFromQuery(query);
     	
