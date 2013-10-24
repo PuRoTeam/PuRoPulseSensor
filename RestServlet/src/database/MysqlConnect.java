@@ -236,9 +236,9 @@ public final class MysqlConnect
 
     public static void main(String[] args)
     {
-    	testGetPatientUid();
+    	//testGetPatientUid();
     	//testGetUser();
-    	//testInsertUser();
+    	testInsertUser();
     	//testInsertSelect();
     	//testGetPointsByDate();    	
     }

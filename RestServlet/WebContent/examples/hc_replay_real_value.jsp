@@ -40,7 +40,28 @@
 				},
 	
 			    rangeSelector: {
-			        selected: 1
+			        selected: 1,
+			        inputEnabled: false,
+			        buttons: [{
+			        	type: 'second',
+			        	count: 30,
+			        	text: '30s'
+			        }, {
+			        	type: 'minute',
+			        	count: 1,
+			        	text: '1m'
+			        }, {
+			        	type: 'minute',
+			        	count: 10,
+			        	text: '10m'
+			        }, {
+			        	type: 'minute',
+			        	count: 60,
+			        	text: '1h'
+			        }, {
+			        	type: 'all',
+			        	text: 'All'
+			        }]
 			    },
 	
 			    title: {
