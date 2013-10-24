@@ -139,8 +139,8 @@ else
 		                    width: 1,
 		                    color: '#808080'
 		                }],
-		                max: 200,
-		                min: 0
+		                max: 700,
+		                min: 400
 		            },
 		            
 		            tooltip: {

@@ -70,7 +70,8 @@ void writeInitialTimestamp()
   int numDigits = getNumOfDigits(initialTimestamp);
   char* strInitialTimestamp = (char*)malloc(sizeof(char)*(numDigits + 1)); //+1 carattere terminatore
   sprintf(strInitialTimestamp, "%ld\n", initialTimestamp);
-
+  //Serial.print("strInitialTimestamp ");
+  //Serial.println(strInitialTimestamp);
   for(int i=0; i<strlen(strInitialTimestamp); i++){
     client.write(strInitialTimestamp[i]);
   }

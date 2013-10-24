@@ -21,7 +21,7 @@ int iter = 0;
 int value = 0; //SOLO PER TEST
 int delayms = 200;
 
-IPAddress serverIP(192,168,1,101);
+IPAddress serverIP(192,168,1,103);
 
 //PulseSensor
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
@@ -53,6 +53,7 @@ void setup()
     mykey = (byte*) malloc(32*sizeof(byte));
         
     myDiffieHellman(g, p, mykey);
+    writeInitialTimestamp();
     
     char* keys = (char*) byte2StringHex(mykey, 32);
     
@@ -169,6 +170,8 @@ void loop()
   /*iter++;
   if(iter > 3)
   {  for(;;){} }*/
+  
+  //for(;;){}
   
   delay(delayms); //se troppo piccolo riempio la finestra TCP del ricevente --> vedi wireshark
 }
