@@ -38,7 +38,7 @@ Regarding your question about requests, a servlet is designed to handle many req
 public class ArduinoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public static final boolean DB_FUNZIONANTE = true; //TODO da eliminare, solo per test senza db
+	public static final boolean DB_FUNZIONANTE = false; //TODO da eliminare, solo per test senza db
 	
     public ArduinoServlet() 
     {
@@ -66,9 +66,9 @@ public class ArduinoServlet extends HttpServlet {
 		//multivalue(request, response, paramJson); //ABILITARE PER PROVE NON CRIPTATE
 		multiCryptoValue(request, response, paramJson); //DISABILITARE PER PROVE NON CRIPTATE
 		
-		PrintWriter out = response.getWriter();
-		out.println("Ricevuto");
-		out.flush();
+		//PrintWriter out = response.getWriter();
+		//out.println("Ricevuto");
+		//out.flush();
 		response.flushBuffer();
 	}
 	

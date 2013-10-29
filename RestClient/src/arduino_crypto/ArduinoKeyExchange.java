@@ -7,7 +7,16 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import crypto.AES;
 import crypto.KeyExchangeData;
 import crypto.SHA256;
 
@@ -78,9 +87,28 @@ public class ArduinoKeyExchange
         return diffieHellmanKey;
 	}
 	
-	public void writeInitialTimestamp(PrintWriter out) throws IOException  
+	public void writeInitialTimestamp(PrintWriter out) 
 	{
-		out.println(System.currentTimeMillis());
+		String plainText = Long.toString(System.currentTimeMillis());
+		try 
+		{
+			String cipherText = AES.EncryptIVFromKey(plainText, diffieHellmanKey);
+			out.println(cipherText);
+		} 
+		catch (InvalidKeyException e) 
+		{ e.printStackTrace(); }
+		catch (NoSuchAlgorithmException e) 
+		{ e.printStackTrace(); } 
+		catch (NoSuchPaddingException e) 
+		{ e.printStackTrace(); } 
+		catch (IllegalBlockSizeException e)
+		{ e.printStackTrace(); } 
+		catch (BadPaddingException e) 
+		{ e.printStackTrace(); } 
+		catch (NoSuchProviderException e) 
+		{ e.printStackTrace(); }
+		catch (InvalidAlgorithmParameterException e) 
+		{ e.printStackTrace(); }
 	}
 	
 	//un solo scambio e poi hash con sha256

@@ -86,8 +86,7 @@ public class AES
 			cipher = Cipher.getInstance(transformation, providerName);
 		else
 			cipher = Cipher.getInstance(transformation);	
-		
-		
+				
 		cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 		 
 		byte[] encryptedTextBytes = Utility.hexStringToByteArray(encryptedText);
@@ -108,18 +107,19 @@ public class AES
 		
 	public static void encryptDecrypt()
 	{	
-		String plainText = "123456789012345678901234567890123456789012345";
+		String plainText = "";
 		System.out.println("PlainText: " + plainText);
 			
-		byte keyByte[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
-		String key = Hex.encodeHexString(keyByte);		
+		//byte keyByte[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+		//String key = Hex.encodeHexString(keyByte);		
+		String key = "19581e27de7ced00ff1ce50b2047e7a567c76b1cbaebabe5ef03f7c3017bb5b7";
 		System.out.println("Key: " + key);
 		
 		try
 		{
 		    String encryptedText = EncryptIVFromKey(plainText, key);
+		    //encryptedText = "7beee3525ca4569c1ffd1bea18af5e40";
 		    System.out.println("EncryptedText: " + encryptedText);
-		    
 		    String decryptedText = DecryptIVFromKey(encryptedText, key);
 		    System.out.println("DecryptedText: " + decryptedText);
 		}

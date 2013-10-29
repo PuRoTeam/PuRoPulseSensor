@@ -3,11 +3,8 @@
 *  Restituisce 0 se tutto è andato a buon fine
 */
 void myDiffieHellman(long g, long p, byte* key)
-{    
-  //Serial.print("freeMemoryA=");
-  //Serial.println(freeMemory());
-  
-  // 2. Fase di scambio
+{  
+  //Fase di scambio
   long temp, X;
   char* Ystring;
 
@@ -22,9 +19,6 @@ void myDiffieHellman(long g, long p, byte* key)
     client.write(Ystring[i]);
   }
   client.write("fine\n"); //fine
-  
-  //Serial.print("Ystring: ");
-  //Serial.println(Ystring);
   
   delay(500);
     
@@ -57,11 +51,51 @@ void myDiffieHellman(long g, long p, byte* key)
   for(int i = 0; i < 32; i++)
     key[i] = hash[i];
     
-  free(Ystring);  
-  
-  //Serial.print("freeMemoryB=");
-  //Serial.println(freeMemory());
+  free(Ystring);
+}
 
+void writeCryptoInitialTimestamp()
+{  
+  long initialTimestamp = millis(); //millisecondi da avvio di arduino
+  int numDigits = getNumOfDigits(initialTimestamp);
+  char* plainInitialTimestamp = (char*)malloc(sizeof(char)*(numDigits + 1)); //+1 carattere terminatore
+  sprintf(plainInitialTimestamp, "%ld", initialTimestamp);
+
+  Serial.print("plainInitialTimestamp: ");
+  Serial.println(plainInitialTimestamp);
+    
+  int plainsize = strlen(plainInitialTimestamp);
+  int blocks = 1; //è sempre un solo blocco, perchè è praticamente impossibile superare le 16 cifre
+  
+  if(plainsize%N_BLOCK == 0)
+    blocks = plainsize/N_BLOCK;
+  else
+    blocks = plainsize/N_BLOCK + 1;  
+   
+  byte* myplain = (byte*) malloc(blocks*N_BLOCK);
+  byte* mycipher = (byte*) malloc(blocks*N_BLOCK);
+  
+  string2Bytes(plainInitialTimestamp, myplain);
+  
+  padding(myplain, plainsize, blocks*N_BLOCK);
+    
+  AES aes;  
+  aes.set_key(mykey, 256);
+  aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
+  
+  char* cryptoInitialTimestamp = byte2StringHex(mycipher, blocks*N_BLOCK);
+      
+  Serial.print("cryptoInitialTimestamp: ");
+  Serial.println(cryptoInitialTimestamp);  
+    
+  for(int i=0; i<strlen(cryptoInitialTimestamp); i++){
+    client.write(cryptoInitialTimestamp[i]);
+  }
+  
+  free(plainInitialTimestamp);  
+  free(cryptoInitialTimestamp);
+  free(myplain);
+  free(mycipher);
 }
 
 void writeInitialTimestamp()
@@ -70,8 +104,7 @@ void writeInitialTimestamp()
   int numDigits = getNumOfDigits(initialTimestamp);
   char* strInitialTimestamp = (char*)malloc(sizeof(char)*(numDigits + 1)); //+1 carattere terminatore
   sprintf(strInitialTimestamp, "%ld\n", initialTimestamp);
-  //Serial.print("strInitialTimestamp ");
-  //Serial.println(strInitialTimestamp);
+  
   for(int i=0; i<strlen(strInitialTimestamp); i++){
     client.write(strInitialTimestamp[i]);
   }
@@ -79,44 +112,8 @@ void writeInitialTimestamp()
   free(strInitialTimestamp);
 }
 
-/*void sendPOST(String* request)
-{
-  Serial.print("freeMemoryF=");
-  Serial.println(freeMemory());
-  
-  Serial.println(*request);
-  
-    client.println("POST /RestServlet/ HTTP/1.1");           
-    //Serial.println("POST /RestServlet/ HTTP/1.1");           
-    client.println("Host: it.uniroma2.arduino");
-    client.println("Content-Type: application/x-www-form-urlencoded");
-    //client.println("Connection: close");
-    client.println("User-Agent: Arduino/1.0");
-    client.print("Content-Length: ");
-    
-    String s = "JSON=";
-    //s.concat(request);
-    client.println(s.length());
-    client.println();
-    client.print(s.concat(*request));
-    Serial.println(s);
-    client.println();  
-}*/
 void sendPOST()
-{
-  //PRIMO METODO
-  /*
-  int contentLength = strlen("JSON=") + strlen(myciphers);
-  int postLength = strlen("POST /RestServlet/ HTTP/1.1\r\n") + strlen("Host: it.uniroma2.arduino\r\n") + strlen("Content-Type: application/x-www-form-urlencoded\r\n") +
-                 strlen("User-Agent: Arduino/1.0\r\n") + strlen("Content-Length: ") + contentLength + strlen("\r\n") + strlen("\r\n") + +strlen("JSON=") + strlen(myciphers) + strlen("\r\n") + 1;
-	
-  char* post = (char*)malloc(sizeof(char)*postLength);
-  sprintf(post, "POST /RestServlet/ HTTP/1.1\r\nHost: it.uniroma2.arduino\r\nContent-Type: application/x-www-form-urlencoded\r\nUser-Agent: Arduino/1.0\r\nContent-Length: %d\r\n\r\nJSON=%s\r\n", contentLength, myciphers);
-  client.print(post);
-  free(post);
-  client.flush();
-  */
-  
+{  
   //SECONDO METODO  
   client.print("POST /RestServlet/ HTTP/1.1\r\n");          
   client.print("Host: it.uniroma2.arduino\r\n");
@@ -125,7 +122,7 @@ void sendPOST()
   client.print("User-Agent: Arduino/1.0\r\n");
   
   client.print("Content-Length: ");  
-  int contentLength = strlen("JSON=")+strlen(myciphers);
+  int contentLength = strlen("JSON=")+strlen(cipherText);
   char* strConLen = (char*)malloc(sizeof(char)*(getNumOfDigits(contentLength) + 1));
   sprintf(strConLen, "%d", contentLength); 
   client.print(strConLen);
@@ -134,7 +131,7 @@ void sendPOST()
   
   client.print("\r\n"); //spazio fra header e body
   client.print("JSON=");
-  client.print(myciphers);
+  client.print(cipherText);
   client.print("\r\n");
   client.flush();
   
@@ -153,11 +150,11 @@ void sendPOST()
   //client.println("Connection: close"); così chiude la connessione al primo pacchetto inviato/ricevuto
   client.println("User-Agent: Arduino/1.0");
   client.print("Content-Length: ");
-  client.println(strlen(myciphers)+strlen("JSON="));
+  client.println(strlen(cipherText)+strlen("JSON="));
   client.println();
   client.print("JSON=");
-  client.println(myciphers);
-  //client.print(myciphers);
+  client.println(cipherText);
+  //client.print(cipherText);
   //client.println();
   client.flush();
   */
@@ -176,23 +173,6 @@ int getNumOfDigits(long num)
 {
   return (int) (log10(num)) + 1;
 }
-
-/*
-char* int2string(long num)
-{
-    char* str;
-    int num_of_digits = (int) (log10(num)) + 1;
-    int remainder;
-    str = (char*)malloc(sizeof(char)*(num_of_digits + 1));
-    str[num_of_digits] = '\0';
-    for (int i = num_of_digits-1; i >= 0; --i) {
-        remainder = num % 10;
-        char rem_char = (char)(remainder + '0'); //ASCII value of '0' = 48
-        str[i] = rem_char;
-        num = num / 10;
-    }
-    return str;
-}*/
 
 char* byte2StringHex(byte* b, int n)
 {  
@@ -213,13 +193,6 @@ void string2Bytes(char* s, byte* a)
   }
 }
 
-void string2BytesString(String s, byte* a)
-{
-  for(int i=0; i<s.length(); i++){
-    a[i] = (byte)s.charAt(i);
-  }
-}
-
 void printHash(uint8_t* hash, int n)
 {
   int i;
@@ -232,6 +205,11 @@ void printHash(uint8_t* hash, int n)
 
 void padding(byte* b, int d, int r)
 {
+  Serial.print("d: ");
+  Serial.println(d);
+  Serial.print("r: ");
+  Serial.println(r);
+  
   int c = d%16;
   c = 16-c;
   

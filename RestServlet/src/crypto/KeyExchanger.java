@@ -8,6 +8,14 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import servlet.ShareTime;
 import servlet.Shared;
@@ -45,15 +53,32 @@ public class KeyExchanger implements Runnable
 	        diffieHellmanKey = key;
 	        Shared.getInstance().setDiffieHellmanKey(diffieHellmanKey);
 	     	        
-	        //System.out.println(Shared.getInstance().getDiffieHellmanKey());
+	        System.out.println("New Key: " + Shared.getInstance().getDiffieHellmanKey());
 	        
 	        String endExchangeMsg = in.readLine(); //controllo su errori
 	        System.out.println(endExchangeMsg);
-	        
-	        String initialTimestamp = in.readLine();
-	        Shared.getInstance().setShareTime(new ShareTime(System.currentTimeMillis(), Long.parseLong(initialTimestamp)));
+	        	        
+	        String cryptoInitialTimestamp = in.readLine();
+	        System.out.println("cryptoInitialTimestamp: " + cryptoInitialTimestamp);
+	        String plainInitialTimestamp = AES.DecryptIVFromKey(cryptoInitialTimestamp, diffieHellmanKey);
+	        System.out.println("plainInitialTimestamp: " + plainInitialTimestamp);
+	        Shared.getInstance().setShareTime(new ShareTime(System.currentTimeMillis(), Long.parseLong(plainInitialTimestamp)));
 		}
 		catch(IOException e)
+		{ e.printStackTrace(); }
+		catch (InvalidKeyException e) 
+		{ e.printStackTrace(); }
+		catch (NoSuchAlgorithmException e) 
+		{ e.printStackTrace(); } 
+		catch (NoSuchPaddingException e) 
+		{ e.printStackTrace(); } 
+		catch (IllegalBlockSizeException e) 
+		{ e.printStackTrace(); } 
+		catch (BadPaddingException e) 
+		{ e.printStackTrace(); } 
+		catch (NoSuchProviderException e) 
+		{ e.printStackTrace(); } 
+		catch (InvalidAlgorithmParameterException e) 
 		{ e.printStackTrace(); }
 		finally
 		{

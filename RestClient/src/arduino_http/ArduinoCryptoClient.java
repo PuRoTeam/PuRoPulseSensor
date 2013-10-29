@@ -26,7 +26,7 @@ public class ArduinoCryptoClient implements Runnable
 {
 	public static final String url = "http://localhost:8080/RestServlet/index.html";
 	public boolean runInfiniteTimes = true;
-	public int msBetweenRequest = 400; //150
+	public int msBetweenRequest = 200; //150
 	
 	int port;
 	long primitive_root;
@@ -69,12 +69,13 @@ public class ArduinoCryptoClient implements Runnable
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
       
-    	int max = 100; //massimo valore estraibile casualmente
+    	int max = 530; //massimo valore estraibile casualmente
+    	int min = 500;
     	int size = 1; //numero di punti da inviare in ogni richiesta POST
     	
     	ArrayList<Double> random = new ArrayList<Double>();
     	for(int i = 0; i < size; i++)
-    		random.add(Math.random()*max);
+    		random.add(Math.random()*(max-min) + min);
     	
     	int dayToDefer = 0; //TODO 2 giorni
     	

@@ -104,7 +104,7 @@ else
 			            			<%
 		                        	}
 			            			%>
-			                    }, 150);	//16 == Circa 60 FPS
+			                    }, 300); //100	//16 == Circa 60 FPS
 	                    	}
 		                }
 		            },
@@ -120,7 +120,7 @@ else
 		            },
 		            xAxis: {
 		                type: 'datetime',
-		                tickInterval: 1000,//500
+		                tickInterval: 5000,//500
 		                gridLineWidth: 1,
 		                labels: {
 		                    rotation: 30, //30
@@ -139,8 +139,8 @@ else
 		                    width: 1,
 		                    color: '#808080'
 		                }],
-		                max: 700,
-		                min: 400
+		                max: 530, //700
+		                min: 500 //400
 		            },
 		            
 		            tooltip: {
@@ -163,7 +163,7 @@ else
 	               		{
 		                    var data = new Array(), time = (new Date()).getTime(), i;
 		    				
-		                    for (i = -19; i <= 0; i++) {
+		                    for (i = -59; i <= 0; i++) {
 		                        data.push({
 		                            x: time + i * 500,
 		                            y: 0

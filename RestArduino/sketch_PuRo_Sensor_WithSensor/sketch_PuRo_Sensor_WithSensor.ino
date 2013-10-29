@@ -14,7 +14,7 @@ byte* my_iv;
 const long g = 2;
 const long p = 13;
 
-char* myciphers;
+char* cipherText;
 uint8_t* hash;
 
 int iter = 0;
@@ -53,23 +53,21 @@ void setup()
     mykey = (byte*) malloc(32*sizeof(byte));
         
     myDiffieHellman(g, p, mykey);
-    writeInitialTimestamp();
     
     char* keys = (char*) byte2StringHex(mykey, 32);
-    
-    //Sha256Class shaObj; 
+
     Sha256.init();
     Sha256.print(keys);
     
-    hash = Sha256.result(); //GLOBALE
-    //uint8_t* hash = Sha256.result(); //LOCALE
+    free(keys);
+    
+    hash = Sha256.result();
     my_iv = (byte*)malloc(16*sizeof(byte));
     for(int i=0; i<16; i++)
       my_iv[i] = hash[i];
+
+    writeCryptoInitialTimestamp(); //deve essere richiamato dopo l'inizializazione di IV        
     
-    printHash(my_iv, 16);
-    
-    free(keys);
     
     client.stop();
   }else
@@ -114,22 +112,19 @@ void loop()
                + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
     
     char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);
-    
-    //char plainjson[] = "[{\"uid\":1,\"timestamp\":5,\"value\":1}]";
-    
+        
     sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
     
     Serial.print("plainjson: ");
     Serial.println(plainjson);
       
     int plainsize = strlen(plainjson);
-    int mount = sizeof(byte)*plainsize;
     int blocks = 1;
     
     if(plainsize%N_BLOCK == 0)
-      blocks = plainsize/16;
+      blocks = plainsize/N_BLOCK;
     else
-      blocks = plainsize/16 + 1;
+      blocks = plainsize/N_BLOCK + 1;
     
     byte* myplain = (byte*) malloc(blocks*N_BLOCK);
     byte* mycipher = (byte*) malloc(blocks*N_BLOCK);
@@ -142,38 +137,33 @@ void loop()
     
     aes.set_key(mykey, 256);
     
-    if (blocks == 1)
-      aes.encrypt(myplain, mycipher);
-    else
-      aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
+    //if (blocks == 1)
+    //  aes.encrypt(myplain, mycipher);
+    //else
+    aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
        
-    free(myplain);  
-       
-    myciphers = byte2StringHex(mycipher, blocks*N_BLOCK);
+    cipherText = byte2StringHex(mycipher, blocks*N_BLOCK);
     
-    Serial.print("myciphers: ");
-    Serial.println(myciphers);
+    Serial.print("cipherText: ");
+    Serial.println(cipherText);
     
     if(client.connected())
       sendPOST();
-            
+        
+    free(myplain);    
     free(mycipher);
-    free(myciphers);        
+    free(cipherText);        
     free(plainjson);
   }  
   else if(!client.connected())
   {
     client.stop(); //prima di riconnettermi devo stoppare il client!
     client.connect(serverIP, 8080); //riprova a connetterti    
-  }     
-
-  /*iter++;
-  if(iter > 3)
-  {  for(;;){} }*/
+  }
   
   //for(;;){}
   
-  delay(delayms); //se troppo piccolo riempio la finestra TCP del ricevente --> vedi wireshark
+  delay(delayms);
 }
 
 void sendDataToProcessing(char symbol, int data ){
