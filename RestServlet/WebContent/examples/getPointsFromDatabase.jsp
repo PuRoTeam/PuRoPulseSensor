@@ -13,6 +13,11 @@
 	String selectedUid = request.getParameter("uid");
 	String strDateFrom = request.getParameter("dateFrom");
 	String strDateTo = request.getParameter("dateTo");
+
+	System.out.println("queryString: " + request.getQueryString());
+	System.out.println("selectedUid: " + selectedUid);
+	System.out.println("strDateFrom: " + strDateFrom);
+	System.out.println("strDateTo: " + strDateTo);
 	
 	Long uid = null;
 	Long dateFrom = null;
@@ -31,8 +36,9 @@
 		
 		ArrayList<Point> points = mysql.getPointsByUidAndDate(uid, dateFrom, dateTo);
 		
-		JSONArray json = new JSONArray(points); //non posso convertire direttamente in json, perchè devo levare la colonna uid
-				
+		JSONArray json = new JSONArray(points);
+		
+		//out.println(points.size());
 		out.println(json.toString());	
 	}
 	catch(SQLException e)

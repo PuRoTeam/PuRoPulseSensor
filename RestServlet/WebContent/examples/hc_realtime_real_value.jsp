@@ -50,7 +50,8 @@ else
 		                events: {	                	
 		                    load: function() {
 		                    	var latestTimestamp = -1; //controlla se sono stati effettivamente aggiunti nuovi punti (se il client stà continuando a scrivere)	                    	
-		                        // set up the updating of the chart each second
+		                        var latestValue = -1;
+		                    	// set up the updating of the chart each second
 		                        var series = this.series[0];	                        
 		            			var loadUrl = "getPointsFromShared.jsp";
 		                        
@@ -71,31 +72,32 @@ else
 				            			    	var newPoints = false;	
 				            			    		
 				            					if(responseText.length > 0) {
-				            						console.log(responseText[responseText.length - 1].timestamp);
 				            						
 				            						var newLatestTimestamp = responseText[responseText.length - 1].timestamp;
-				            						if(latestTimestamp != newLatestTimestamp)
+				            						var newLatestValue = responseText[responseText.length - 1].value;
+				            						if(latestTimestamp != newLatestTimestamp && latestValue != newLatestValue)
 				            						{
 				            							newPoints = true;
 				            							latestTimestamp = newLatestTimestamp;
+				            							latestValue = newLatestValue;
 				            						}
 				            					}
 				            					
 				            					if(newPoints) { //se ho aggiunto nuovi punti 				            						            						
 				            						for(var i = 0; i < responseText.length; i++)
 				            						{
-				        	                            var x = responseText[i].timestamp,
-				        	                            y = responseText[i].value;
+				        	                            var x = responseText[i].timestamp;
+				        	                            var y = responseText[i].value;
 				        	                            series.addPoint([x, y], false, true); //redraw = false, shift = true
 				        	                            //se metto shift = false, tutti i punti creati vengono mostrati (finestra di punti infinita)
 				            						}			            						
-				            					}
+				            					}/*//in caso è da mettere in getPointsFromDatabase l'azzeramente di tutti i punti
 				            					else if(!newPoints && responseText.length > 0) { //se il client arduino si è fermato, anzichè mostrare gli ultimi N valori a ripetizione, mostro solo l'ultimo a ripetizione
-			        	                            //var x = responseText[responseText.length - 1].timestamp,
+			        	                            //var x = responseText[responseText.length - 1].timestamp;
 			        	                            var x = new Date().getTime(); //in modo da continuare ad aggiungere punti e mostrare una linea continua
-			        	                            y = responseText[responseText.length - 1].value;
+			        	                            var y = responseText[responseText.length - 1].value;
 			        	                            series.addPoint([x, y], false, true);
-				            					}
+				            					}*/
 				            					
 				            					$('#container').highcharts().redraw(); //disegno tutto alla fine
 				            			    },  

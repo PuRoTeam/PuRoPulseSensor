@@ -145,7 +145,7 @@ public class ArduinoServlet extends HttpServlet {
 						long now = st.getNow();
 						
 						long realCurTimeStamp = now + (curTimestamp-st.getTimestampArduino());
-						
+						//System.out.println("SERVLET: " + curValue + " " + realCurTimeStamp);
 						Point newPoint = new Point(curUidJsonElement, curValue, realCurTimeStamp);
 						
 						pointsWithSameUid.add(newPoint);

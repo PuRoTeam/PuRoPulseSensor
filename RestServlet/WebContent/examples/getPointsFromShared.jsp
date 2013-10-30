@@ -29,7 +29,17 @@
 		
 			Shared singleton = Shared.getInstance();
 			ArrayList<Point> points = singleton.getPointsByUid(uid);
+			
+			if(points == null)
+			{
+				out.println("[]");
+				return;
+			}
+			//for(int i = 0; i < points.size(); i++)
+			//	System.out.println("GET: " + points.get(i).getValue() + " " + points.get(i).getTimestamp()); 
+				
 			JSONArray json = new JSONArray(points);
+			
 			out.println(json.toString());
 		}
 	}

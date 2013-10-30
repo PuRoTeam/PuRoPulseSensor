@@ -31,6 +31,11 @@ public class Shared
     	return points.get(new Long(uid));
     }
     
+    public void deleteAllPoints()
+    {
+    	points = new HashMap<Long, ArrayList<Point>>();
+    }
+    
     public void putPointsByUid(long uid, ArrayList<Point> newPoints)
     {
     	points.put(new Long(uid), newPoints);

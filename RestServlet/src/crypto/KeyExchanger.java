@@ -63,6 +63,7 @@ public class KeyExchanger implements Runnable
 	        String plainInitialTimestamp = AES.DecryptIVFromKey(cryptoInitialTimestamp, diffieHellmanKey);
 	        System.out.println("plainInitialTimestamp: " + plainInitialTimestamp);
 	        Shared.getInstance().setShareTime(new ShareTime(System.currentTimeMillis(), Long.parseLong(plainInitialTimestamp)));
+	        //Shared.getInstance().deleteAllPoints();
 		}
 		catch(IOException e)
 		{ e.printStackTrace(); }
