@@ -1,17 +1,22 @@
 package servlet;
 
-import java.util.Date;
-
 public class Prova
 {
+    public static String avoidInjection(String parameter)
+    {
+    	String escapedString = parameter;
+    	escapedString = parameter.replaceAll("'", "\\\\'");
+    	escapedString = escapedString.replaceAll("#", "");
+    	escapedString = escapedString.replaceAll("--", "");
+    	return escapedString;
+    }
+	
 	public static void main(String[] args)
 	{
-		Date d1 = new Date(1383144854617L);
-		System.out.println(d1);
-		Date d2 = new Date(1383144856349L);
-		System.out.println(d2);
-		Date d3 = new Date(1383144856863L);
-		System.out.println(d3);
+		String c = "SELECT * FROM user WHERE username='' OR '1'='1' -- AND password='a'";
+		c = avoidInjection(c);
+		System.out.println(c);
+		
 		/*ArrayList<String> a = new ArrayList<String>();
 		a.add("claudio");
 		a.add("c");

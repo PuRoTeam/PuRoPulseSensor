@@ -204,12 +204,7 @@ void printHash(uint8_t* hash, int n)
 }
 
 void padding(byte* b, int d, int r)
-{
-  Serial.print("d: ");
-  Serial.println(d);
-  Serial.print("r: ");
-  Serial.println(r);
-  
+{  
   int c = d%16;
   c = 16-c;
   

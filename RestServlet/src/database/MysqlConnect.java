@@ -30,8 +30,8 @@ public final class MysqlConnect
     {
         try {
             Class.forName(driver).newInstance();
-            this.conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
-            if(this.conn == null){
+            conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
+            if(conn == null){
             	
             }
         }
@@ -65,7 +65,7 @@ public final class MysqlConnect
      * @throws SQLException
      */
     public ResultSet query(String query) throws SQLException{
-        statement = db.conn.createStatement();
+        statement = conn.createStatement();
         ResultSet res = statement.executeQuery(query);
         return res;
     }
@@ -78,7 +78,7 @@ public final class MysqlConnect
      */
     public int insert(String insertQuery) throws SQLException 
     {
-        statement = db.conn.createStatement();
+        statement = conn.createStatement();
         int result = statement.executeUpdate(insertQuery);
         return result; 
     }
@@ -109,8 +109,22 @@ public final class MysqlConnect
     	
     }
     
+    //# e -- sono commenti sql
+    //parameter: "' OR 'a'='a' #"
+    //SELECT * FROM user WHERE username='' OR 'a'='a' #' AND password='xxx'
+    //la query di sopra restituisce true
+    public String avoidInjection(String parameter)
+    {
+    	String escapedString = parameter;
+    	escapedString = parameter.replaceAll("'", "\\\\'");
+    	escapedString = escapedString.replaceAll("#", "");
+    	escapedString = escapedString.replaceAll("--", "");
+    	return escapedString;
+    }
+    
     public User userExists(String username, String password) throws SQLException
     {
+    	username = avoidInjection(username);
     	String tuTableName = TableInfo.TableUser.toString();
     	String tuFirstName = TableInfo.TUserFirstName.toString();
     	String tuLastName = TableInfo.TUserLastName.toString();
@@ -119,9 +133,10 @@ public final class MysqlConnect
     	
     	String query = "SELECT * FROM " + tuTableName + " WHERE "
     				   + tuUserName + "='" + username + "' AND " + tuPassword + "='" + SHA256.getMsgDigest(password) + "'";
+    	System.out.println(query);
     	
     	ResultSet resultSet = query(query);
-    	
+    	    	
     	if(resultSet == null)
     		return null;
     	

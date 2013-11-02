@@ -11,21 +11,29 @@
 	if(password == null)
 		password = "";
 
-	MysqlConnect mysql = MysqlConnect.getDbCon();
-	if(mysql != null){
-		User user = mysql.userExists(userName, password);	
-		
-		if(user != null){//successo	
-			session.setAttribute("userName", userName);
-			response.sendRedirect("home.jsp"); //redirect a home
+	try
+	{
+		MysqlConnect mysql = MysqlConnect.getDbCon();
+		if(mysql != null){
+			User user = mysql.userExists(userName, password);	
+			
+			if(user != null){//successo	
+				session.setAttribute("userName", userName);
+				response.sendRedirect("home.jsp"); //redirect a home
+			}
+			else{//fallimento	
+		        String message = "No user or password matched" ;
+		        response.sendRedirect("login.jsp?error=" + message);
+			}
 		}
-		else{//fallimento	
-	        String message = "No user or password matched" ;
+		else{
+			String message = "No database found" ;
 	        response.sendRedirect("login.jsp?error=" + message);
 		}
 	}
-	else{
-		String message = "No database found" ;
-        response.sendRedirect("login.jsp?error=" + message);
+	catch(Exception e)
+	{
+		String message = "Database error" ;
+        response.sendRedirect("login.jsp?error=" + message);		
 	}
 %>

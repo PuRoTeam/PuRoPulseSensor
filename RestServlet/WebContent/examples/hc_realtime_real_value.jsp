@@ -106,7 +106,7 @@ else
 			            			<%
 		                        	}
 			            			%>
-			                    }, 500); //100	//16 == Circa 60 FPS
+			                    }, 50); //100	//16 == Circa 60 FPS
 	                    	}
 		                }
 		            },
@@ -165,7 +165,7 @@ else
 	               		{
 		                    var data = new Array(), time = (new Date()).getTime(), i;
 		    				
-		                    for (i = -59; i <= 0; i++) {
+		                    for (i = -29; i <= 0; i++) {
 		                        data.push({
 		                            x: time + i * 500,
 		                            y: 0
