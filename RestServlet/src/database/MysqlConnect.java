@@ -1,5 +1,8 @@
 package database;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,44 +23,65 @@ public final class MysqlConnect
     private static Statement statement;
     public static MysqlConnect db;
     
+    private static final String dbConfFileName = "puro_db.conf";
     private static final String url= "jdbc:mysql://localhost:3306/";
-    private static final String dbName = "chart";
     private static final String driver = "com.mysql.jdbc.Driver";
-    private static final String userName = "root";
-    private static final String password = "stealer";
-    
+
     private MysqlConnect() 
     {
-        try {
-            Class.forName(driver).newInstance();
-            conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
-            if(conn == null){
-            	
-            }
-        }
-        catch (Exception sqle) {
-            sqle.printStackTrace();
-        }
     }
+    
     /**
      *
      * @return MysqlConnect Database connection object
      */
     public static synchronized MysqlConnect getDbCon() 
     {
-    	try {
-            Class.forName(driver).newInstance();
-            conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
-            if(conn != null){
-            	if(db == null ) {
-                    db = new MysqlConnect();
-                }
-            }
-        }catch (Exception sqle) {
-            sqle.printStackTrace();
-        }
-    	return db;
+    	ArrayList<String> parameters = getConnectionToDbParameters();
+    
+		if(parameters.size() == 3)
+		{
+			String dbName = parameters.get(0);
+			String userName = parameters.get(1);
+			String password = parameters.get(2);
+			
+	    	try {
+	            Class.forName(driver).newInstance();
+	            conn = (Connection)DriverManager.getConnection(url + dbName, userName, password);
+	            if(conn != null){
+	            	if(db == null ) {
+	                    db = new MysqlConnect();
+	                }
+	            }
+	        }catch (Exception sqle) {
+	            sqle.printStackTrace();
+	        }	    				
+		}    
+		
+		return db;
     }
+    
+    private static ArrayList<String> getConnectionToDbParameters()
+    {
+    	ArrayList<String> parameters = new ArrayList<String>();
+    	
+    	String pathToDbConf = System.getProperty("user.home") + System.getProperty("file.separator") + dbConfFileName;
+    	
+		try (BufferedReader br = new BufferedReader(new FileReader(pathToDbConf)))
+		{ 
+			String curLine;
+ 
+			while ((curLine = br.readLine()) != null) {
+				parameters.add(curLine);
+				System.out.println(curLine);
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}   
+		return parameters;
+    }    
+    
+    
     /**
      *
      * @param query The query to be executed (select)
@@ -133,7 +157,7 @@ public final class MysqlConnect
     	
     	String query = "SELECT * FROM " + tuTableName + " WHERE "
     				   + tuUserName + "='" + username + "' AND " + tuPassword + "='" + SHA256.getMsgDigest(password) + "'";
-    	System.out.println(query);
+    	//System.out.println(query);
     	
     	ResultSet resultSet = query(query);
     	    	
@@ -251,9 +275,9 @@ public final class MysqlConnect
 
     public static void main(String[] args)
     {
-    	//testGetPatientUid();
+    	testGetPatientUid();
     	//testGetUser();
-    	testInsertUser();
+    	//testInsertUser();
     	//testInsertSelect();
     	//testGetPointsByDate();    	
     }

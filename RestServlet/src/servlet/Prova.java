@@ -17,6 +17,8 @@ public class Prova
 		c = avoidInjection(c);
 		System.out.println(c);
 		
+		System.out.println(System.getProperty("user.home"));
+		
 		/*ArrayList<String> a = new ArrayList<String>();
 		a.add("claudio");
 		a.add("c");

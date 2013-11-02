@@ -21,7 +21,7 @@ int iter = 0;
 int value = 0; //SOLO PER TEST
 int delayms = 200;
 
-IPAddress serverIP(192,168,1,103);
+IPAddress serverIP(192,168,1,101);
 
 //PulseSensor
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
