@@ -19,9 +19,9 @@ uint8_t* hash;
 
 int iter = 0;
 int value = 0; //SOLO PER TEST
-int delayms = 200;
+int delayms = 20;
 
-IPAddress serverIP(192,168,1,101);
+IPAddress serverIP(192,168,1,102);
 
 //PulseSensor
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
@@ -112,8 +112,17 @@ void loop()
                + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
     
     char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);
-        
+    
     sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
+    
+    /*if (QS == true) {
+      Serial.println("BPMBPMBPMBPMBPMBPM");
+      sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d,\"bpm\":%d}]", uid, timestamp, value, BPM); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
+     }
+    else {
+      sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
+    }
+    QS = false;*/
     
     Serial.print("plainjson: ");
     Serial.println(plainjson);
@@ -137,9 +146,6 @@ void loop()
     
     aes.set_key(mykey, 256);
     
-    //if (blocks == 1)
-    //  aes.encrypt(myplain, mycipher);
-    //else
     aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
        
     cipherText = byte2StringHex(mycipher, blocks*N_BLOCK);

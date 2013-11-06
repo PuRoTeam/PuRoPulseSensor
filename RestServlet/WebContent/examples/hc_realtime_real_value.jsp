@@ -106,7 +106,7 @@ else
 			            			<%
 		                        	}
 			            			%>
-			                    }, 50); //100	//16 == Circa 60 FPS
+			                    }, 20); //16 == Circa 60 FPS
 	                    	}
 		                }
 		            },
@@ -122,7 +122,7 @@ else
 		            },
 		            xAxis: {
 		                type: 'datetime',
-		                tickInterval: 5000,//500
+		                tickInterval: 2000,//500
 		                gridLineWidth: 1,
 		                labels: {
 		                    rotation: 30, //30
@@ -165,9 +165,9 @@ else
 	               		{
 		                    var data = new Array(), time = (new Date()).getTime(), i;
 		    				
-		                    for (i = -29; i <= 0; i++) {
+		                    for (i = -59; i <= 0; i++) {
 		                        data.push({
-		                            x: time + i * 500,
+		                            x: time + i * 5,
 		                            y: 0
 		                        });
 		                    }

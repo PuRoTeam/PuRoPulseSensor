@@ -73,7 +73,7 @@ public final class MysqlConnect
  
 			while ((curLine = br.readLine()) != null) {
 				parameters.add(curLine);
-				System.out.println(curLine);
+				//System.out.println(curLine);
 			} 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -143,6 +143,7 @@ public final class MysqlConnect
     	escapedString = parameter.replaceAll("'", "\\\\'");
     	escapedString = escapedString.replaceAll("#", "");
     	escapedString = escapedString.replaceAll("--", "");
+    	escapedString = escapedString.replaceAll(";", "");
     	return escapedString;
     }
     
