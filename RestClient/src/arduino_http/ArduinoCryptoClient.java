@@ -145,7 +145,7 @@ public class ArduinoCryptoClient implements Runnable
     		int port = KeyExchangeData.port;
     		long primitive_root = KeyExchangeData.primitive_root;
     		long prime = KeyExchangeData.prime;
-    		int keyLength = KeyExchangeData.keyLenght; //32 -> 32*8 = 256 bit
+    		int keyLength = KeyExchangeData.keyLenghtInBytes; //32 -> 32*8 = 256 bit
     		    		
     		ArduinoCryptoClient cryptoClient = new ArduinoCryptoClient(port, primitive_root, prime, keyLength);
     		Thread thread = new Thread(cryptoClient); //un solo thread che invia richieste in serie

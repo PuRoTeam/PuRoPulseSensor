@@ -1,8 +1,3 @@
-void exchange(long g, long p, byte* key)
-{
-  
-}
-
 //Esegue la procedura di creazione della chiave AES tramite DH
 void diffieHellman(long g, long p, byte* key)
 {  

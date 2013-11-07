@@ -11,8 +11,8 @@ byte arduinoMAC[] = {0x90, 0xA2 , 0xDA, 0x0D, 0xD9, 0x35};
 byte* mykey=NULL;
 byte* my_iv;
 
-const long g = 2;
-const long p = 13;
+const long g = 14;
+const long p = 1031;
 
 char* cipherText;
 uint8_t* hash;
@@ -173,7 +173,4 @@ void loop()
   delay(delayms);
 }
 
-void sendDataToProcessing(char symbol, int data ){
-  Serial.print(symbol);                // symbol prefix tells Processing what type of data is coming
-  Serial.println(data);                // the data to send culminating in a carriage return
-}
+

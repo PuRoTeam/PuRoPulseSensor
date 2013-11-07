@@ -3,7 +3,9 @@ package crypto;
 public class KeyExchangeData
 {
 	public static final int  port = 1600;
-	public static final long primitive_root = 2;
-	public static final long prime = 13;
-	public static final int keyLenght = 32; //32 -> 32*8 = 256 bit
+	public static final long primitive_root = 14;
+	public static final long prime = 1031;
+	public static final int keyLenghtInBytes = 32; //32 -> 32*8 = 256 bit
 }
+
+//(primitive_root, prime): (2,13),(14, 1031),(2,32771)

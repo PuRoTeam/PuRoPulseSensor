@@ -10,7 +10,7 @@ public class KeyExchangeManager extends Thread
 	int port = KeyExchangeData.port;
 	long primitive_root = KeyExchangeData.primitive_root;
 	long prime = KeyExchangeData.prime;
-	int keyLength = KeyExchangeData.keyLenght; //32 -> 32*8 = 256 bit
+	int keyLength = KeyExchangeData.keyLenghtInBytes; //32 -> 32*8 = 256 bit
 	
 	public static void main(String[] args)
 	{
