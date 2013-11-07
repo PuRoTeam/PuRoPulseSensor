@@ -528,3 +528,68 @@ input[type="submit"] {
  }
 
 }
+
+/* Animation heart */
+@keyframes pulse_animation {
+	0% { transform: scale(1); }
+	30% { transform: scale(1); }
+	40% { transform: scale(1.08); }
+	50% { transform: scale(1); }
+	60% { transform: scale(1); }
+	70% { transform: scale(1.05); }
+	80% { transform: scale(1); }
+	100% { transform: scale(1); }
+}
+
+@-moz-keyframes pulse_animation {
+	0% { -moz-transform: scale(1); }
+	30% { -moz-transform: scale(1); }
+	40% { -moz-transform: scale(1.08); }
+	50% { -moz-transform: scale(1); }
+	60% { -moz-transform: scale(1); }
+	70% { -moz-transform: scale(1.05); }
+	80% { -moz-transform: scale(1); }
+	100% { -moz-transform: scale(1); }
+}
+
+@-o-keyframes pulse_animation {
+	0% { -o-transform: scale(1); }
+	30% { -o-transform: scale(1); }
+	40% { -o-transform: scale(1.08); }
+	50% { -o-transform: scale(1); }
+	60% { -o-transform: scale(1); }
+	70% { -o-transform: scale(1.05); }
+	80% { -o-transform: scale(1); }
+	100% { -o-transform: scale(1); }
+}
+
+@-webkit-keyframes pulse_animation {
+	0% { -webkit-transform: scale(1); }
+	30% { -webkit-transform: scale(1); }
+	40% { -webkit-transform: scale(1.08); }
+	50% { -webkit-transform: scale(1); }
+	60% { -webkit-transform: scale(1); }
+	70% { -webkit-transform: scale(1.05); }
+	80% { -webkit-transform: scale(1); }
+	100% { -webkit-transform: scale(1); }
+}
+
+.pulse {
+	-webkit-animation-name: 'pulse_animation';
+	-webkit-animation-duration: 1000ms;
+	-webkit-transform-origin:70% 70%;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	
+	-moz-animation-name: 'pulse_animation';
+	-moz-animation-duration: 1000ms;
+	-moz-transform-origin:70% 70%;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+	
+	-o-animation-name: 'pulse_animation';
+	-o-animation-duration: 1000ms;
+	-o-transform-origin:70% 70%;
+	-o-animation-iteration-count: infinite;
+	-o-animation-timing-function: linear;
+}
