@@ -28,7 +28,7 @@ public class ArduinoKeyExchange
 	private long prime;
 	private int keyLenght;
 	private String diffieHellmanKey;	
-	public static final String host = "localhost";
+	public static final String host = HostData.host;
 	
 	public ArduinoKeyExchange(int port, long primitive_root, long prime, int keyLenght)
 	{
@@ -69,18 +69,21 @@ public class ArduinoKeyExchange
 		out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                  
-        out.println("ciao");
+        //1. Start
+        String startExchangeMsg = "start";
+        out.println(startExchangeMsg);
 
-        //String key = iterativeExchange(in, out);  //32 scambi diffie hellman
-        String key = sha256Exchange(in, out); //una sola iterazione, hash chiave con sha256
-        
-        diffieHellmanKey = key;
-        
-        System.out.println(key);
-        
-        out.println("fine");
-        
+        //2. Diffie Hellman
+        String key = sha256Exchange(in, out); //una sola iterazione, hash chiave con sha256        
+        diffieHellmanKey = key;        
+        System.out.println("diffieHellmanKey: " + diffieHellmanKey);
+                
+        //3. Initial Timestamp Agreement
         writeInitialTimestamp(out);
+        
+        //4. End
+        String endExchangeMsg = "end";
+        out.println(endExchangeMsg);
         
         clientSocket.close();
         
@@ -90,6 +93,7 @@ public class ArduinoKeyExchange
 	public void writeInitialTimestamp(PrintWriter out) 
 	{
 		String plainText = Long.toString(System.currentTimeMillis());
+		System.out.println(plainText);
 		try 
 		{
 			String cipherText = AES.EncryptIVFromKey(plainText, diffieHellmanKey);

@@ -1,8 +1,10 @@
-/*
-*  Esegue la procedura di creazione della chiave AES tramite DH
-*  Restituisce 0 se tutto è andato a buon fine
-*/
-void myDiffieHellman(long g, long p, byte* key)
+void exchange(long g, long p, byte* key)
+{
+  
+}
+
+//Esegue la procedura di creazione della chiave AES tramite DH
+void diffieHellman(long g, long p, byte* key)
 {  
   //Fase di scambio
   long temp, X;
@@ -12,15 +14,13 @@ void myDiffieHellman(long g, long p, byte* key)
 
   temp = powMod(g, X, p);  
   Ystring = (char*)malloc(sizeof(char)*(getNumOfDigits(temp) + 1));
-  sprintf(Ystring, "%d\n", temp);
-  
-  client.write("ciao\n"); //ciao
+  sprintf(Ystring, "%d\n", temp); //include il carattere "newline", quindi non devo aggiungere println dopo il for
+        
   for(int i=0; i<strlen(Ystring); i++){
     client.write(Ystring[i]);
   }
-  client.write("fine\n"); //fine
   
-  delay(500);
+  delay(500); //attendo per essere sicuro di avere dati da leggere
     
   free(Ystring);     
   Ystring = (char*)malloc(sizeof(char)*10); //la dimensione è da definire in base al primo con cui fai il modulo - p=13 in realtà bastano due cifre +1 (carattere termintore)
@@ -65,7 +65,7 @@ void writeCryptoInitialTimestamp()
   Serial.println(plainInitialTimestamp);
     
   int plainsize = strlen(plainInitialTimestamp);
-  int blocks = 1; //è sempre un solo blocco, perchè è praticamente impossibile superare le 16 cifre
+  int blocks = 1; //è sempre un solo blocco, perchè è praticamente impossibile superare le 16 cifre con i millisecondi
   
   if(plainsize%N_BLOCK == 0)
     blocks = plainsize/N_BLOCK;
@@ -83,14 +83,15 @@ void writeCryptoInitialTimestamp()
   aes.set_key(mykey, 256);
   aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
   
-  char* cryptoInitialTimestamp = byte2StringHex(mycipher, blocks*N_BLOCK);
-      
+  char* cryptoInitialTimestamp = byte2StringHex(mycipher, blocks*N_BLOCK); //non include "newline" quindi lo devo scrivere al client      
   Serial.print("cryptoInitialTimestamp: ");
   Serial.println(cryptoInitialTimestamp);  
     
   for(int i=0; i<strlen(cryptoInitialTimestamp); i++){
     client.write(cryptoInitialTimestamp[i]);
   }
+  client.println();
+  client.flush();
   
   free(plainInitialTimestamp);  
   free(cryptoInitialTimestamp);
@@ -114,11 +115,9 @@ void writeInitialTimestamp()
 
 void sendPOST()
 {  
-  //SECONDO METODO  
   client.print("POST /RestServlet/ HTTP/1.1\r\n");          
   client.print("Host: it.uniroma2.arduino\r\n");
   client.print("Content-Type: application/x-www-form-urlencoded\r\n");
-  //client.println("Connection: close"); così chiude la connessione al primo pacchetto inviato/ricevuto
   client.print("User-Agent: Arduino/1.0\r\n");
   
   client.print("Content-Length: ");  

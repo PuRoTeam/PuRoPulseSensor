@@ -8,12 +8,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import crypto.AES;
-import crypto.KeyExchangeManager;
-import crypto.KeyExchanger;
 import data.Point;
 import database.MysqlConnect;
 
@@ -61,14 +57,9 @@ public class ArduinoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
 	{	
-		String paramJson = request.getParameter("JSON");
+		String paramJson = request.getParameter("JSON");		
+		multiCryptoValue(request, response, paramJson);
 		
-		//multivalue(request, response, paramJson); //ABILITARE PER PROVE NON CRIPTATE
-		multiCryptoValue(request, response, paramJson); //DISABILITARE PER PROVE NON CRIPTATE
-		
-		//PrintWriter out = response.getWriter();
-		//out.println("Ricevuto");
-		//out.flush();
 		response.flushBuffer();
 	}
 	
@@ -76,13 +67,14 @@ public class ArduinoServlet extends HttpServlet {
 	public void multiCryptoValue(HttpServletRequest request, HttpServletResponse response, String cryptoJson) 
 			throws ServletException, IOException
 	{
-		//System.out.println("cryptoJson: " + cryptoJson);
-		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKey();
-		
+		System.out.println("cryptoJson: " + cryptoJson);		
+		String clientIP = getRequestIP(request);
+		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKeyFromIP(clientIP);
+		System.out.println("diffieHellmanKey: " + diffieHellmanKey);
 		try 
 		{
 			String plainJson = AES.DecryptIVFromKey(cryptoJson, diffieHellmanKey);
-			//System.out.println("plainJson: " + plainJson);
+			System.out.println("plainJson: " + plainJson);
 			multivalue(request, response, plainJson);
 		} 
 		catch (InvalidKeyException e) 
@@ -141,7 +133,8 @@ public class ArduinoServlet extends HttpServlet {
 						double curValue = curJsonElement.getDouble("value");
 						long curTimestamp = curJsonElement.getLong("timestamp");
 						
-						ShareTime st = Shared.getInstance().getShareTime();
+						String clientIP = getRequestIP(request);
+						ShareTime st = Shared.getInstance().getShareTimeFromIP(clientIP);
 						long now = st.getNow();
 						
 						long realCurTimeStamp = now + (curTimestamp-st.getTimestampArduino());
@@ -159,12 +152,11 @@ public class ArduinoServlet extends HttpServlet {
 					
 					singleton.putPointsByUid(curUidInArray, pointsWithSameUid);					
 				}
-				//TODO commentare se si usa arduino
-				PrintWriter out = response.getWriter();
-				ArrayList<Point> singletonPointSameUid = singleton.getPointsByUid(curUidInArray);
+				//PrintWriter out = response.getWriter();
+				//ArrayList<Point> singletonPointSameUid = singleton.getPointsByUid(curUidInArray);
 				
-				for(int j = 0; j < singletonPointSameUid.size(); j++)
-					out.println(singletonPointSameUid.get(j).getUid() + " " + singletonPointSameUid.get(j).getTimestamp() + " " + singletonPointSameUid.get(j).getValue());				
+				//for(int j = 0; j < singletonPointSameUid.size(); j++)
+				//	out.println(singletonPointSameUid.get(j).getUid() + " " + singletonPointSameUid.get(j).getTimestamp() + " " + singletonPointSameUid.get(j).getValue());				
 			}			
 		} 
 		catch (JSONException e) 
@@ -173,42 +165,10 @@ public class ArduinoServlet extends HttpServlet {
 		{ e.printStackTrace(); }
 	}
 	
-	
-	
-	//ricevo solo un valore da arduino (da non cancellare finchè non si definisce per bene la comunicazione)
-	/*public void singleValue(HttpServletRequest request, HttpServletResponse response, String plainJson) 
-			throws ServletException, IOException 
+	public String getRequestIP(HttpServletRequest request)
 	{
-		//String json = request.getParameter("JSON"); //singolo valore
-		PrintWriter out = response.getWriter();
-		
-		try 
-		{
-			JSONObject jobj = new JSONObject(plainJson);
-			
-	        long uid = jobj.getLong("uid");       
-			double value = jobj.getDouble("value");
-			long timestamp = jobj.getLong("timestamp");
-			
-			MysqlConnect mysql = MysqlConnect.getDbCon();
-			
-			Point point = new Point(uid, value, timestamp);
-				
-			int result = mysql.insertPoint(point);		
-			
-			if(result != 0)
-			{
-				out.println(point.getUid());			
-				out.println(point.getValue());
-				out.println(point.getTimestamp());
-				
-				ServletContext context = getServletContext();
-				context.setAttribute("Random", point.getValue()); //sarebbe da settare "Random + uid"			
-			}
-		}
-		catch (JSONException e) 
-		{ e.printStackTrace(); } 
-		catch (SQLException e) 
-		{ e.printStackTrace(); }
-	}*/
+		String clientIP = request.getRemoteAddr();
+		System.out.println("SERVLET - Client IP: " + clientIP);
+		return clientIP;
+	}
 }

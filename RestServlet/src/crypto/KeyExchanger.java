@@ -17,6 +17,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import servlet.ArduinoShared;
 import servlet.ShareTime;
 import servlet.Shared;
 
@@ -25,16 +26,14 @@ public class KeyExchanger implements Runnable
 	private Socket clientSocket; 
 	private long primitive_root;
 	private long prime;
-	private int keyLength;	
-	private String diffieHellmanKey;
+	private int keyLength;
 	
 	public KeyExchanger(Socket clientSocket, long primitive_root, long prime, int keyLength)
 	{
 		this.clientSocket = clientSocket;
 		this.primitive_root = primitive_root;
 		this.prime = prime;
-		this.keyLength = keyLength;		
-		diffieHellmanKey = "";
+		this.keyLength = keyLength;
 	}
 	
 	public void run() 
@@ -43,43 +42,40 @@ public class KeyExchanger implements Runnable
 		{
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 	        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-	                 
-	        String startExchangeMsg = in.readLine(); //controllo su errori
+	        
+	        //1. Start
+	        String startExchangeMsg = in.readLine();
 	        System.out.println(startExchangeMsg);
 	        
-	        //String key = iterativeExchange(in, out);  //32 scambi diffie hellman
-	        String key = sha256Exchange(in, out); //una sola iterazione, hash chiave con sha256
-	        
-	        diffieHellmanKey = key;
-	        Shared.getInstance().setDiffieHellmanKey(diffieHellmanKey);
-	     	        
-	        System.out.println("New Key: " + Shared.getInstance().getDiffieHellmanKey());
-	        
-	        String endExchangeMsg = in.readLine(); //controllo su errori
-	        System.out.println(endExchangeMsg);
+	        //2. Diffie Hellman
+	        String diffieHellmanKey = sha256Exchange(in, out); //una sola iterazione, hash chiave con sha256
+	        //System.out.println("diffieHellmanKey: " + diffieHellmanKey);
+	  
+	        /*//3. Authentication
+	        String authChallenge = in.readLine(); //se fallisco evito di salvarmi le informazioni su chiave, timestamp, ip
 	        	        
+	        if(!checkAuthentication(authChallenge, diffieHellmanKey))
+	        {
+	        	throw new Exception();	        	
+	        }*/
+	        
+	        String clientIP = getClientIP();
+	        ArduinoShared newArduinoShared = new ArduinoShared(clientIP, diffieHellmanKey, null); //devo impostare SUBITO la chiave, altrimenti errore perchè parte prima la POST e non trova la chiave
+	        Shared.getInstance().addNewArduinoToList(newArduinoShared);	        
+	        		
+	        //3. Initial Timestamp Agreement
 	        String cryptoInitialTimestamp = in.readLine();
-	        //System.out.println("cryptoInitialTimestamp: " + cryptoInitialTimestamp);
+	        System.out.println("cryptoInitialTimestamp: " + cryptoInitialTimestamp);
 	        String plainInitialTimestamp = AES.DecryptIVFromKey(cryptoInitialTimestamp, diffieHellmanKey);
-	        //System.out.println("plainInitialTimestamp: " + plainInitialTimestamp);
-	        Shared.getInstance().setShareTime(new ShareTime(System.currentTimeMillis(), Long.parseLong(plainInitialTimestamp)));
-	        //Shared.getInstance().deleteAllPoints();
+	        System.out.println("plainInitialTimestamp: " + plainInitialTimestamp);
+	    
+	        newArduinoShared.setShareTime(new ShareTime(System.currentTimeMillis(), Long.parseLong(plainInitialTimestamp))); //"puntatore" elemento inserito nell'array
+	        	        
+	        //4. End
+	        String endExchangeMsg = in.readLine();
+	        System.out.println(endExchangeMsg);		
 		}
-		catch(IOException e)
-		{ e.printStackTrace(); }
-		catch (InvalidKeyException e) 
-		{ e.printStackTrace(); }
-		catch (NoSuchAlgorithmException e) 
-		{ e.printStackTrace(); } 
-		catch (NoSuchPaddingException e) 
-		{ e.printStackTrace(); } 
-		catch (IllegalBlockSizeException e) 
-		{ e.printStackTrace(); } 
-		catch (BadPaddingException e) 
-		{ e.printStackTrace(); } 
-		catch (NoSuchProviderException e) 
-		{ e.printStackTrace(); } 
-		catch (InvalidAlgorithmParameterException e) 
+		catch(Exception e)
 		{ e.printStackTrace(); }
 		finally
 		{
@@ -108,6 +104,23 @@ public class KeyExchanger implements Runnable
     	String msgDigest = SHA256.getMsgDigest(key);
     	
     	return msgDigest;
+	}
+	
+	public boolean checkAuthentication(String authChallenge, String diffieHellmanKey) 
+	{
+		try
+		{
+			AES.DecryptIVFromKey(authChallenge, diffieHellmanKey);
+			
+			Long solution = new Long(prime - primitive_root);			
+			Long toCheck = Long.parseLong(authChallenge);
+			
+			if(solution == toCheck)
+				return true;
+		}
+		catch(Exception e)
+		{ e.printStackTrace(); }
+		return false;
 	}
 	
 	//32 scambi
@@ -150,6 +163,13 @@ public class KeyExchanger implements Runnable
         return key;
 	}
 	
+	public String getClientIP()
+	{		
+		String clientIP = clientSocket.getInetAddress().getHostAddress().toString();
+        System.out.println("KEY EX - Client IP: " + clientIP);
+        return clientIP;
+	}
+	
 	public Socket getClientSocket()
 	{
 		return clientSocket;
@@ -169,12 +189,7 @@ public class KeyExchanger implements Runnable
 	{
 		return keyLength;
 	}
-	
-	public String getDiffieHellmanKey()
-	{
-		return diffieHellmanKey;
-	}
-	
+		
 	public void setClientSocket(Socket clientSocket)
 	{
 		this.clientSocket = clientSocket;

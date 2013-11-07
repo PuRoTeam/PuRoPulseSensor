@@ -3,18 +3,18 @@ package servlet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import data.Point;
 
 public class Shared 
 {
     private static Shared instance = null;
     
-    //TODO serve sincronizzato? Non credo!
-    //private Map<Long, ArrayList<Point>> points = Collections.synchronizedMap(new HashMap<Long, ArrayList<Point>>());
-    //synchronized(m) { func(m) } devo usare questo se lavoro con hashmap sincronizzata?
-    
-    private String diffieHellmanKey = "";
+    private Map<String, ArduinoShared> arduinoMap = new HashMap<String, ArduinoShared>();
+    //private ArrayList<ArduinoShared> arduinoList = new ArrayList<ArduinoShared>();
     private Map<Long, ArrayList<Point>> points = new HashMap<Long, ArrayList<Point>>();
+    
+    private String diffieHellmanKey = "";    
     private ShareTime shareTime;
     
     private Shared() {}
@@ -90,5 +90,34 @@ public class Shared
 
 	public void setShareTime(ShareTime shareTime) {
 		this.shareTime = shareTime;
+	}
+	
+	/****************************************/
+	
+	public void addNewArduinoToList(ArduinoShared newArduinoShared)
+	{
+		arduinoMap.put(newArduinoShared.getArduinoIP(), newArduinoShared);
+	}
+	
+	public String getDiffieHellmanKeyFromIP(String arduinoIP)
+	{
+		String key = "";
+		
+		ArduinoShared arduinoShared = arduinoMap.get(arduinoIP);
+		if(arduinoShared != null)
+			key = arduinoShared.getDiffieHellmanKey();
+		
+		return key;
+	}
+	
+	public ShareTime getShareTimeFromIP(String arduinoIP)
+	{
+		ShareTime shareTime = null;
+		
+		ArduinoShared arduinoShared = arduinoMap.get(arduinoIP);
+		if(arduinoShared != null)		
+			shareTime = arduinoShared.getShareTime();		
+		
+		return shareTime;
 	}
 }

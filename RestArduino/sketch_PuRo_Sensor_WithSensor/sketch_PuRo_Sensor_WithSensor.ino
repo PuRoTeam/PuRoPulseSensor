@@ -49,11 +49,16 @@ void setup()
   client.connect(serverIP, 1600);
   
   if(client.connected()){
-    Serial.println("OK");
-    mykey = (byte*) malloc(32*sizeof(byte));
-        
-    myDiffieHellman(g, p, mykey);
+    Serial.println("OK");    
     
+    //1. Start
+    client.write("start\n");   
+     
+    mykey = (byte*) malloc(32*sizeof(byte)); 
+     
+    //2. Diffie Hellman
+    diffieHellman(g, p, mykey); 
+        
     char* keys = (char*) byte2StringHex(mykey, 32);
 
     Sha256.init();
@@ -65,9 +70,12 @@ void setup()
     my_iv = (byte*)malloc(16*sizeof(byte));
     for(int i=0; i<16; i++)
       my_iv[i] = hash[i];
-
-    writeCryptoInitialTimestamp(); //deve essere richiamato dopo l'inizializazione di IV        
+      
+    //3. Initial Timest
+    writeCryptoInitialTimestamp(); //deve essere richiamato dopo l'inizializazione di IV
     
+    //4. End
+    client.write("end\n");
     
     client.stop();
   }else
@@ -84,7 +92,6 @@ void setup()
   // different seed numbers each time the sketch runs.
   // randomSeed() will then shuffle the random function.
   //randomSeed(analogRead(0));
-
 }
 
 void loop()
@@ -97,13 +104,7 @@ void loop()
   int uid = 1;
     
   if(mykey!=NULL && client.connected()) {      
-    
-    //timestamp = (long)IBI; //FONDAMENTALE IL CAST!
-    //sendDataToProcessing('S', Signal);
-    // Quantified Self flag is true when arduino finds a heartbeat
-    //sendDataToProcessing('B',BPM);   // send heart rate with a 'B' prefix
-    //sendDataToProcessing('Q',IBI);   // send time between beats with a 'Q' prefix
-           
+               
     //perchè cbc "sporca" il vettore di inizializzazione ad ogni chiamata a cbc_encrypt
     for(int i=0; i<16; i++)
       my_iv[i] = hash[i];  

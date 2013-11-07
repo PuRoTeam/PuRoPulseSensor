@@ -43,8 +43,7 @@ public class AES
 		
 		byte ivBytes[] = Utility.hexStringToByteArray(iv);
 		IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
-		
-		// Instantiate the cipher
+
 		Cipher cipher = null;
 		if(!providerName.equals(""))
 			cipher = Cipher.getInstance(transformation, providerName);
@@ -73,14 +72,13 @@ public class AES
 	public static String Decrypt(String encryptedText, String key, String iv) 
 			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
 			IllegalBlockSizeException, BadPaddingException, NoSuchProviderException, InvalidAlgorithmParameterException   
-	{		
+	{	
 		byte keyInByte[] = Utility.hexStringToByteArray(key); //necessario per riottenere un array di 32 elementi 
 		SecretKeySpec keySpec = new SecretKeySpec(keyInByte, algorithm);
 		
 		byte ivBytes[] = Utility.hexStringToByteArray(iv);
 		IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
 		
-		// Instantiate the cipher
 		Cipher cipher = null;
 		if(!providerName.equals(""))
 			cipher = Cipher.getInstance(transformation, providerName);

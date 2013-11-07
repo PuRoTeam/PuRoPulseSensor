@@ -20,11 +20,12 @@ import org.apache.http.message.BasicNameValuePair;
 import crypto.AES;
 import crypto.KeyExchangeData;
 import arduino_crypto.ArduinoKeyExchange;
+import arduino_crypto.HostData;
 
 //Invio di punti criptati
 public class ArduinoCryptoClient implements Runnable
 {
-	public static final String url = "http://localhost:8080/RestServlet/index.html";
+	public static final String url = HostData.url;
 	public boolean runInfiniteTimes = true;
 	public int msBetweenRequest = 50; //150
 	
@@ -77,16 +78,18 @@ public class ArduinoCryptoClient implements Runnable
     	for(int i = 0; i < size; i++)
     		random.add(Math.random()*(max-min) + min);
     	
-    	int dayToDefer = 0; //TODO 2 giorni
+    	int dayToDefer = 0; //cambiare per fare prove su replay in diversi intervalli
+    	
+    	long uid = 2;
     	
     	String plainJson = "[";
     	for(int i = 0; i < size - 1; i++)
     	{
     		long curTimestamp = System.currentTimeMillis() + deferDate(dayToDefer);    		
-    		plainJson += "{\"uid\":1,\"timestamp\":" + curTimestamp + ",\"value\":" + random.get(i) +"}, ";
+    		plainJson += "{\"uid\":" + uid + ",\"timestamp\":" + curTimestamp + ",\"value\":" + random.get(i) +"}, ";
     	}
     	long curTimestamp = System.currentTimeMillis() + deferDate(dayToDefer);
-    	plainJson += "{\"uid\":1,\"timestamp\":" + curTimestamp + ",\"value\":" + random.get(size - 1) +"}";
+    	plainJson += "{\"uid\":" + uid + ",\"timestamp\":" + curTimestamp + ",\"value\":" + random.get(size - 1) +"}";
     	plainJson += "]"; 
     	    	
         //array di punti
@@ -157,8 +160,7 @@ public class ArduinoCryptoClient implements Runnable
 		try 
 		{
 			String diffieHellmanKey = ExchangeKey();
-				
-			System.out.println("Lunghezza Chiave: " + diffieHellmanKey.length());
+			
 			while(true)
 			{
 				Post(diffieHellmanKey);
