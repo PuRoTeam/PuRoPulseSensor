@@ -43,7 +43,7 @@
 	<form id="slick-login" name="frmLogin" onSubmit="return validate();" action="doLogin.jsp" method="post">
 		<label>Username</label><input type="text" name="sUserName"  placeholder="Username"/>
 		<label>Password</label><input type="password" name="sPwd" placeholder="Password"/>
-		<input type="submit" name="sSubmit" value="Submit" />
+		<input class="pulse" type="submit" name="sSubmit" value="Submit" />
 		<div id="error"><%=error%></div>
 	</form>
 </body>
