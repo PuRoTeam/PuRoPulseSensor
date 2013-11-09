@@ -36,10 +36,10 @@
 	
 	<%
 		if(mode.equals("realtime"))	{	
-			%><jsp:include page="hc_realtime_real_value.jsp"/><%
+			%><jsp:include page="realtime.jsp"/><%
 		}
 		if(mode.equals("replay")) {
-			%><jsp:include page="hc_replay_real_value.jsp"/><%
+			%><jsp:include page="replay.jsp"/><%
 		}
 	%>
 
