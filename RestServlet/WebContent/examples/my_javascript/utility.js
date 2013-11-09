@@ -52,7 +52,7 @@ function getDateAndTime() {
  
 	if(selectedUid != -1)
 	{
-		$.get(url, {uid: selectedUid, dateFrom: from_date, dateTo: to_date}, function(responseText) {
+		$.post(url, {uid: selectedUid, dateFrom: from_date, dateTo: to_date}, function(responseText) {
 					
 			var newData = new Array();	 
 			newData.length = responseText.length;

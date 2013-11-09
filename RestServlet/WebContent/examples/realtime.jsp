@@ -65,7 +65,7 @@ else
 		                        	if(!selectedUid.equals(new Long(-1)))
 		                        	{	
 		                        	%>		                        	
-			            			$.get(loadUrl,
+			            			$.post(loadUrl,
 				            				{uid: <%=selectedUid%>},  
 				            			    function(responseText) {
 	

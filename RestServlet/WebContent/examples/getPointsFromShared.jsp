@@ -17,6 +17,7 @@
 	double random = Math.random()*max;
 	JSONObject jObject = new JSONObject().put("random", point_var);
 	out.println(jObject.toString());*/
+	//System.out.println("SHARED: " + request.getMethod());
 	
 	String selectedUid = request.getParameter("uid");
 	long uid = -1;

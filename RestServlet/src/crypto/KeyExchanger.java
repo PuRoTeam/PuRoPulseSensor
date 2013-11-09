@@ -65,9 +65,9 @@ public class KeyExchanger implements Runnable
 	        		
 	        //3. Initial Timestamp Agreement
 	        String cryptoInitialTimestamp = in.readLine();
-	        System.out.println("cryptoInitialTimestamp: " + cryptoInitialTimestamp);
+	        //System.out.println("cryptoInitialTimestamp: " + cryptoInitialTimestamp);
 	        String plainInitialTimestamp = AES.DecryptIVFromKey(cryptoInitialTimestamp, diffieHellmanKey);
-	        System.out.println("plainInitialTimestamp: " + plainInitialTimestamp);
+	        //System.out.println("plainInitialTimestamp: " + plainInitialTimestamp);
 	    
 	        newArduinoShared.setShareTime(new ShareTime(System.currentTimeMillis(), Long.parseLong(plainInitialTimestamp))); //"puntatore" elemento inserito nell'array
 	        	        
@@ -166,7 +166,7 @@ public class KeyExchanger implements Runnable
 	public String getClientIP()
 	{		
 		String clientIP = clientSocket.getInetAddress().getHostAddress().toString();
-        System.out.println("KEY EX - Client IP: " + clientIP);
+        //System.out.println("KEY EX - Client IP: " + clientIP);
         return clientIP;
 	}
 	

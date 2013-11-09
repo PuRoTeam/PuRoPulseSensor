@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=iso-8859-1" language="java" %>
 <%
 
-	//TODO TEST
 	/*if(session.getAttribute("userName") != null) 
 	{
 		out.write("User logged as " + session.getAttribute("userName"));
@@ -38,13 +37,35 @@
 	</script>
 </head>
 
+<%
+String username = (String)session.getAttribute("userName");
+if(username == null)
+{
+%>
+	<body style="background-color: #323B55">
+		<img id="slick-banner" src="css/header.png">
+		<form id="slick-login" name="frmLogin" onSubmit="return validate();" action="doLogin.jsp" method="post">
+			<label>Username</label><input type="text" name="sUserName"  placeholder="Username"/>
+			<label>Password</label><input type="password" name="sPwd" placeholder="Password"/>
+			<input class="pulse" type="submit" name="sSubmit" value="Submit" />
+			<div id="error"><%=error%></div>
+		</form>
+	</body>	
+<%	
+}
+else
+{
+%>
 <body style="background-color: #323B55">
 	<img id="slick-banner" src="css/header.png">
-	<form id="slick-login" name="frmLogin" onSubmit="return validate();" action="doLogin.jsp" method="post">
-		<label>Username</label><input type="text" name="sUserName"  placeholder="Username"/>
-		<label>Password</label><input type="password" name="sPwd" placeholder="Password"/>
-		<input class="pulse" type="submit" name="sSubmit" value="Submit" />
-		<div id="error"><%=error%></div>
+	<form id="slick-login" name="frmLogin" action="" method="post">
+		<div id="error">Welcome <%=username %></div>		
+		<input class="pulse" type="submit" name="sSubmit" value="Home" onclick="document.getElementById('slick-login').action = 'home.jsp';"/>
+		<input type="submit" name="sSubmit" value="Logout" onclick="document.getElementById('slick-login').action = 'logout.jsp';"/>
 	</form>
 </body>
+<%	
+}
+%>
+
 </html>

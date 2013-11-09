@@ -67,14 +67,14 @@ public class ArduinoServlet extends HttpServlet {
 	public void multiCryptoValue(HttpServletRequest request, HttpServletResponse response, String cryptoJson) 
 			throws ServletException, IOException
 	{
-		System.out.println("cryptoJson: " + cryptoJson);		
+		//System.out.println("cryptoJson: " + cryptoJson);		
 		String clientIP = getRequestIP(request);
 		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKeyFromIP(clientIP);
-		System.out.println("diffieHellmanKey: " + diffieHellmanKey);
+		//System.out.println("diffieHellmanKey: " + diffieHellmanKey);
 		try 
 		{
 			String plainJson = AES.DecryptIVFromKey(cryptoJson, diffieHellmanKey);
-			System.out.println("plainJson: " + plainJson);
+			//System.out.println("plainJson: " + plainJson);
 			multivalue(request, response, plainJson);
 		} 
 		catch (InvalidKeyException e) 
@@ -168,7 +168,7 @@ public class ArduinoServlet extends HttpServlet {
 	public String getRequestIP(HttpServletRequest request)
 	{
 		String clientIP = request.getRemoteAddr();
-		System.out.println("SERVLET - Client IP: " + clientIP);
+		//System.out.println("SERVLET - Client IP: " + clientIP);
 		return clientIP;
 	}
 }

@@ -14,10 +14,7 @@
 	String strDateFrom = request.getParameter("dateFrom");
 	String strDateTo = request.getParameter("dateTo");
 
-	System.out.println("queryString: " + request.getQueryString());
-	System.out.println("selectedUid: " + selectedUid);
-	System.out.println("strDateFrom: " + strDateFrom);
-	System.out.println("strDateTo: " + strDateTo);
+	//System.out.println("DB: " + request.getMethod());
 	
 	Long uid = null;
 	Long dateFrom = null;
