@@ -117,7 +117,16 @@
 					<input name="date_to" id="datetimepicker2"/>
 					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">
 				</form>
-			</div>	
+			</div>
+			<div id="uid">
+				<form name="select_min_max" id="date_form">
+					<label>Min:</label>
+					<input name="mingraph" type="number">
+					<label>Max:</label>
+					<input name="maxgraph" type="number">
+					<input id="idate" type="button" value="Imposta" onclick="setMinMax()">
+				</form>
+			</div>
 		</div>
 		<div id="chart_wrapper">
 			<div id="container"></div>
