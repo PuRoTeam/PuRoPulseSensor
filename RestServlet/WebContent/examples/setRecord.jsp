@@ -4,8 +4,9 @@
 
 <%
 	String stato = request.getParameter("state");
+	
 	if(stato != null){
-		boolean state = Boolean.getBoolean(stato);
+		boolean state = Boolean.parseBoolean(stato);		
 		Shared singleton = Shared.getInstance();
 		singleton.setDBWorking(state);
 	}

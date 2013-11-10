@@ -17,7 +17,9 @@ public class Shared
     private String diffieHellmanKey = "";    
     private ShareTime shareTime;
     
-    private boolean DBWorking = true;
+    private int BPM = 0;
+    
+    private boolean DBWorking = false;
     
     private Shared() {}
  
@@ -92,6 +94,14 @@ public class Shared
 
 	public void setShareTime(ShareTime shareTime) {
 		this.shareTime = shareTime;
+	}
+	
+	public int getBPM() {
+		return BPM;
+	}
+	
+	public void setBPM(int BPM) {
+		this.BPM = BPM;
 	}
 	
 	public boolean isDBWorking() {

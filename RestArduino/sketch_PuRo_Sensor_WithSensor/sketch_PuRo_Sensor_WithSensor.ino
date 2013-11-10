@@ -24,9 +24,9 @@ int delayms = 20;
 //PulseSensor
 //IMPORTANTE!!: Se uso True Random, devo tenere il pin 0 libero. Il sensore deve essere attaccato ad un altro pin, e bisogna modificare la linea di codice qui sotto
 int pulsePin = 1;                 // Pulse Sensor purple wire connected to analog pin 0 (DA MODIFICARE! PIN 1)
-int blinkPin = 13;                // pin to blink led at each beat
+//int blinkPin = 13;                // pin to blink led at each beat
 
-volatile int BPM;                   // used to hold the pulse rate
+volatile int BPM = 0;                   // used to hold the pulse rate L'HO IMPOSTATO IO A ZERO, PRIMA ERA NON INIZIALIZZATO
 volatile int Signal = 0;                // holds the incoming raw data
 volatile int IBI = 600;             // holds the time between beats, must be seeded! 
 volatile boolean Pulse = false;     // true when pulse wave is high, false when it's low
@@ -99,30 +99,29 @@ void loop()
 {  
   Serial.println("Loop...");
   
-  int value = (int)Signal;
+  int value = Signal;
   long timestamp = millis();
+  int bpm = (int)BPM;
     
   if(mykey!=NULL && client.connected()) {      
                
     //cbc "sporca" il vettore di inizializzazione ad ogni chiamata a cbc_encrypt, quindi devo reinizializzarlo ad ogni iterazione
     for(int i=0; i<16; i++)
       my_iv[i] = hash[i];  
+ 
+    Serial.print("bpm: ");
+    Serial.println(bpm);
     
+    /*int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
+             + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen(",")
+             + strlen("\"bpm\":") + getNumOfDigits(bpm) + strlen("}]") + 1; //carattere terminatore //CON BPM*/
     int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
-               + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
+             + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
     
-    char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);    
+    char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);
+    //sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d,\"bpm\":%d}]", uid, timestamp, value, bpm); //CON BPM
     sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value);
-    
-    /*if (QS == true) {
-      Serial.println("BPMBPMBPMBPMBPMBPM");
-      sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d,\"bpm\":%d}]", uid, timestamp, value, BPM); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
-     }
-    else {
-      sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
-    }
-    QS = false;*/
-    
+        
     Serial.print("plainjson: ");
     Serial.println(plainjson);
       
@@ -134,16 +133,24 @@ void loop()
     else
       blocks = plainsize/N_BLOCK + 1;
     
+    //Serial.println("A");
+    
     byte* myplain = (byte*) malloc(blocks*N_BLOCK);
     byte* mycipher = (byte*) malloc(blocks*N_BLOCK);
     
     string2Bytes(plainjson, myplain);
     
+    //Serial.println("B");
+    
     padding(myplain, plainsize, blocks*N_BLOCK);
+
+    //Serial.println("C");
       
     AES aes;
     
     aes.set_key(mykey, 256);
+    
+    //Serial.println("D");
     
     aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
        
@@ -159,6 +166,8 @@ void loop()
     free(mycipher);
     free(cipherText);        
     free(plainjson);
+    
+    //Serial.println("E");
   }  
   else if(!client.connected())
   {
@@ -167,7 +176,7 @@ void loop()
   }
   
   //for(;;){}
-  
+  //Serial.println("F");
   delay(delayms);
 }
 

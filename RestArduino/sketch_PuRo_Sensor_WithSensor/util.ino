@@ -18,7 +18,7 @@ void diffieHellman(long g, long p, byte* key)
   delay(500); //attendo per essere sicuro di avere dati da leggere
     
   free(Ystring);     
-  Ystring = (char*)malloc(sizeof(char)*10); //la dimensione è da definire in base al primo con cui fai il modulo - p=13 in realtà bastano due cifre +1 (carattere termintore)
+  Ystring = (char*)malloc(sizeof(char)*(getNumOfDigits(p) + 1)); //la dimensione è da definire in base al primo con cui fai il modulo - p=13 in realtà bastano due cifre +1 (carattere terminatore)
   
   int i = 0;
   while(client.available()){    

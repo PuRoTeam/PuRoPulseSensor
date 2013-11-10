@@ -131,8 +131,18 @@ public class ArduinoServlet extends HttpServlet {
 						double curValue = curJsonElement.getDouble("value");
 						long curTimestamp = curJsonElement.getLong("timestamp");
 						
+						int BPM = 0;
+						try
+						{
+							BPM = curJsonElement.getInt("bpm"); //se in questa json è stato invito anche il BPM
+							singleton.setBPM(BPM);
+							System.out.println("BPM: " + BPM);
+						}
+						catch(JSONException f)
+						{}
+						
 						String clientIP = getRequestIP(request);
-						ShareTime st = Shared.getInstance().getShareTimeFromIP(clientIP);
+						ShareTime st = singleton.getShareTimeFromIP(clientIP);
 						long now = st.getNow();
 						
 						long realCurTimeStamp = now + (curTimestamp-st.getTimestampArduino());
