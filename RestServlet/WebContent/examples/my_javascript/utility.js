@@ -1,5 +1,25 @@
 var selectedUid = -1;
 
+function record() {
+	
+	var saveb = document.getElementById("save");
+	var value = saveb.getAttribute("value");
+	var url = "setRecord.jsp";
+	
+	if(value == "Start"){
+		var rec = true;
+		saveb.setAttribute("value", "Stop");
+		$.post(url, {state: rec});
+	}
+	
+	if(value == "Stop"){
+		var rec = false;
+		saveb.setAttribute("value", "Start");
+		$.post(url, {state: rec});
+	}
+
+}
+
 function setMinMax() {
 	
 	var min = document.forms["select_min_max"]["mingraph"].value;

@@ -212,6 +212,10 @@ else
 			<div id="heart">
 				<img src="css/heart.png" class="pulse" height="100" width="120">
 				<div>33</div> <!-- <%=session.getAttribute("userName") %> -->
+			</div>
+			<div id="uid">
+			<label>Saving data:
+			<input id="save" type="submit" value="Start" onclick="record()"/></label>
 			</div>			
 		</div>
 		<div id="chart_wrapper">

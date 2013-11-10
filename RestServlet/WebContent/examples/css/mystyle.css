@@ -44,6 +44,12 @@ input[type="submit"] {
 	width:70px;
 	border: 2px solid #000000;
 }
+
+input[type="button"] {
+	width:70px;
+	border: 2px solid #000000;
+	
+}
  /* Title */
 
 #title{
