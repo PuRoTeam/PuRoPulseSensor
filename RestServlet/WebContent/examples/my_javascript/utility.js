@@ -1,5 +1,15 @@
 var selectedUid = -1;
 
+function setMinMax() {
+	
+	var min = document.forms["select_min_max"]["mingraph"].value;
+	var max = document.forms["select_min_max"]["maxgraph"].value;
+	
+	if(min < max)
+		$('#container').highcharts().yAxis[0].setExtremes(min, max);
+}
+
+
 function selectUid() {
 	var selectBox = document.getElementById("uidSelection");			
 	var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -64,6 +74,10 @@ function getDateAndTime() {
 			    	zoomType: 'x',		
 				},
 	
+				scrollbar: {
+					liveRedraw: true
+				},
+				
 			    rangeSelector: {
 			        selected: 1,
 			        inputEnabled: false,
@@ -105,7 +119,8 @@ function getDateAndTime() {
 			        type: 'spline',
 			        tooltip: {
 			        	valueDecimals: 2
-			        }
+			        },
+			        //turboThreshold: 0
 			    }]
 			});
 			

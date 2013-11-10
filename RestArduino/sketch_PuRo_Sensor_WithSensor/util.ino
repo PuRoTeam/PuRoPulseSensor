@@ -7,7 +7,7 @@ void diffieHellman(long g, long p, byte* key)
 
   X = random(2, p-1);
 
-  temp = powMod(g, X, p);  
+  temp = modpowFast(g, X, p);  
   Ystring = (char*)malloc(sizeof(char)*(getNumOfDigits(temp) + 1));
   sprintf(Ystring, "%d\n", temp); //include il carattere "newline", quindi non devo aggiungere println dopo il for
         
@@ -29,7 +29,7 @@ void diffieHellman(long g, long p, byte* key)
   
   //potrei usare una memset(Ystring, '-', getNumOfDigits(temp) + 1)) al posto di free e malloc, ma non cambierebbe occupazione di memoria
   //The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function.    
-  temp = powMod(atoi(Ystring), X, p);
+  temp = modpowFast(atoi(Ystring), X, p);
   free(Ystring);
  
   Ystring = (char*)malloc(sizeof(char)*(getNumOfDigits(temp) + 1));
@@ -155,13 +155,44 @@ void sendPOST()
   */
 }
 
-long powMod(long base, long e, long mod)
+/*long powMod(long base, long e, long mod)
 {
   int i;	
   long ret = 1;
   for(i = 1; i <= e; i++)	
     ret = (ret*base)%mod;
   return ret;
+}*/
+
+long modpowFast(long a,long b,long mod)
+{
+    long product,pseq;
+    product=1;
+    pseq=a%mod;
+    while(b>0)
+    {
+        if(b&1)
+            product=modmult(product,pseq,mod);
+        pseq=modmult(pseq,pseq,mod);
+        b>>=1;
+    }
+    return product;
+}
+
+long modmult(long a,long b,long mod)
+{
+    if (a == 0 || b < mod / a)
+        return (a*b)%mod;
+    long sum;
+    sum = 0;
+    while(b>0)
+    {
+        if(b&1)
+            sum = (sum + a) % mod;
+        a = (2*a) % mod;
+        b>>=1;
+    }
+    return sum;
 }
 
 int getNumOfDigits(long num)
