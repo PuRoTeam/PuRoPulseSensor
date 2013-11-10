@@ -181,6 +181,24 @@ input[type="submit"] {
 	border: 2px solid #000000;
 }
 
+#heart {
+	margin: 0px 0px 20px 20px;
+	padding: 10px 10px 10px 20px;
+	float: left;
+	color: #FFFFFF;
+	font-weight: bold;
+	position: relative;
+}
+
+#heart div{
+	position: absolute;
+	left: 68px;
+	top: 48px;
+	z-index: +1;
+	color: #FFFFFF;
+	font-size: 18px;
+	
+}
 
 
 /* Footer */

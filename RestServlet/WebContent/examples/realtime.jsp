@@ -218,6 +218,10 @@ else
 					<input id="idate" type="button" value="Imposta" onclick="setMinMax()">
 				</form>
 			</div>
+			<div id="heart">
+				<img src="css/heart.png" class="pulse" height="100" width="120">
+				<div>33</div> <!-- <%=session.getAttribute("userName") %> -->
+			</div>			
 		</div>
 		<div id="chart_wrapper">
 			<div id="container"></div>
