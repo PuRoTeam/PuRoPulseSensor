@@ -78,7 +78,8 @@ void writeCryptoInitialTimestamp()
   aes.set_key(mykey, 256);
   aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
   
-  char* cryptoInitialTimestamp = byte2StringHex(mycipher, blocks*N_BLOCK); //non include "newline" quindi lo devo scrivere al client      
+  char* cryptoInitialTimestamp = byte2StringHex(mycipher, blocks*N_BLOCK); //non include "newline" quindi lo devo scrivere al client
+  
   Serial.print("cryptoInitialTimestamp: ");
   Serial.println(cryptoInitialTimestamp);  
     

@@ -1,30 +1,29 @@
 #include <Ethernet.h>
 #include <SPI.h>
-#include <MemoryFree.h>
 #include <sha256.h>
 #include <AES.h>
-#include <string.h>
+#include <TrueRandom.h>
+//#include <MemoryFree.h>
+
+int uid = 1; //Questo Arduino serve paziente con uid = 1
 
 EthernetClient client;
 byte arduinoMAC[] = {0x90, 0xA2 , 0xDA, 0x0D, 0xD9, 0x35};
+IPAddress serverIP(192,168,1,103);
 
 byte* mykey=NULL;
-byte* my_iv;
+byte* my_iv=NULL;
+char* cipherText=NULL;
+uint8_t* hash=NULL;
 
 const long g = 14;
 const long p = 1031;
 
-char* cipherText;
-uint8_t* hash;
-
-int iter = 0;
-int value = 0; //SOLO PER TEST
 int delayms = 20;
 
-IPAddress serverIP(192,168,1,102);
-
 //PulseSensor
-int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
+//IMPORTANTE!!: Se uso True Random, devo tenere il pin 0 libero. Il sensore deve essere attaccato ad un altro pin, e bisogna modificare la linea di codice qui sotto
+int pulsePin = 1;                 // Pulse Sensor purple wire connected to analog pin 0 (DA MODIFICARE! PIN 1)
 int blinkPin = 13;                // pin to blink led at each beat
 
 volatile int BPM;                   // used to hold the pulse rate
@@ -35,10 +34,13 @@ volatile boolean QS = false;        // becomes true when Arduoino finds a beat.
 
 void setup()
 {  
-  interruptSetup();                 // sets up to read Pulse Sensor signal every 2mS 
+  interruptSetup();                 // sets up to read Pulse Sensor signal every 2mS
+  
   // UN-COMMENT THE NEXT LINE IF YOU ARE POWERING The Pulse Sensor AT LOW VOLTAGE, 
   // AND APPLY THAT VOLTAGE TO THE A-REF PIN
-  //analogReference(EXTERNAL);  
+  //analogReference(EXTERNAL);
+ 
+  randomSeed(TrueRandom.random()); 
   
   Serial.begin(115200);  
   Serial.println("Arduino");
@@ -49,12 +51,12 @@ void setup()
   client.connect(serverIP, 1600);
   
   if(client.connected()){
-    Serial.println("OK");    
+    Serial.println("Connected to Diffie Hellman Server");    
     
     //1. Start
-    client.write("start\n");   
+    client.write("Start Diffie Hellman Exchange\n");   
      
-    mykey = (byte*) malloc(32*sizeof(byte)); 
+    mykey = (byte*) malloc(32*sizeof(byte));  
      
     //2. Diffie Hellman
     diffieHellman(g, p, mykey); 
@@ -75,18 +77,17 @@ void setup()
     writeCryptoInitialTimestamp(); //deve essere richiamato dopo l'inizializazione di IV
     
     //4. End
-    client.write("end\n");
+    client.write("End Diffie Hellman Exchange\n");
     
     client.stop();
   }else
-    Serial.println("Impossible connecting to Diffie Hellman server...");
+    Serial.println("Impossible connecting to Diffie Hellman Server...");
 
   if(client.connect(serverIP, 8080))
     Serial.println("Connected to Tomcat");
   else
     Serial.println("Connection failed");
   
-  //SOLO PER TEST
   // if analog input pin 0 is unconnected, random analog
   // noise will cause the call to randomSeed() to generate
   // different seed numbers each time the sketch runs.
@@ -98,23 +99,20 @@ void loop()
 {  
   Serial.println("Loop...");
   
-  //value = random(0, 100);
-  value = (int)Signal;
+  int value = (int)Signal;
   long timestamp = millis();
-  int uid = 1;
     
   if(mykey!=NULL && client.connected()) {      
                
-    //perchè cbc "sporca" il vettore di inizializzazione ad ogni chiamata a cbc_encrypt
+    //cbc "sporca" il vettore di inizializzazione ad ogni chiamata a cbc_encrypt, quindi devo reinizializzarlo ad ogni iterazione
     for(int i=0; i<16; i++)
       my_iv[i] = hash[i];  
     
     int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
                + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
     
-    char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);
-    
-    sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value); //se non metti la formattazione giusta, arduino si incazza! (timestamp -> long -> ld)
+    char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);    
+    sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value);
     
     /*if (QS == true) {
       Serial.println("BPMBPMBPMBPMBPMBPM");
