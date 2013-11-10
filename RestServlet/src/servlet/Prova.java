@@ -13,6 +13,8 @@ public class Prova
 	
 	public static void main(String[] args)
 	{
+		System.out.println(System.currentTimeMillis());
+		
 		String c = "SELECT * FROM user WHERE username='' OR '1'='1' -- AND password='a'";
 		c = avoidInjection(c);
 		System.out.println(c);
