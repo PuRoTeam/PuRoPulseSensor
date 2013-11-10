@@ -149,9 +149,15 @@ input[type="submit"] {
 }
 
 #min_max {
-	margin: 20px 0px 20px 20px;
 	float: left;
+	margin-top: 10px;
+	padding-top: 10px 0px 10px 0px;
+	width: 19%;
+	background-image: -moz-linear-gradient(0% 100% 90deg,#003399, #003399, #0044CC 56%);
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 	color: #FFFFFF;
+	background: #003399;
 	font-weight: bold;
 }
 

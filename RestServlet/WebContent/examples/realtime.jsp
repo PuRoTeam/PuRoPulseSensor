@@ -209,15 +209,6 @@ else
 					<input type="hidden" value="" name="selUid" id="selUid"/>
 				</form>
 			</div>
-			<div id="min_max">
-				<form name="select_min_max" id="date_form">
-					<label>Min:</label>
-					<input name="mingraph" type="number">
-					<label>Max:</label>
-					<input name="maxgraph" type="number">
-					<input id="idate" type="button" value="Imposta" onclick="setMinMax()">
-				</form>
-			</div>
 			<div id="heart">
 				<img src="css/heart.png" class="pulse" height="100" width="120">
 				<div>33</div> <!-- <%=session.getAttribute("userName") %> -->
@@ -225,7 +216,16 @@ else
 		</div>
 		<div id="chart_wrapper">
 			<div id="container"></div>
-		</div>				
+		</div>
+		<div id="min_max">
+			<form name="select_min_max" id="date_form">
+				<label>Min:</label>
+				<input name="mingraph" type="number">
+				<label>Max:</label>
+				<input name="maxgraph" type="number">
+				<input id="idate" type="button" value="Imposta" onclick="setMinMax()">
+			</form>
+		</div>		
 	</div>
 </body>
 </html>
