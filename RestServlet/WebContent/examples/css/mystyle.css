@@ -148,6 +148,22 @@ input[type="submit"] {
 	margin-right: 60px; 
 }
 
+#min_max {
+	margin: 20px 0px 20px 20px;
+	float: left;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+#min_max select{
+	background-color: #FFFFFF;
+	width: 80px; 
+	color: #000000;
+}
+
+#min_max label{
+	margin-right: 60px; 
+}
 
 /* Date time form */
 #datetime {

@@ -33,8 +33,6 @@ Regarding your question about requests, a servlet is designed to handle many req
 @WebServlet("/ArduinoServlet")
 public class ArduinoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	public static final boolean DB_IS_WORKING = true; //TODO per testing senza db
 	
     public ArduinoServlet() 
     {
@@ -143,7 +141,7 @@ public class ArduinoServlet extends HttpServlet {
 						
 						pointsWithSameUid.add(newPoint);
 						
-						if(DB_IS_WORKING)
+						if(singleton.isDBWorking())
 						{
 							MysqlConnect mysql = MysqlConnect.getDbCon();
 							int result = mysql.insertPoint(newPoint);

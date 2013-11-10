@@ -73,10 +73,6 @@ function getDateAndTime() {
 				chart: {
 			    	zoomType: 'x',		
 				},
-	
-				scrollbar: {
-					liveRedraw: true
-				},
 				
 			    rangeSelector: {
 			        selected: 1,
@@ -119,8 +115,7 @@ function getDateAndTime() {
 			        type: 'spline',
 			        tooltip: {
 			        	valueDecimals: 2
-			        },
-			        //turboThreshold: 0
+			        },			        
 			    }]
 			});
 			

@@ -17,6 +17,8 @@ public class Shared
     private String diffieHellmanKey = "";    
     private ShareTime shareTime;
     
+    private boolean DBWorking = true;
+    
     private Shared() {}
  
     public static synchronized Shared getInstance() 
@@ -90,6 +92,14 @@ public class Shared
 
 	public void setShareTime(ShareTime shareTime) {
 		this.shareTime = shareTime;
+	}
+	
+	public boolean isDBWorking() {
+		return DBWorking;
+	}
+	
+	public void setDBWorking(boolean DBWorking) {
+		this.DBWorking = DBWorking;
 	}
 	
 	/****************************************/

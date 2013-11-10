@@ -46,9 +46,12 @@ public final class MysqlConnect
 			String password = parameters.get(2);
 			
 	    	try {
-	            Class.forName(driver).newInstance();
-	            conn = (Connection)DriverManager.getConnection(url + dbName, userName, password);
-	            if(conn != null){
+	    		if(conn == null) { //così lo faccio solo la prima volta
+		            Class.forName(driver).newInstance();
+		            conn = (Connection)DriverManager.getConnection(url + dbName, userName, password);	    			
+	    		}
+
+	            if(conn != null) { //se la chiamata precedente è andata a buon fine
 	            	if(db == null ) {
 	                    db = new MysqlConnect();
 	                }

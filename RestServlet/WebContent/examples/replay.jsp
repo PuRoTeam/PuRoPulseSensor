@@ -124,7 +124,7 @@
 					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">
 				</form>
 			</div>
-			<div id="uid">
+			<div id="min_max">
 				<form name="select_min_max" id="date_form">
 					<label>Min:</label>
 					<input name="mingraph" type="number">

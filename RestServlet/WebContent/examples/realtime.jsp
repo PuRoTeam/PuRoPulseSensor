@@ -165,9 +165,9 @@ else
 	               		{
 		                    var data = new Array(), time = (new Date()).getTime(), i;
 		    				
-		                    for (i = -59; i <= 0; i++) {
+		                    for (i = -99; i <= 0; i++) {
 		                        data.push({
-		                            x: time + i * 5,
+		                            x: time,// + i * 5,
 		                            y: 0
 		                        });
 		                    }
@@ -209,7 +209,7 @@ else
 					<input type="hidden" value="" name="selUid" id="selUid"/>
 				</form>
 			</div>
-			<div id="uid">
+			<div id="min_max">
 				<form name="select_min_max" id="date_form">
 					<label>Min:</label>
 					<input name="mingraph" type="number">
