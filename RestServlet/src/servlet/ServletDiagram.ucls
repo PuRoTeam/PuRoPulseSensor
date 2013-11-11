@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.4" icons="false" always-add-relationships="true" generalizations="false" 
+  realizations="false" associations="false" dependencies="false" nesting-relationships="false">  
+  <class id="1" language="java" name="servlet.ArduinoServletContextListener" project="RestServlet" 
+    file="/RestServlet/src/servlet/ArduinoServletContextListener.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="595" y="77"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="servlet.ArduinoServlet" project="RestServlet" 
+    file="/RestServlet/src/servlet/ArduinoServlet.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="653" y="210"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="servlet.ShareTime" project="RestServlet" 
+    file="/RestServlet/src/servlet/ShareTime.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="508" y="224"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="servlet.Shared" project="RestServlet" file="/RestServlet/src/servlet/Shared.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="561" y="399"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="servlet.ArduinoShared" project="RestServlet" 
+    file="/RestServlet/src/servlet/ArduinoShared.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="368" y="356"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="crypto.AES" project="RestServlet" file="/RestServlet/src/crypto/AES.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="867" y="146"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="crypto.Utility" project="RestServlet" file="/RestServlet/src/crypto/Utility.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="921" y="281"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="crypto.SHA256" project="RestServlet" file="/RestServlet/src/crypto/SHA256.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="852" y="432"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="crypto.KeyExchanger" project="RestServlet" 
+    file="/RestServlet/src/crypto/KeyExchanger.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="314" y="221"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="crypto.KeyExchangeManager" project="RestServlet" 
+    file="/RestServlet/src/crypto/KeyExchangeManager.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="534" y="138"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="crypto.KeyExchangeData" project="RestServlet" 
+    file="/RestServlet/src/crypto/KeyExchangeData.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="370" y="116"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="12" language="java" name="database.TableInfo" project="RestServlet" 
+    file="/RestServlet/src/database/TableInfo.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="779" y="221"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="13" language="java" name="database.MysqlConnect" project="RestServlet" 
+    file="/RestServlet/src/database/MysqlConnect.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="778" y="287"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="data.User" project="RestServlet" file="/RestServlet/src/data/User.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="695" y="355"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="data.Point" project="RestServlet" file="/RestServlet/src/data/Point.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="655" y="283"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <dependency id="16">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="17">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <association id="18">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="19" name="db"/>      
+      <multiplicity id="20" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="21">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="23">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="24">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="25">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="26">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="27">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="28">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <association id="31">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="32" name="shareTime">        
+        <position height="16" width="58" x="467" y="290"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="35" name="arduinoMap"/>      
+      <multiplicity id="36" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="37">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="38">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="39">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="40">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="41">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <association id="42">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="43" name="managerThread"/>      
+      <multiplicity id="44" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="45">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="46">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="13"/>  
+  </dependency>  
+  <dependency id="47">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="48">    
+    <bendpoint x="313" y="427"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <association id="49">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="50" name="instance"/>      
+      <multiplicity id="51" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="52">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <association id="53">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="54" name="shareTime">        
+        <position height="16" width="58" x="377" y="311"/>      
+      </attribute>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="false" package="true" initial-value="false" signature="false" 
+    accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="true"/>    
+    <operations public="false" package="false" protected="false" private="false" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
