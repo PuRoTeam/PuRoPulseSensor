@@ -27,7 +27,7 @@ public class ArduinoCryptoClient implements Runnable
 {
 	public static final String url = HostData.url;
 	public boolean runInfiniteTimes = true;
-	public int msBetweenRequest = 50; //150
+	public int msBetweenRequest = 20;
 	
 	int port;
 	long primitive_root;

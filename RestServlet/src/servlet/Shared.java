@@ -11,14 +11,9 @@ public class Shared
     private static Shared instance = null;
     
     private Map<String, ArduinoShared> arduinoMap = new HashMap<String, ArduinoShared>();
-    //private ArrayList<ArduinoShared> arduinoList = new ArrayList<ArduinoShared>();
     private Map<Long, ArrayList<Point>> points = new HashMap<Long, ArrayList<Point>>();
-    
-    private String diffieHellmanKey = "";    
-    private ShareTime shareTime;
-    
-    private int BPM = 0;
-    
+    private Map<Long, Integer> beatPerMinuteByUid = new HashMap<Long, Integer>();
+        
     private boolean DBWorking = false;
     
     private Shared() {}
@@ -43,16 +38,6 @@ public class Shared
     public void putPointsByUid(long uid, ArrayList<Point> newPoints)
     {
     	points.put(new Long(uid), newPoints);
-    }
-    
-    public String getDiffieHellmanKey()
-    {
-    	return diffieHellmanKey;
-    }
-    
-    public void setDiffieHellmanKey(String diffieHellmanKey)
-    {
-    	this.diffieHellmanKey = diffieHellmanKey;
     }
     
     public static void main(String args[])
@@ -87,21 +72,13 @@ public class Shared
     	//JSONArray ar = new JSONArray(ap1);
     	//System.out.println(ar.toString());
     }
-
-	public ShareTime getShareTime() {
-		return shareTime;
-	}
-
-	public void setShareTime(ShareTime shareTime) {
-		this.shareTime = shareTime;
+	
+	public Integer getBPM(long uid) {
+		return beatPerMinuteByUid.get(uid);
 	}
 	
-	public int getBPM() {
-		return BPM;
-	}
-	
-	public void setBPM(int BPM) {
-		this.BPM = BPM;
+	public void putBPM(long uid, int BPM) {
+		beatPerMinuteByUid.put(uid, BPM);
 	}
 	
 	public boolean isDBWorking() {

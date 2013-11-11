@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<%@page import="servlet.Shared"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page import="database.MysqlConnect" %>
 <html>
@@ -33,7 +34,9 @@ else
 	<!-- HighCharts -->
 	<script type="text/javascript">
 	
-		var timeinterval = 5000;
+		var timeinterval = 20;
+		
+		//crea grafico
 		$(function () {
 		    $(document).ready(function() {
 		        Highcharts.setOptions({
@@ -53,8 +56,7 @@ else
 		                        var latestValue = -1;
 		                    	// set up the updating of the chart each second
 		                        var series = this.series[0];	                        
-		            			var loadUrl = "getPointsFromShared.jsp";
-		                        
+		            					                        
 		                        setInterval(function() {
 		                        	
 		                        	//il problema è che tipo buffera le richieste, e quando cambio la selezione, per un pò alterna richieste con vecchio uid a richieste con nuovo uid (con casini per il grafico)
@@ -65,7 +67,16 @@ else
 		                        	if(!selectedUid.equals(new Long(-1)))
 		                        	{	
 		                        	%>		                        	
-			            			$.post(loadUrl,
+			    						var urlBeat = "getBeat.jsp";
+			    						$.post(urlBeat, 
+			    							{uid: <%=selectedUid%>}, 
+			    							function(responseText) {
+				    							//var heartBeatDiv = document.getElementById("heartBeat");
+				    							$('#heartBeat span').text(responseText.BPM);
+			    						}, "json");
+		                        	
+		    							var loadUrl = "getPointsFromShared.jsp";
+			            				$.post(loadUrl,
 				            				{uid: <%=selectedUid%>},  
 				            			    function(responseText) {
 	
@@ -106,7 +117,7 @@ else
 			            			<%
 		                        	}
 			            			%>
-			                    }, 20); //16 == Circa 60 FPS
+			                    }, timeinterval); //16 == Circa 60 FPS
 	                    	}
 		                }
 		            },
@@ -175,7 +186,7 @@ else
 	               		})()
 		            }]
 		            
-		        });
+		        }); //end container highcharts
 		    });
 		    
 		});
@@ -211,11 +222,25 @@ else
 			</div>
 			<div id="heart">
 				<img src="css/heart.png" class="pulse" height="100" width="120">
-				<div>33</div> <!-- <%=session.getAttribute("userName") %> -->
+				<div id="heartBeat"><span>0</span></div> <!-- <%=session.getAttribute("userName") %> -->
 			</div>
 			<div id="uid">
 			<label>Saving data:
-			<input id="save" type="submit" value="Start" onclick="record()"/></label>
+				<%
+				if(Shared.getInstance().isDBWorking()) //se attualmente funziona, domando se voglio interromperlo
+				{
+					%>
+					<input id="save" type="submit" value="Stop" onclick="record()"/>
+					<%
+				}
+				else
+				{
+					%>
+					<input id="save" type="submit" value="Start" onclick="record()"/>
+					<%					
+				}
+				%>
+			</label>
 			</div>			
 		</div>
 		<div id="chart_wrapper">

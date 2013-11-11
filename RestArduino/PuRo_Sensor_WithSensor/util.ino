@@ -49,6 +49,47 @@ void diffieHellman(long g, long p, byte* key)
   free(Ystring);
 }
 
+/*
+//lasciare commentata
+char* encrypt(char* plainTxt)
+{
+  Serial.print("plainTxt: ");
+  Serial.println(plainTxt);
+
+  //cbc "sporca" il vettore di inizializzazione ad ogni chiamata a cbc_encrypt, quindi devo reinizializzarlo ad ogni iterazione
+  for(int i=0; i<16; i++)
+    my_iv[i] = hash[i];
+
+  int plainsize = strlen(plainTxt);
+  int blocks = 1;
+  
+  if(plainsize%N_BLOCK == 0)
+    blocks = plainsize/N_BLOCK;
+  else
+    blocks = plainsize/N_BLOCK + 1;  
+   
+  byte* myplain = (byte*) malloc(blocks*N_BLOCK);
+  byte* mycipher = (byte*) malloc(blocks*N_BLOCK);
+  
+  string2Bytes(plainTxt, myplain);
+  
+  padding(myplain, plainsize, blocks*N_BLOCK);
+    
+  AES aes;  
+  aes.set_key(mykey, 256);
+  aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
+  
+  char* cipherTxt = byte2StringHex(mycipher, blocks*N_BLOCK); //non include "newline" quindi lo devo scrivere al client
+
+  Serial.print("cipherTxt: ");
+  Serial.println(cipherTxt);
+
+  free(myplain);
+  free(mycipher);
+  
+  return cipherTxt;
+}
+*/
 void writeCryptoInitialTimestamp()
 {  
   long initialTimestamp = millis(); //millisecondi da avvio di arduino
@@ -65,20 +106,23 @@ void writeCryptoInitialTimestamp()
   if(plainsize%N_BLOCK == 0)
     blocks = plainsize/N_BLOCK;
   else
-    blocks = plainsize/N_BLOCK + 1;  
+    blocks = plainsize/N_BLOCK + 1;
    
   byte* myplain = (byte*) malloc(blocks*N_BLOCK);
   byte* mycipher = (byte*) malloc(blocks*N_BLOCK);
   
   string2Bytes(plainInitialTimestamp, myplain);
+  free(plainInitialTimestamp); 
   
   padding(myplain, plainsize, blocks*N_BLOCK);
     
   AES aes;  
   aes.set_key(mykey, 256);
   aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
+  free(myplain);
   
   char* cryptoInitialTimestamp = byte2StringHex(mycipher, blocks*N_BLOCK); //non include "newline" quindi lo devo scrivere al client
+  free(mycipher);
   
   Serial.print("cryptoInitialTimestamp: ");
   Serial.println(cryptoInitialTimestamp);  
@@ -87,72 +131,46 @@ void writeCryptoInitialTimestamp()
     client.write(cryptoInitialTimestamp[i]);
   }
   client.println();
-  client.flush();
-  
-  free(plainInitialTimestamp);  
+  client.flush(); 
+   
   free(cryptoInitialTimestamp);
-  free(myplain);
-  free(mycipher);
-}
-
-void writeInitialTimestamp()
-{
-  long initialTimestamp = millis(); //millisecondi da avvio di arduino
-  int numDigits = getNumOfDigits(initialTimestamp);
-  char* strInitialTimestamp = (char*)malloc(sizeof(char)*(numDigits + 1)); //+1 carattere terminatore
-  sprintf(strInitialTimestamp, "%ld\n", initialTimestamp);
-  
-  for(int i=0; i<strlen(strInitialTimestamp); i++){
-    client.write(strInitialTimestamp[i]);
-  }
-  
-  free(strInitialTimestamp);
 }
 
 void sendPOST()
-{  
+{ 
+  int beatPerMinute = BPM;
+  char* beatPerMinuteStr = (char*)malloc(sizeof(char)*(getNumOfDigits(beatPerMinute) + 1));  
+  sprintf(beatPerMinuteStr, "%d", beatPerMinute);  
+  
+  /*for(int i=0; i<16; i++)
+      my_iv[i] = hash[i];
+  char* cryptoBPM;
+  encrypt(mykey, beatPerMinuteStr, cryptoBPM);
+  free(cryptoBPM);*/
+  
   client.print("POST /RestServlet/ HTTP/1.1\r\n");          
   client.print("Host: it.uniroma2.arduino\r\n");
   client.print("Content-Type: application/x-www-form-urlencoded\r\n");
   client.print("User-Agent: Arduino/1.0\r\n");
   
   client.print("Content-Length: ");  
-  int contentLength = strlen("JSON=")+strlen(cipherText);
+  int contentLength = strlen("JSON=") + strlen(cipherText) + strlen("&BPM=") + strlen(beatPerMinuteStr);
   char* strConLen = (char*)malloc(sizeof(char)*(getNumOfDigits(contentLength) + 1));
-  sprintf(strConLen, "%d", contentLength); 
+  sprintf(strConLen, "%d", contentLength);
   client.print(strConLen);
   client.print("\r\n");
   free(strConLen);
   
   client.print("\r\n"); //spazio fra header e body
+  
   client.print("JSON=");
   client.print(cipherText);
+  
+  client.print("&BPM=");
+  client.print(beatPerMinuteStr);
+  free(beatPerMinuteStr);
+
   client.print("\r\n");
-  client.flush();
-  
-  
-  //ecco cosa fà flush
-  //void EthernetClient::flush() {
-  //while (available())
-  //  read();
-  //}
-  
-  //TERZO METODO
-  /*
-  client.println("POST /RestServlet/ HTTP/1.1");          
-  client.println("Host: it.uniroma2.arduino");
-  client.println("Content-Type: application/x-www-form-urlencoded");
-  //client.println("Connection: close"); così chiude la connessione al primo pacchetto inviato/ricevuto
-  client.println("User-Agent: Arduino/1.0");
-  client.print("Content-Length: ");
-  client.println(strlen(cipherText)+strlen("JSON="));
-  client.println();
-  client.print("JSON=");
-  client.println(cipherText);
-  //client.print(cipherText);
-  //client.println();
-  client.flush();
-  */
 }
 
 /*long powMod(long base, long e, long mod)
@@ -218,7 +236,8 @@ void string2Bytes(char* s, byte* a)
     a[i] = (byte)s[i];
   }
 }
-
+/*
+//lasciare commentata
 void printHash(uint8_t* hash, int n)
 {
   int i;
@@ -228,7 +247,7 @@ void printHash(uint8_t* hash, int n)
   }
   Serial.println();
 }
-
+*/
 void padding(byte* b, int d, int r)
 {  
   int c = d%16;

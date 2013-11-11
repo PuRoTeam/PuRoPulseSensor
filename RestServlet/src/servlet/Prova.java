@@ -1,5 +1,8 @@
 package servlet;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Prova
 {
     public static String avoidInjection(String parameter)
@@ -11,8 +14,16 @@ public class Prova
     	return escapedString;
     }
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws JSONException
 	{
+		long uid = 1;
+		Shared singleton = Shared.getInstance();
+		Integer BPM = singleton.getBPM(uid);
+		JSONObject json = new JSONObject();
+		json.put("BPM", BPM);
+		System.out.println(json.toString());	
+		
+		
 		System.out.println(System.currentTimeMillis());
 		
 		String c = "SELECT * FROM user WHERE username='' OR '1'='1' -- AND password='a'";

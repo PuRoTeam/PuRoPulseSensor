@@ -4,7 +4,7 @@ public class ArduinoShared
 {
 	private String arduinoIP;
 	private String diffieHellmanKey;
-	private ShareTime shareTime;
+	private ShareTime shareTime;	
 	
 	public ArduinoShared(String arduinoIP, String diffieHellmanKey, ShareTime shareTime)
 	{

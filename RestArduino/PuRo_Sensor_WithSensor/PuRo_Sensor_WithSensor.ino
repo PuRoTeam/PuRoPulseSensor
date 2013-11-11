@@ -3,13 +3,12 @@
 #include <sha256.h>
 #include <AES.h>
 #include <TrueRandom.h>
-//#include <MemoryFree.h>
 
 int uid = 1; //Questo Arduino serve paziente con uid = 1
 
 EthernetClient client;
 byte arduinoMAC[] = {0x90, 0xA2 , 0xDA, 0x0D, 0xD9, 0x35};
-IPAddress serverIP(192,168,1,103);
+IPAddress serverIP(192,168,1,102); //192,168,1,103
 
 byte* mykey=NULL;
 byte* my_iv=NULL;
@@ -26,16 +25,16 @@ int delayms = 20;
 int pulsePin = 1;                 // Pulse Sensor purple wire connected to analog pin 0 (DA MODIFICARE! PIN 1)
 //int blinkPin = 13;                // pin to blink led at each beat
 
-volatile int BPM = 0;                   // used to hold the pulse rate L'HO IMPOSTATO IO A ZERO, PRIMA ERA NON INIZIALIZZATO
-volatile int Signal = 0;                // holds the incoming raw data
+volatile int BPM = 0;               // used to hold the pulse rate L'HO IMPOSTATO IO A ZERO, PRIMA ERA NON INIZIALIZZATO
+volatile int Signal = 0;            // holds the incoming raw data
 volatile int IBI = 600;             // holds the time between beats, must be seeded! 
 volatile boolean Pulse = false;     // true when pulse wave is high, false when it's low
-volatile boolean QS = false;        // becomes true when Arduoino finds a beat.
+//volatile boolean QS = false;      // becomes true when Arduoino finds a beat.
 
 void setup()
 {  
   interruptSetup();                 // sets up to read Pulse Sensor signal every 2mS
-  
+
   // UN-COMMENT THE NEXT LINE IF YOU ARE POWERING The Pulse Sensor AT LOW VOLTAGE, 
   // AND APPLY THAT VOLTAGE TO THE A-REF PIN
   //analogReference(EXTERNAL);
@@ -60,19 +59,27 @@ void setup()
      
     //2. Diffie Hellman
     diffieHellman(g, p, mykey); 
-        
+    
     char* keys = (char*) byte2StringHex(mykey, 32);
 
     Sha256.init();
-    Sha256.print(keys);
-    
+    Sha256.print(keys);    
     free(keys);
     
     hash = Sha256.result();
     my_iv = (byte*)malloc(16*sizeof(byte));
     for(int i=0; i<16; i++)
       my_iv[i] = hash[i];
+    
+    /*char* clap = (char*)malloc(sizeof(char)*(strlen("clap") + 1));
+    char* cryptClap;
+    cryptClap = encrypt(clap);
+    Serial.print("cryptClap: ");
+    Serial.println(cryptClap);
+    free(clap);
+    free(cryptClap);*/
       
+    
     //3. Initial Timest
     writeCryptoInitialTimestamp(); //deve essere richiamato dopo l'inizializazione di IV
     
@@ -96,7 +103,7 @@ void setup()
 }
 
 void loop()
-{  
+{
   Serial.println("Loop...");
   
   int value = Signal;
@@ -107,19 +114,22 @@ void loop()
                
     //cbc "sporca" il vettore di inizializzazione ad ogni chiamata a cbc_encrypt, quindi devo reinizializzarlo ad ogni iterazione
     for(int i=0; i<16; i++)
-      my_iv[i] = hash[i];  
+      my_iv[i] = hash[i];
  
-    Serial.print("bpm: ");
-    Serial.println(bpm);
+    //Serial.print("bpm: ");
+    //Serial.println(bpm);
     
-    /*int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
-             + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen(",")
-             + strlen("\"bpm\":") + getNumOfDigits(bpm) + strlen("}]") + 1; //carattere terminatore //CON BPM*/
+    //int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
+    //         + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen(",")
+    //         + strlen("\"bpm\":") + getNumOfDigits(bpm) + strlen("}]") + 1; //carattere terminatore //CON BPM
+             
     int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
-             + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
+            + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
     
     char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);
+    
     //sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d,\"bpm\":%d}]", uid, timestamp, value, bpm); //CON BPM
+    
     sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value);
         
     Serial.print("plainjson: ");
@@ -133,41 +143,29 @@ void loop()
     else
       blocks = plainsize/N_BLOCK + 1;
     
-    //Serial.println("A");
-    
-    byte* myplain = (byte*) malloc(blocks*N_BLOCK);
-    byte* mycipher = (byte*) malloc(blocks*N_BLOCK);
+    byte* myplain = (byte*) malloc(blocks*N_BLOCK);    
     
     string2Bytes(plainjson, myplain);
-    
-    //Serial.println("B");
+    free(plainjson);
     
     padding(myplain, plainsize, blocks*N_BLOCK);
-
-    //Serial.println("C");
       
-    AES aes;
-    
+    AES aes;    
     aes.set_key(mykey, 256);
-    
-    //Serial.println("D");
-    
+    byte* mycipher = (byte*) malloc(blocks*N_BLOCK);  
     aes.cbc_encrypt(myplain, mycipher, blocks, my_iv);
+    free(myplain);
        
     cipherText = byte2StringHex(mycipher, blocks*N_BLOCK);
+    free(mycipher); 
     
     Serial.print("cipherText: ");
     Serial.println(cipherText);
     
     if(client.connected())
-      sendPOST();
-        
-    free(myplain);    
-    free(mycipher);
-    free(cipherText);        
-    free(plainjson);
-    
-    //Serial.println("E");
+      sendPOST();        
+
+    free(cipherText);
   }  
   else if(!client.connected())
   {
@@ -176,7 +174,7 @@ void loop()
   }
   
   //for(;;){}
-  //Serial.println("F");
+  
   delay(delayms);
 }
 

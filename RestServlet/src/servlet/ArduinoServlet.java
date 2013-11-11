@@ -54,17 +54,19 @@ public class ArduinoServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException 
-	{	
-		String paramJson = request.getParameter("JSON");		
-		multiCryptoValue(request, response, paramJson);
+	{			
+		multiCryptoValue(request, response);
 		
 		response.flushBuffer();
 	}
 	
 	//ricevo un array di punti criptato
-	public void multiCryptoValue(HttpServletRequest request, HttpServletResponse response, String cryptoJson) 
+	public void multiCryptoValue(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException
 	{
+		String cryptoJson = request.getParameter("JSON");
+		//System.out.println("JSON: " + cryptoJson);
+		
 		//System.out.println("cryptoJson: " + cryptoJson);		
 		String clientIP = getRequestIP(request);
 		String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKeyFromIP(clientIP);
@@ -131,14 +133,20 @@ public class ArduinoServlet extends HttpServlet {
 						double curValue = curJsonElement.getDouble("value");
 						long curTimestamp = curJsonElement.getLong("timestamp");
 						
-						int BPM = 0;
 						try
 						{
-							BPM = curJsonElement.getInt("bpm"); //se in questa json è stato invito anche il BPM
-							singleton.setBPM(BPM);
-							System.out.println("BPM: " + BPM);
+							Integer BPM = new Integer(0);
+							//1.
+							String bpmString = request.getParameter("BPM");
+							if(bpmString != null)							
+								BPM = Integer.parseInt(bpmString);		
+							//2.
+							//BPM = curJsonElement.getInt("BPM"); //se in questa json è stato invito anche il BPM							
+														
+							//System.out.println("BPM: " + BPM);
+							singleton.putBPM(curUidInArray, BPM);
 						}
-						catch(JSONException f)
+						catch(Exception f)
 						{}
 						
 						String clientIP = getRequestIP(request);
