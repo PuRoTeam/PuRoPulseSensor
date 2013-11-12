@@ -1,7 +1,14 @@
 package servlet;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import sun.org.mozilla.javascript.internal.ast.ForInLoop;
+import database.MysqlConnect;
 
 public class Prova
 {
@@ -14,15 +21,18 @@ public class Prova
     	return escapedString;
     }
 	
-	public static void main(String[] args) throws JSONException
+	public static void main(String[] args) throws JSONException, SQLException
 	{
-		long uid = 1;
-		Shared singleton = Shared.getInstance();
-		Integer BPM = singleton.getBPM(uid);
-		JSONObject json = new JSONObject();
-		json.put("BPM", BPM);
-		System.out.println(json.toString());	
+		MysqlConnect mysql = MysqlConnect.getDbCon();
+		ArrayList<Long> arr = mysql.getPatientUid();
+		JSONArray jarray = new JSONArray(arr);
 		
+		System.out.println(jarray.toString());
+		
+		for (int i = 0; i < jarray.length(); i++) 
+		{
+			System.out.println(jarray.getLong(i));			
+		}		
 		
 		System.out.println(System.currentTimeMillis());
 		
