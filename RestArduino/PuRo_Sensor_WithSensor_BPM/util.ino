@@ -105,13 +105,15 @@ void writeCryptoInitialTimestamp()
   free(cryptoInitialTimestamp);
 }
 
+//sendPost con invio continuo di BPM
 void sendPOST()
 { 
   int beatPerMinute = BPM;
   char* beatPerMinuteStr = (char*)malloc(sizeof(char)*(getNumOfDigits(beatPerMinute) + 1));  
   sprintf(beatPerMinuteStr, "%d", beatPerMinute);  
   
-  //char* cryptoBeatPerMinute = encrypt(beatPerMinuteStr);
+  char* cryptoBeatPerMinute = encrypt(beatPerMinuteStr);
+  free(beatPerMinuteStr);
   
   client.print("POST /RestServlet/ HTTP/1.1\r\n");          
   client.print("Host: it.uniroma2.arduino\r\n");
@@ -119,7 +121,56 @@ void sendPOST()
   client.print("User-Agent: Arduino/1.0\r\n");
   
   client.print("Content-Length: ");  
-  int contentLength = strlen("JSON=") + strlen(cipherText) + strlen("&BPM=") + strlen(beatPerMinuteStr);
+  
+  int contentLength = strlen("JSON=") + strlen(cipherText) + strlen("&BPM=") + strlen(cryptoBeatPerMinute);
+  
+  char* strConLen = (char*)malloc(sizeof(char)*(getNumOfDigits(contentLength) + 1));
+  sprintf(strConLen, "%d", contentLength);
+  client.print(strConLen);
+  client.print("\r\n");
+  free(strConLen);
+  
+  client.print("\r\n"); //spazio fra header e body
+  
+  client.print("JSON=");
+  client.print(cipherText);
+
+  client.print("&BPM=");
+  client.print(cryptoBeatPerMinute);
+  free(cryptoBeatPerMinute);
+    
+  client.print("\r\n");
+}
+
+/*
+//sendPost con invio di BPM solo quando QS=true
+void sendPOST()
+{ 
+  char* cryptoBeatPerMinute = NULL;
+  if(QS == true)
+  {
+    int beatPerMinute = BPM;
+    char* beatPerMinuteStr = (char*)malloc(sizeof(char)*(getNumOfDigits(beatPerMinute) + 1));  
+    sprintf(beatPerMinuteStr, "%d", beatPerMinute);  
+    
+    cryptoBeatPerMinute = encrypt(beatPerMinuteStr);
+    free(beatPerMinuteStr);
+  }
+  
+  client.print("POST /RestServlet/ HTTP/1.1\r\n");          
+  client.print("Host: it.uniroma2.arduino\r\n");
+  client.print("Content-Type: application/x-www-form-urlencoded\r\n");
+  client.print("User-Agent: Arduino/1.0\r\n");
+  
+  client.print("Content-Length: ");  
+  
+  int contentLength;
+ 
+  if(QS == true)
+    contentLength = strlen("JSON=") + strlen(cipherText) + strlen("&BPM=") + strlen(cryptoBeatPerMinute);
+  else
+    contentLength = strlen("JSON=") + strlen(cipherText);
+  
   char* strConLen = (char*)malloc(sizeof(char)*(getNumOfDigits(contentLength) + 1));
   sprintf(strConLen, "%d", contentLength);
   client.print(strConLen);
@@ -131,12 +182,17 @@ void sendPOST()
   client.print("JSON=");
   client.print(cipherText);
   
-  client.print("&BPM=");
-  client.print(beatPerMinuteStr);
-  free(beatPerMinuteStr);
-
+  if(QS == true)
+  {
+    client.print("&BPM=");
+    client.print(cryptoBeatPerMinute);
+    free(cryptoBeatPerMinute);
+  }
   client.print("\r\n");
-}
+  
+  QS = false;
+}*/
+
 
 long modpowFast(long a,long b,long mod)
 {

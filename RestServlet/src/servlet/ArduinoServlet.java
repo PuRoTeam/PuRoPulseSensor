@@ -135,19 +135,17 @@ public class ArduinoServlet extends HttpServlet {
 						
 						try
 						{
-							Integer BPM = new Integer(0);
 							//1.
-							String bpmString = request.getParameter("BPM");
-							if(bpmString != null)							
-								BPM = Integer.parseInt(bpmString);		
+							Integer BPM = getBPMFromPost(request, curUidJsonElement);	
 							//2.
-							//BPM = curJsonElement.getInt("BPM"); //se in questa json è stato invito anche il BPM							
-														
-							//System.out.println("BPM: " + BPM);
+							//BPM = curJsonElement.getInt("BPM"); //se in questa json è stato inviato anche il BPM							
+							
 							singleton.putBPM(curUidInArray, BPM);
 						}
 						catch(Exception f)
-						{}
+						{
+							f.printStackTrace();
+						}
 						
 						String clientIP = getRequestIP(request);
 						ShareTime st = singleton.getShareTimeFromIP(clientIP);
@@ -179,6 +177,32 @@ public class ArduinoServlet extends HttpServlet {
 		{ e.printStackTrace(); } 
 		catch (SQLException e) 
 		{ e.printStackTrace(); }
+	}
+	
+	public Integer getBPMFromPost(HttpServletRequest request, long uid) 
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, 
+			BadPaddingException, NoSuchProviderException, InvalidAlgorithmParameterException, NumberFormatException
+	{	
+		Integer BPM = new Integer(0);
+		
+		String cryptoBPM = request.getParameter("BPM");		
+		
+		if(cryptoBPM != null)
+		{
+			//System.out.println(cryptoBPM);
+			String clientIP = getRequestIP(request);
+			String diffieHellmanKey = Shared.getInstance().getDiffieHellmanKeyFromIP(clientIP);
+			
+			String plainBPM = AES.DecryptIVFromKey(cryptoBPM, diffieHellmanKey);
+			//System.out.println(plainBPM);
+					
+			if(plainBPM != null)							
+				BPM = Integer.parseInt(plainBPM);
+		}
+		else
+			BPM = Shared.getInstance().getBPM(uid);
+			
+		return BPM;
 	}
 	
 	public String getRequestIP(HttpServletRequest request)

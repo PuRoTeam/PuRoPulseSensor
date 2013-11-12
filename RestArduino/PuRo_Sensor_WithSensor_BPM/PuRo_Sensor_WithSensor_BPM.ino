@@ -8,7 +8,7 @@ int uid = 1; //Questo Arduino serve paziente con uid = 1
 
 EthernetClient client;
 byte arduinoMAC[] = {0x90, 0xA2 , 0xDA, 0x0D, 0xD9, 0x35};
-IPAddress serverIP(192,168,1,102); //192,168,1,103
+IPAddress serverIP(192,168,1,101);
 
 byte* mykey=NULL;
 byte* my_iv=NULL;
@@ -100,17 +100,17 @@ void loop()
     for(int i=0; i<16; i++)
       my_iv[i] = hash[i];
    
-    //int bpm = (int)BPM;   
-    //int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
-    //         + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen(",")
-    //         + strlen("\"bpm\":") + getNumOfDigits(bpm) + strlen("}]") + 1; //carattere terminatore //CON BPM
+    /*int beatPerMinute = BPM;    
+    int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
+             + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen(",")
+             + strlen("\"bpm\":") + getNumOfDigits(BPM) + strlen("}]") + 1; //carattere terminatore //CON BPM*/
              
     int sizeOfPlainJson = strlen("[{\"uid\":") + getNumOfDigits(uid) + strlen(",") + strlen("\"timestamp\":") 
             + getNumOfDigits(timestamp) + strlen(",") + strlen("\"value\":") + getNumOfDigits(value) + strlen("}]") + 1; //carattere terminatore
     
     char* plainjson = (char*)malloc(sizeof(char)*sizeOfPlainJson);
     
-    //sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d,\"bpm\":%d}]", uid, timestamp, value, bpm); //CON BPM
+    //sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d,\"BPM\":%d}]", uid, timestamp, value, BPM); //CON BPM    
     
     sprintf(plainjson, "[{\"uid\":%d,\"timestamp\":%ld,\"value\":%d}]", uid, timestamp, value);
         
