@@ -118,9 +118,9 @@
 			<div id="datetime">
 				<form name="date_form" id="date_form">
 					<label>From:</label>
-					<input name="date_from" id="datetimepicker"/>
+					<input name="date_from" id="datetimepicker">
 					<label>To:</label>
-					<input name="date_to" id="datetimepicker2"/>
+					<input name="date_to" id="datetimepicker2">
 					<input id="idate" type="button" value="Invia" onclick="getDateAndTime()">
 				</form>
 			</div>

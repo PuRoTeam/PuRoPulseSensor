@@ -200,7 +200,6 @@ input[type="button"] {
 	width: 120px;
 	float: right;
 	margin: 10px 10px 5px 10px;
-	border: 0px solid #FFFF00;
 }
 
 #date_form input[type="submit"]{
