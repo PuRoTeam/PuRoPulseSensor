@@ -1,6 +1,3 @@
-<!-- <%@ page language="java" import="java.sql.*" errorPage="" %> -->
-
-<%@page import="java.io.PrintWriter"%>
 <%@ page import="database.MysqlConnect" %>
 <%@ page import="data.User" %>
 <%
