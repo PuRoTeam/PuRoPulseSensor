@@ -15,8 +15,8 @@ byte* my_iv=NULL;
 char* cipherText=NULL;
 uint8_t* hash=NULL;
 
-const long g = 14;
-const long p = 1031;
+const long g = 2;
+const long p = 32771;
 
 int delayms = 20;
 

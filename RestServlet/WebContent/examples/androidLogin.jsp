@@ -8,18 +8,13 @@
 	String password = request.getParameter("sPwd");
 	if(password == null)
 		password = "";
-
-	System.out.println(userName);
-	System.out.println(password);
 	
 	try
 	{
 		MysqlConnect mysql = MysqlConnect.getDbCon();
 		if(mysql != null){
 			User user = mysql.userExists(userName, password);	
-			
-			System.out.println(user);
-			
+						
 			if(user != null){//successo	
 				out.println("{\"res\":true}");
 			}
