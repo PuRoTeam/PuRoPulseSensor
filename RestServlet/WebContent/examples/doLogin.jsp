@@ -1,5 +1,4 @@
-<!-- <%@ page language="java" import="java.sql.*" errorPage="" %> -->
-
+<%@ page import="crypto.SHA256" %>
 <%@ page import="database.MysqlConnect" %>
 <%@ page import="data.User" %>
 <%
@@ -15,6 +14,9 @@
 	{
 		MysqlConnect mysql = MysqlConnect.getDbCon();
 		if(mysql != null){
+			
+			password = SHA256.getMsgDigest(password);
+			
 			User user = mysql.userExists(userName, password);	
 			
 			if(user != null){//successo	

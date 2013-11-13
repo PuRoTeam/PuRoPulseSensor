@@ -150,7 +150,7 @@ public final class MysqlConnect
     	return escapedString;
     }
     
-    public User userExists(String username, String password) throws SQLException
+    public User userExists(String username, String hashPassword) throws SQLException
     {
     	username = avoidInjection(username);
     	String tuTableName = TableInfo.TableUser.toString();
@@ -160,7 +160,7 @@ public final class MysqlConnect
     	String tuPassword = TableInfo.TUserPassword.toString();
     	
     	String query = "SELECT * FROM " + tuTableName + " WHERE "
-    				   + tuUserName + "='" + username + "' AND " + tuPassword + "='" + SHA256.getMsgDigest(password) + "'";
+    				   + tuUserName + "='" + username + "' AND " + tuPassword + "='" + hashPassword + "'";
     	//System.out.println(query);
     	
     	ResultSet resultSet = query(query);
@@ -175,7 +175,7 @@ public final class MysqlConnect
 	    	String firstName = resultSet.getString(tuFirstName);
 	    	String lastName = resultSet.getString(tuLastName);
 	    	String userName = resultSet.getString(tuUserName);
-	    	user = new User(firstName, lastName, userName, password); //dentro viene fatto l'hash della password
+	    	user = new User(firstName, lastName, userName, hashPassword); //dentro viene fatto l'hash della password
 	    }
 	    resultSet.close();
 	    
