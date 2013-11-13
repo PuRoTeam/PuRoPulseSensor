@@ -32,7 +32,14 @@
 	
 	<div id="wrapper">	
 		<jsp:include page="menu.jsp"/>
-		<img src="css/funny_hearts.jpg" height="400" width="1100" >
+		<%
+		if(mode.equals(""))
+		{
+		%>
+			<img src="css/funny_hearts.jpg" height="400" width="1100" >
+		<%	
+		}
+		%>		
 	</div>
 	
 	<%

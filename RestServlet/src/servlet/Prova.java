@@ -3,9 +3,12 @@ package servlet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.commons.codec.binary.Hex;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import crypto.SHA256;
 
 import sun.org.mozilla.javascript.internal.ast.ForInLoop;
 import database.MysqlConnect;
@@ -20,9 +23,19 @@ public class Prova
     	escapedString = escapedString.replaceAll("--", "");
     	return escapedString;
     }
-	
+    
 	public static void main(String[] args) throws JSONException, SQLException
 	{
+		String prova = "prova";
+		String sha = SHA256.getMsgDigest(prova);
+		System.out.println(sha);
+		
+		byte[] data = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+		String msgDigest = Hex.encodeHexString(data);
+		System.out.println(msgDigest);
+		msgDigest = new String(Hex.encodeHex(data));
+		System.out.println(msgDigest);
+		
 		MysqlConnect mysql = MysqlConnect.getDbCon();
 		ArrayList<Long> arr = mysql.getPatientUid();
 		JSONArray jarray = new JSONArray(arr);
