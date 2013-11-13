@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>R4-Server</display-name>
+  <display-name>Pulse Sensor</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
     <servlet-name>ArduinoServlet</servlet-name>
-    <servlet-class>servlet.ArduinoServlet</servlet-class>
+    <servlet-class>it.uniroma2.pulsesensor.servlet.ArduinoServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ArduinoServlet</servlet-name>
     <url-pattern>/index.html</url-pattern>
   </servlet-mapping>
   <listener>
-		<listener-class>servlet.ArduinoServletContextListener</listener-class>
+		<listener-class>it.uniroma2.pulsesensor.servlet.ArduinoServletContextListener</listener-class>
   </listener>
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Protected Context</web-resource-name>
-			<url-pattern>/examples/*</url-pattern>
+			<url-pattern>/PulseSensor/*</url-pattern>
 		</web-resource-collection>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>

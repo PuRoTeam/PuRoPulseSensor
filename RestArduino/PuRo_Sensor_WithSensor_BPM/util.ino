@@ -115,7 +115,7 @@ void sendPOST()
   char* cryptoBeatPerMinute = encrypt(beatPerMinuteStr);
   free(beatPerMinuteStr);
   
-  client.print("POST /RestServlet/ HTTP/1.1\r\n");          
+  client.print("POST /RestServlet/index.html HTTP/1.1\r\n");          
   client.print("Host: it.uniroma2.arduino\r\n");
   client.print("Content-Type: application/x-www-form-urlencoded\r\n");
   client.print("User-Agent: Arduino/1.0\r\n");
