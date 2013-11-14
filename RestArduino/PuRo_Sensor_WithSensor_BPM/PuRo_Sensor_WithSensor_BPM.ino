@@ -8,7 +8,7 @@ int uid = 1; //Questo Arduino serve paziente con uid = 1
 
 EthernetClient client;
 byte arduinoMAC[] = {0x90, 0xA2 , 0xDA, 0x0D, 0xD9, 0x35};
-IPAddress serverIP(192,168,1,101);
+IPAddress serverIP(192,168,1,102);
 
 byte* mykey=NULL;
 byte* my_iv=NULL;
@@ -53,7 +53,7 @@ void setup()
     Serial.println("Connected to Diffie Hellman Server");    
     
     //1. Start
-    client.write("Start Diffie Hellman Exchange\n");   
+    client.write("Start\n");   
      
     mykey = (byte*) malloc(32*sizeof(byte));  
      
@@ -75,7 +75,7 @@ void setup()
     writeCryptoInitialTimestamp(); //deve essere richiamato dopo l'inizializazione di IV
     
     //4. End
-    client.write("End Diffie Hellman Exchange\n");
+    client.write("End\n");
     
     client.stop();
   }else
